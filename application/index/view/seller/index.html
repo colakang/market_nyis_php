@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Seller Profile</title>
+	<link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+	{include file="seller/header" /}
+	<link rel="stylesheet" href="/assets/css/ace.min.css" class="ace-main-stylesheet" id="main-ace-style">
+</head>
+<body>
+	{include file="seller/navbar_index" nickname=$nickname /}
+	{notempty name="nickname"}
+		{include file="seller/navbar_login" nickname=$nickname /}
+	{/notempty}
+
+<div class="profile-header">
+  <div class="container">
+    <div class="profile-photo">
+      <img src="/static/images/profile-07.png">
+    </div>
+    <div class="caption">
+      {$Think.lang.view_my_account}
+    </div>
+    <a href="/seller/profile">
+      <div class="pull-right icon-container">
+        <div class="icon-lg">
+          <i class="icon-profile-icon"></i>
+        </div>
+        <h6>{$Think.lang.view_my_info}</h6>
+      </div>
+    </a>
+
+    <a href="/seller/myservice">
+      <div class="pull-right icon-container">
+        <div class="icon-lg">
+          <i class="icon-profile-icon"></i>
+        </div>
+        <h6>{$Think.lang.view_my_service}</h6>
+      </div>
+    </a>
+
+    <a href="/seller/addservice">
+      <div class="pull-right icon-container">
+        <div class="icon-lg">
+          <i class="icon-profile-icon"></i>
+        </div>
+        <h6>{$Think.lang.view_add_service}</h6>
+      </div>
+    </a>
+  </div>
+</div>
+
+<div class="main-content">
+	<div class="main-content-inner">
+		<div class="page-content">
+			<div class="row  container panel-container">
+				{include file="seller/left_menu" /}
+				<div class="col-xs-10">
+				<!-- PAGE CONTENT BEGINS -->
+					<form class="form-horizontal" role="form" action="/seller/save" method="post">
+						<div class="form-group">
+							<label class="col-sm-3 control-label no-padding-right" for="email">{$Think.lang.view_email}</label>
+							<div class="col-sm-9">
+								<input type="text" id="email" name="email" placeholder="{$Think.lang.view_email}" class="col-xs-10 col-sm-5" value="{$profile.email ?? ''}" readonly="true">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-3 control-label no-padding-right" for="name">{$Think.lang.view_name}</label>
+							<div class="col-sm-9">
+								<input type="text" id="name" name="name"  placeholder="{$Think.lang.view_name}" class="col-xs-10 col-sm-5" value="{$profile.name ?? ''}">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-3 control-label no-padding-right" for="area">{$Think.lang.view_area}</label>
+							<div class="col-sm-9">
+								<input type="text" id="area" name="area" placeholder="{$Think.lang.view_area}" class="col-xs-10 col-sm-5" value="{$profile.area ?? ''}">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-3 control-label no-padding-right" for="wechat">{$Think.lang.view_wechat}</label>
+							<div class="col-sm-9">
+								<input type="text" id="wechat" name="wechat" placeholder="{$Think.lang.view_wechat}" class="col-xs-10 col-sm-5" value="{$profile.wechat ?? ''}">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-3 control-label no-padding-right" for="phone">{$Think.lang.view_phone}</label>
+							<div class="col-sm-9">
+								<input type="text" id="phone" name="phone" placeholder="{$Think.lang.view_phone}" class="col-xs-10 col-sm-5" value="{$profile.phone ?? ''}">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-3 control-label no-padding-right" for="address">{$Think.lang.view_address}</label>
+							<div class="col-sm-9">
+								<input type="text" id="address" name="address" placeholder="{$Think.lang.view_address}" class="col-xs-10 col-sm-5" value="{$profile.address ?? ''}">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-3 control-label no-padding-right" for="practice">{$Think.lang.view_practice}</label>
+							<div class="col-sm-9">
+								<input type="text" id="practice" name="practice" placeholder="{$Think.lang.view_practice}" class="col-xs-10 col-sm-5" value="{$profile.practice ?? ''}">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-3 control-label no-padding-right" for="rank">{$Think.lang.view_rank}</label>
+							<div class="col-sm-9">
+								<input type="text" id="rank" name="rank" placeholder="{$Think.lang.view_rank}" class="col-xs-10 col-sm-5" value="{$profile.rank ?? ''}">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-3 control-label no-padding-right" for="descript">{$Think.lang.view_descript}</label>
+							<div class="col-sm-9">
+								<input type="text" id="descript" name="descript" placeholder="{$Think.lang.view_descript}" class="col-xs-10 col-sm-5" value="{$profile.descript ?? ''}">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-3 control-label no-padding-right" for="status">{$Think.lang.view_status}</label>
+							<div class="col-sm-9">
+								<input type="text" id="status" name="status" placeholder="{$Think.lang.view_status}" class="col-xs-10 col-sm-5" value="{$profile.status ?? ''}" readonly='true'>
+							</div>
+						</div>
+
+						<div class="space-4"></div>
+						<div class="login-button-wrapper">
+                					<button type="submit" class="btn btn-primary btn-login">更新</button>
+              					</div>
+
+					</form>
+				<!-- PAGE CONTENT ENDS -->
+				</div>
+			<!-- /.col -->
+			</div>
+		</div>
+	</div>
+</div>
+
+
+	{include file="seller/footer_clean"  /}
+<script>
+  $('document').ready(function () {
+    $('#search-service-form [type="submit"]').on('click', function (e) {
+      e.preventDefault();
+      window.location.href = "/search-result.html";
+    });
+  });
+</script>
+</body>
+</html>

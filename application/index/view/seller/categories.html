@@ -1,0 +1,349 @@
+
+<script>
+
+/*定义三级分类数据*/
+//一级分类
+var province = {
+			"00":"Immigration", 
+			"01":"Immigration", 
+			"02":"Immigration", 
+			//"03":"Immigration", 
+			//"04":"Immigration", 
+			//"05":"Immigration", 
+			//"06":"Immigration", 
+			//"07":"Immigration",
+			};
+
+//二级分类
+var city = {
+	"00":{	"00":"Family Based Immigration", 
+		"01":"Employment Based Immigration", 
+		"02":"Nonimmigrant Workers Classifications",
+		"03":"Visit Classifications",
+		"04":"Common Services",
+	},
+	"01":{	"00":"Family Based Immigration", 
+		"01":"Employment Based Immigration", 
+		"02":"Nonimmigrant Workers Classifications",
+		"03":"Visit Classifications",
+		"04":"Common Services",
+	},
+	"02":{	"00":"Family Based Immigration", 
+		"01":"Employment Based Immigration", 
+		"02":"Nonimmigrant Workers Classifications",
+		"03":"Visit Classifications",
+		"04":"Common Services",
+	},
+//	"03":{	"00":"Family Based Immigration", 
+//		"01":"Employment Based Immigration", 
+//		"02":"Nonimmigrant Workers Classifications",
+//		"03":"Visit Classifications",
+//		"04":"Common Services",
+//	},
+};
+//三级分类
+var district = {
+	/*Immigration*/
+	"00":{
+		"00":{	"00":"Family of U.S. Citizens", 
+			"01":"Family of Green Card Holders (Permanent Residents)", 
+		},
+		"01":{	"00":"Employment-Based Immigration: First Preference EB-1", 
+			"01":"Employment-Based Immigration: Second Preference EB-2", 
+			"02":"Employment-Based Immigration: Third Preference EB-3",
+			"03":"Employment-Based Immigration: Fourth Preference EB-4",
+			"04":"Employment-Based Immigration: Fifth Preference EB-5",
+		},
+		"02":{	"00":"H-1B Specialty Occupations and Fashion Models", 
+			"01":"H-4 Dependent Spouses of H-1B Holder", 
+			"02":"H-1C Registered Nurse",
+			"03":"H-2A Agricultural Workers",
+			"04":"H-2B Non-Agricultural Workers",
+			"05":"H-3 Nonimmigrant Trainee",
+			"06":"L-1 Intracompany Transferee",
+			"07":"L-2 Dependent Spouses and Children of L-1 Holder",
+			"08":"O-1 Individuals with Extraordinary Ability or Achievement",
+			"09":"O-2 Associate of O-1 Holder",
+			"0A":"O-3 Dependent Spouses and Children of O-1 Holder",
+			"0B":"TN NAFTA Professionals - Initial",
+			"0C":"R Religious Worker Visa",
+			"0D":"P Athletes, Artists and Entertainment Groups Visa",
+			"0E":"E Treaty Trader & Investor Visa",
+			"0F":"CW-1: CNMI-Only Transitional Worker",
+			"10":"I Representatives of Foreign Media",
+		},
+		"03":{	"00":"B Visitor Visa", 
+			"01":"F Student Visa", 
+			"02":"M Student Visa",
+			"03":"J Exchange Visitor Visa",
+		},
+		"04":{	"00":"Application to Register Permanent Residence or Adjust Status", 
+			"01":"Advance Parole Document", 
+			"02":"Reentry Permit",
+			"03":"Refugee Travel Document",
+			"04":"Employment Authorization Document",
+			"05":"Renew or Replace Green Card",
+			"06":"Naturalization",
+			"07":"Immigrant Visa",
+			"08":"Petition for Amerasian, Widow(er), or Special Immigrant",
+			"09":"Refugee/Asylee Relative Petition",
+			"0A":"Application to Extend/Change Nonimmigrant Status",
+			"0B":"F-1 Reinstatement",
+			"0C":"J1 Wavier",
+		},
+	},
+	/*   */
+	"01":{
+		"00":{	"00":"Family of U.S. Citizens", 
+			"01":"Family of Green Card Holders (Permanent Residents)", 
+		},
+		"01":{	"00":"Employment-Based Immigration: First Preference EB-1", 
+			"01":"Employment-Based Immigration: Second Preference EB-2", 
+			"02":"Employment-Based Immigration: Third Preference EB-3",
+			"03":"Employment-Based Immigration: Fourth Preference EB-4",
+			"04":"Employment-Based Immigration: Fifth Preference EB-5",
+		},
+		"02":{	"00":"H-1B Specialty Occupations and Fashion Models", 
+			"01":"H-4 Dependent Spouses of H-1B Holder", 
+			"02":"H-1C Registered Nurse",
+			"03":"H-2A Agricultural Workers",
+			"04":"H-2B Non-Agricultural Workers",
+			"05":"H-3 Nonimmigrant Trainee",
+			"06":"L-1 Intracompany Transferee",
+			"07":"L-2 Dependent Spouses and Children of L-1 Holder",
+			"08":"O-1 Individuals with Extraordinary Ability or Achievement",
+			"09":"O-2 Associate of O-1 Holder",
+			"0A":"O-3 Dependent Spouses and Children of O-1 Holder",
+			"0B":"TN NAFTA Professionals - Initial",
+			"0C":"R Religious Worker Visa",
+			"0D":"P Athletes, Artists and Entertainment Groups Visa",
+			"0E":"E Treaty Trader & Investor Visa",
+			"0F":"CW-1: CNMI-Only Transitional Worker",
+			"10":"I Representatives of Foreign Media",
+		},
+		"03":{	"00":"B Visitor Visa", 
+			"01":"F Student Visa", 
+			"02":"M Student Visa",
+			"03":"J Exchange Visitor Visa",
+		},
+		"04":{	"00":"Application to Register Permanent Residence or Adjust Status", 
+			"01":"Advance Parole Document", 
+			"02":"Reentry Permit",
+			"03":"Refugee Travel Document",
+			"04":"Employment Authorization Document",
+			"05":"Renew or Replace Green Card",
+			"06":"Naturalization",
+			"07":"Immigrant Visa",
+			"08":"Petition for Amerasian, Widow(er), or Special Immigrant",
+			"09":"Refugee/Asylee Relative Petition",
+			"0A":"Application to Extend/Change Nonimmigrant Status",
+			"0B":"F-1 Reinstatement",
+			"0C":"J1 Wavier",
+		},
+	},
+
+};
+var end = {
+	/* Immigration*/
+	"00":{
+		"00":{	"00":{	"00":"Spouse And Children (unmarried and under 21)",
+				"01":"Sons and daughters (married)",
+				"02":"Sons and daughters (21 or over)",
+				"03":"Parents, if you are 21 or over",
+				"04":"Siblings, if you are 21 or over",
+				"05":"A fiancé(e) residing outside the United States and children of fiancé(e) under 21",
+				"06":"Remove Conditions ",
+			}, 
+			"01":{	"00":"Spouse (husband or wife)",
+				"01":"Unmarried children under 21",
+				"02":"Unmarried children under 21",
+			}, 
+		},
+		"01":{	"00":{	"00":"Extraordinary Ability",
+				"01":"Outstanding professors and researchers",
+				"02":"Multinational manager or executive",
+			},
+			"01":{	"00":"Advanced Degree",
+				"01":"National Interest Waiver",
+				"02":"Exceptional Ability",
+				"03":"Immigrant Petition for Alien Worker",
+			},
+			"02":{	"00":"Professionals",
+				"01":"Skilled Workers",
+				"02":"PERM",
+				"03":"Immigrant Petition for Alien Worker",
+			},
+			"03":{	"00":"special immigrants",
+			},
+			"04":{	"00":"Immigrant Investor",
+				"01":"Immigrant Investor (Remove Condition)",
+			},
+
+		},
+		"02":{	"00":{	"00":"H-1B Specialty Occupations and Fashion Models - Initial",
+				"01":"H-1B Specialty Occupations and Fashion Models - Extension",
+				"02":"H-1B Specialty Occupations and Fashion Models - Transfer",
+				"03":"H-1B Specialty Occupations and Fashion Models - RFE",
+			},
+			"01":{	"00":"Dependent Spouses of H-1B Holder - Initial",
+				"01":"Dependent Spouses of H-1B Holder - Extension",
+			},
+			"02":{	"00":"H-1C Registered Nurse",
+			},
+			"03":{	"00":"H-2A Agricultural Workers",
+			},
+			"04":{	"00":"H-2B Non-Agricultural Workers",
+			},
+			"05":{	"00":"H-3 Nonimmigrant Trainee",
+			},
+			"06":{	"00":"L1 - Initial",
+				"01":"L1 - Extension",
+			},
+			"07":{	"00":"L-2 application",
+				"01":"L-2 EAD",
+			},
+			"08":{	"00":"O-1 Individuals with Extraordinary Ability or Achievement - Initial",
+				"01":"O-1 Individuals with Extraordinary Ability or Achievement - Extension",
+			},
+			"09":{	"00":"O-2 Associate of O-1 Holder - Initial",
+				"01":"O2 - Extension",
+			},
+			"0A":{	"00":"O-3 Dependent Spouses and Children of O-1 Holder - Initial",
+				"01":"O-3 Dependent Spouses and Children of O-1 Holder - Extension",
+			},
+			"0B":{	"00":"TN NAFTA Professionals - Initial",
+				"01":"TN - Extension",
+			},
+			"0C":{	"00":"R-1 Temporary Religious Workers",
+				"01":"R-2 Dependent Spouses and Children of R-1 Holder",
+			},
+			"0D":{	"00":"P-1A Internationally Recognized Athlete",
+				"01":"P-1B A Member of an Internationally Recognized Entertainment Group",
+				"02":"P-2 Performer or Group Performing under Reciprocal Exchange Program",
+				"03":"P-3 Artist or Entertainer Part of a Culturally Unique Program",
+			},
+			"0E":{	"00":"E-1 Treaty Traders",
+				"01":"E-2 CNMI Investor/E-2 Treaty Investors",
+				"02":"E-3 Certain Specialty Occupation Professionals from Australia",
+			},
+			"0F":{	"00":"CW-1: CNMI-Only Transitional Worker",
+			},
+			"10":{	"00":"I Representatives of Foreign Media",
+			},
+
+		},
+		"03":{	"00":{	"00":"B-1 Temporary Business Visitor / B-2 Tourist Visa",
+			},
+			"01":{	"00":"F-1 Full-time Student / F-2 - Dependent Spouses and Children of F-1 Holder",
+			},
+			"02":{	"00":"M-1 Nonacademic or Vocational Student / M-2 - Dependent Spouses and Children of M-1 Holder",
+			},
+			"03":{	"00":"J-1 Exchange Visitor Visa / J-2 Dependent Spouses and Children of J-1 Holder",
+			},
+		},
+		"04":{	"00":{	"00":"I-485",
+			},
+			"01":{	"00":"I-131",
+			},
+			"02":{	"00":"I-131",
+			},
+			"03":{	"00":"I-131",
+			},
+			"04":{	"00":"I-765",
+			},
+			"05":{	"00":"I-90",
+			},
+			"06":{	"00":"N-400",
+			},
+			"07":{	"00":"DS-260",
+			},
+			"08":{	"00":"I-360",
+			},
+			"09":{	"00":"I-730",
+			},
+			"0A":{	"00":"I-539",
+			},
+			"0B":{	"00":"I-539",
+			},
+			"0C":{	"00":"J1 Wavier",
+			},
+
+		},
+
+	},
+
+};
+
+
+var expressP, expressC, expressD, expressArea, areaCont;
+var arrow = " <font>&gt;</font> ";
+
+/*初始化一级目录*/
+function intProvince() {
+	areaCont = "";
+	for (var i in province) {
+		id = "p_"+i;
+		areaCont += '<li id='+id+' onClick="selectP(\'' + i.trim() + '\');"><a href="javascript:void(0)">' + province[i] + '</a></li>';
+	}
+	$("#sort1").html(areaCont);
+}
+intProvince();
+
+/*选择一级目录*/
+function selectP(p) {
+	areaCont = "";
+	for (var j in city[p]) {
+		id = "c_"+j;
+		areaCont += '<li id='+id+' onClick="selectC(\'' + p + '\',\'' + j + '\');"><a href="javascript:void(0)">' + city[p][j] + '</a></li>';
+	}
+	$("#sort2").html(areaCont).show();
+	$("#sort3").hide();
+	$("#sort4").hide();
+	$("#sort1 li#p_"+p).addClass("active").siblings("li").removeClass("active");
+	expressP = province[p];
+	$("#categories").val(p);
+	$("#selectedSort").html(expressP);
+	$("#releaseBtn").removeAttr("disabled");
+}
+
+/*选择二级目录*/
+function selectC(p,c) {
+	areaCont = "";
+	expressC = "";
+	for (var k in district[p][c]) {
+		id = "d_"+k;
+		areaCont += '<li id='+id+' onClick="selectD(\'' + p + '\',\'' + c + '\',\'' + k + '\');"><a href="javascript:void(0)">' + district[p][c][k] + '</a></li>';
+	}
+	$("#sort3").html(areaCont).show();
+	$("#sort4").hide();
+	$("#sort2 li#c_"+c).addClass("active").siblings("li").removeClass("active");
+	expressC = expressP + arrow + city[p][c];
+	$("#categories").val(p+c);
+	$("#selectedSort").html(expressC);
+}
+
+/*选择三级目录*/
+function selectD(p,c,d) {
+	areaCont = "";
+	for (var f in end[p][c][d]) {
+		id = "e_"+f;
+		areaCont += '<li id='+id+' onClick="selectE(\'' + p + '\',\'' + c + '\',\'' + d + '\',\''+ f + '\');"><a href="javascript:void(0)">' + end[p][c][d][f] + '</a></li>';
+	}
+	$("#sort4").html(areaCont).show();
+	$("#sort3 li#d_"+d).addClass("active").siblings("li").removeClass("active");
+	expressD = expressC + arrow + district[p][c][d];
+	$("#categories").val(p+c+d);
+	$("#selectedSort").html(expressD);
+}
+
+function selectE(p,c,d,e) {
+	$("#sort4 li#e_"+e).addClass("active").siblings("li").removeClass("active");
+	expressE = expressD + arrow + end[p][c][d][e];
+	$("#categories").val(p+c+d+e);
+	$("#selectedSort").html(expressE);
+}
+
+
+</script>
+
+

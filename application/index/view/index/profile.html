@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>user profile</title>
+	{include file="index/header" /}
+</head>
+<body>
+	{include file="index/navbar_index" nickname=$nickname /}
+	{notempty name="nickname"}
+		{include file="index/navbar_login" nickname=$nickname /}
+	{/notempty}
+
+<div class="profile-header">
+  <div class="container">
+    <div class="profile-photo">
+      <img src="/static/images/profile-07.png">
+    </div>
+    <div class="caption">
+      我的账号
+    </div>
+    <a href="#1">
+      <div class="pull-right icon-container">
+        <div class="icon-lg">
+          <i class="icon-profile-icon"></i>
+        </div>
+        <h6>个人资料</h6>
+      </div>
+    </a>
+  </div>
+</div>
+<div>
+{$profile.email}
+{$profile.nickname}
+</div>
+
+	{include file="index/footer_clean"  /}
+<script>
+  $('document').ready(function () {
+    $('#search-service-form [type="submit"]').on('click', function (e) {
+      e.preventDefault();
+      window.location.href = "/search-result.html";
+    });
+  });
+</script>
+</body>
+</html>

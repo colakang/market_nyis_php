@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, max-scale=1">
+  <title>Market Index</title>
+	{include file="index/header" /}
+</head>
+<body>
+
+	{include file="index/navbar_index" nickname=$nickname /}
+	{notempty name="nickname"}
+		{include file="index/navbar_login" nickname=$nickname /}
+	{/notempty}
+
+  <div class="jumbo-show-container_md">
+    <div class="jumbo-show-background" style="background-image: url('/static/images/1-1.jpg')">
+    </div>
+    <div class="jumbo-content__container text-center">
+      <div class="v-full v-middle-container">
+        <div class="v-middle">
+          <div class="jumbo-caption">
+            <h1>搜索法律服务</h1>
+            <p>上千种法律服务, 一键搜索, 轻松搞定</p>
+          </div>
+          <div class="inline-form-wrapper">
+            <div class="inline-form jumbo-form-theme combo-jumbo-form">
+              <form action="/s" id="search-service-form">
+                <div class="sig-ipt group">
+		  <label for="category"></label>
+		  <input type="text" id="category" name="category" style="display:none">
+                  <label for="legal-service"></label>
+                  <input type="text" class="tt-input" id="legal-service" name="legalService" placeholder="法律服务...">
+                </div>
+                <div class="ipt-btn-group group">
+                  <label for="location"></label>
+                  <input type="text" class="tt-input" id="location" name="location" placeholder="所在州...">
+		  <label for="std-location"></label>
+		  <input type="text" id="std-location" name="stdLocation" style="display: none">
+                  <button type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="clearfix row-top-bottom-padding">
+      <div class="col-md-4 thumbnail-icon" >
+        <img src="/static/images/1-2.png">
+      </div>
+      <div class="col-md-4 thumbnail-icon" >
+        <img src="/static/images/1-3.png">
+      </div>
+      <div class="col-md-4 thumbnail-icon" >
+        <img src="/static/images/1-4.png">
+      </div>
+    </div>
+  </div>
+  <div class="mosaic-row">
+    <div class="col-md-6 mosaic-col">
+      <a href="https://nyislawfirm.com/?page_id=19726">
+        <div class="mosaic-block-md">
+          <div class="mosaic-background" style="background-image: url('/static/images/1-5.jpg')"></div>
+        </div>
+      </a>
+    </div>
+    <div class="col-md-6 mosaic-col">
+      <a href="//ask.nyis.com">
+      <div class="mosaic-block-md">
+        <div class="mosaic-background" style="background-image: url('/static/images/1-6.png')"></div>
+      </div>
+      </a>
+    </div>
+  </div>
+
+	{include file="index/browser_history" /}
+	{include file="index/top_lawyer" /}
+  <div style="width: 1080px; margin: 0 auto;">
+    <div class="clearfix row-top-bottom-padding text-center">
+      <h3><b>热门搜索服务类别</b></h3>
+      <div style="height: 680px; position: relative">
+        <div style="background-color: #3f8cbc; width: 160px; height: 160px; border-radius: 50%; position: absolute; top:20%; left:10%">
+          <a href="#">
+          <div class="mask-caption">
+            <div class="mask-content high-contrast">
+              <h3>劳工</h3>
+            </div>
+          </div>
+          </a>
+        </div>
+        <div class="bg-img-pos" style="background-image: url('/static/images/1-10移民.jpg'); width: 280px; height: 280px; border-radius: 50%; position: absolute; top:5%; left:28%">
+          <a href="#">
+            <div class="mask-caption" style="background-color: rgba(43,44,45,.8); border-radius: 50%">
+              <div class="mask-content high-contrast">
+                  <h1>移民</h1>
+              </div>
+            </div>
+          </a>
+        </div>
+        <div class="bg-img-pos" style="background-image: url('/static/images/1-11家庭.jpg'); width: 250px; height: 250px; border-radius: 50%; position: absolute; top:5%; left:56%">
+          <a href="#">
+          <div class="mask-caption" style="background-color: rgba(252,119,119,.8); border-radius: 50%">
+            <div class="mask-content high-contrast">
+              <h1>家庭</h1>
+            </div>
+          </div>
+          </a>
+        </div>
+        <div style="background-color: #3f8cbc; width: 130px; height: 130px; border-radius: 50%; position: absolute; top:30%; right:10%">
+          <a href="#">
+          <div class="mask-caption">
+            <div class="mask-content high-contrast">
+              <h3>刑事</h3>
+            </div>
+          </div>
+          </a>
+        </div>
+        <div class="bg-img-pos" style="background-image: url('/static/images/1-12地产.jpg'); width: 250px; height: 250px; border-radius: 50%; position: absolute; top:46%; left:7%">
+          <a href="#">
+          <div class="mask-caption" style="background-color: rgba(252,119,119,.8); border-radius: 50%">
+            <div class="mask-content high-contrast">
+              <h1>地产</h1>
+            </div>
+          </div>
+          </a>
+        </div>
+        <div class="bg-img-pos" style="background-image: url('/static/images/1-13商业.jpg'); width: 250px; height: 250px; border-radius: 50%; position: absolute; top:60%; left:30%">
+          <a href="#">
+          <div class="mask-caption" style="background-color: rgba(63,140,188,.8); border-radius: 50%">
+            <div class="mask-content high-contrast">
+              <h1>商业</h1>
+            </div>
+          </div>
+          </a>
+        </div>
+        <div style="background-color: #fc7777; width: 160px; height: 160px; border-radius: 50%; position: absolute; top:45%; left:50%">
+          <a href="#">
+          <div class="mask-caption">
+            <div class="mask-content high-contrast">
+              <h3>租赁</h3>
+            </div>
+          </div>
+            </a>
+        </div>
+        <div style="background-color: #2B2C2D; width: 160px; height: 160px; border-radius: 50%; position: absolute; bottom:5%; left:55%">
+          <a href="#">
+          <div class="mask-caption">
+            <div class="mask-content high-contrast">
+              <h3>所有服务</h3>
+            </div>
+          </div>
+          </a>
+        </div>
+        <div class="bg-img-pos" style="background-image: url('/static/images/1-14交通.jpg'); width: 250px; height: 250px; border-radius: 50%; position: absolute; bottom:9%; right:7%">
+          <a href="#">
+          <div class="mask-caption" style="background-color: rgba(39,44,56,.8); border-radius: 50%">
+            <div class="mask-content high-contrast">
+              <h1>交通</h1>
+            </div>
+          </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="/static/javascripts/login-signup-toggle.js"></script>
+  <script src="/static/javascripts/autocomplete.js"></script>
+	{include file="index/footer" /}
+	{include file="index/login_modal" /}
+
+</body>
+</html>

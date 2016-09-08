@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Order Query</title>
+  <link rel="stylesheet" href="/stylesheets/sass/common-stylesheet.css">
+  <link rel="stylesheet" href="/stylesheets/sass/service-stylesheet.css">
+  <link rel="stylesheet" href="/stylesheets/font-awesome-4.6.3/css/font-awesome.min.css">
+  <script type="text/javascript" src="/bower_components/jquery/dist/jquery.min.js"></script>
+  <script type="text/javascript" src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="/bower_components/angular/angular.min.js"></script>
+  <script type="text/javascript" src="/bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
+</head>
+<body>
+<div id="navbar" class="navbar clearfix navbar-dark">
+  <div class="comp pull-left nav-logo">
+    <a href="/index.html"><i class="icon-nyis-logo" style="font-size: 20px"></i></a>
+  </div>
+  <div class="inline-form nav-form-theme combo-nav-form">
+    <form action="/s" id="search-service-form">
+      <div class="sig-ipt group">
+        <label for="law-service"></label>
+        <input type="text" id="law-service" name="lawService" placeholder="法律服务...">
+      </div>
+      <div class="ipt-btn-group group">
+        <label for="location"></label>
+        <input type="text" id="location" name="location" placeholder="地点">
+        <button type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
+      </div>
+    </form>
+  </div>
+  <div class="comp pull-right">
+    <button class="btn btn-hdr" data-toggle="modal" data-target="#loginModal">登录</button>
+    <button class="btn btn-hdr btn-lang">EN</button>
+  </div>
+  <div class="comp pull-right">
+    <a class="btn btn-link" href="//ask.nyis.com">小纽问答</a>
+  </div>
+  <div class="comp pull-right">
+    <a class="btn btn-link" href="/market-index.html">服务商城</a>
+  </div>
+</div>
+<div class="jumbo-show-container_sm">
+  <div class="jumbo-show-background" style="background-image: url('/images/5-1 6-1 7-1.jpg')">
+  </div>
+</div>
+<div class="service-header">
+  <div class="container">
+    <div class="service-specification__header">
+      <div class="provider-info-card">
+        <div class="photo-container">
+          <img src="/images/profile-07.png">
+        </div>
+        <div class="info-container">
+          <h3><b>NYIS Law Firm adfsafadsf afdjasldfja;jf adfasdfasf afasdf</b></h3>
+          <p>新泽西 纽约</p>
+          <div class="score">
+            <span><i class="fa fa-star golden-star"></i></span>
+            <span><i class="fa fa-star golden-star"></i></span>
+            <span><i class="fa fa-star golden-star"></i></span>
+            <span><i class="fa fa-star golden-star"></i></span>
+            <span><i class="fa fa-star golden-star"></i></span>
+            <span>189</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="price-tag-container__header primary-price-tag">
+      <div class="price-tag">
+          <h3>H1-B申请</h3>
+          <h2><b>$1,500</b></h2>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="service-query">
+  <div class="container">
+    <form action="/apply" method="post">
+      <div class="col-md-6">
+        <h6 class="step-caption">第一步: 填写基本信息</h6>
+        <div class="question-container primary-question-theme">
+          <h6 class="question">目前是否在美国</h6>
+          <div>
+            <label class="control control-radio">
+              是
+              <input type="radio" name="withinUSA" value="true">
+              <div class="control__indicator"></div>
+            </label>
+            <label class="control control-radio">
+              否
+              <input type="radio" name="withinUSA" value="false">
+              <div class="control__indicator"></div>
+            </label>
+          </div>
+        </div>
+        <div class="question-container primary-question-theme">
+          <h6 class="question">当前身份</h6>
+          <div class="select">
+            <select id="state" name="state">
+              <option value="F1">学生F1-OPT</option>
+              <option value="F2">F2</option>
+              <option value="F3">F3</option>
+            </select>
+            <div class="select-arrow"></div>
+          </div>
+        </div>
+        <div class="question-container primary-question-theme">
+          <h6 class="question">当前身份到期时间</h6>
+          <input type="text" id='month' name="month" class="digit-2-input"> |
+          <input type="text" id='date' name="date" class="digit-2-input"> |
+          <input type="text" id='year' name="year" class="digit-4-input">
+        </div>
+        <div class="question-container primary-question-theme">
+          <h6 class="question">教育程度</h6>
+          <div class="select">
+            <select id="education" name="education">
+              <option value="bachelor">学士</option>
+              <option value="master">硕士</option>
+              <option value="doctor">博士</option>
+            </select>
+            <div class="select-arrow"></div>
+          </div>
+        </div>
+        <div class="question-container primary-question-theme">
+          <h6 class="question">专业名称</h6>
+          <div class="select">
+            <select id="field" name="field">
+              <option value="finance">金融</option>
+              <option value="CS">计算机科学</option>
+              <option value="EE">电子工程</option>
+            </select>
+            <div class="select-arrow"></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <h6 class="step-caption">第二步: 填写详细信息</h6>
+        <div class="question-container primary-question-theme">
+          <h6 class="question">请描述您的具体情况</h6>
+          <textarea name="description" id="description" class="textarea-primary"></textarea>
+        </div>
+        <!-- <div>
+          <button type="submit" class="btn btn-primary btn-lg">提交申请</button>
+        </div> -->
+      </div>
+    </form>
+    <button class="btn btn-primary btn-lg" style="margin-left: 20px" data-toggle="modal" data-target="#responseModal">提交申请</button>
+  </div>
+</div>
+<div class="service-rc-block">
+  <div class="container">
+    <h4 class="bottom-space-2"><b>相关服务</b></h4>
+    <div class="col-md-3 service-card">
+      <div class="service-card-bg-sm" style="background-image: url('/images/1-7.jpg')">
+        <div class="mask-caption v1-dark-mask">
+          <h3 class="left-top">NYIS</h3>
+          <div class="mask-content">
+            <a class="btn btn-link btn-link-hdr">H1-B申请</a>
+            <br>
+            <div>
+              <i class="fa fa-star golden-star" aria-hidden="true"></i>
+              <i class="fa fa-star golden-star" aria-hidden="true"></i>
+              <i class="fa fa-star golden-star" aria-hidden="true"></i>
+              <i class="fa fa-star golden-star" aria-hidden="true"></i>
+              <i class="fa fa-star golden-star" aria-hidden="true"></i>
+              <span>73</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="service-card-bottom-padding">
+        <h6>$2,100</h6>
+        <p>由<a>NYIS Law Firm</a>提供</p>
+      </div>
+    </div>
+    <div class="col-md-3 service-card">
+      <div class="service-card-bg-sm" style="background-image: url('/images/1-7.jpg')">
+        <div class="mask-caption v1-dark-mask">
+          <h3 class="left-top">NYIS</h3>
+          <div class="mask-content">
+            <a class="btn btn-link btn-link-hdr">H1-B申请</a>
+            <br>
+            <div>
+              <i class="fa fa-star golden-star" aria-hidden="true"></i>
+              <i class="fa fa-star golden-star" aria-hidden="true"></i>
+              <i class="fa fa-star golden-star" aria-hidden="true"></i>
+              <i class="fa fa-star golden-star" aria-hidden="true"></i>
+              <i class="fa fa-star golden-star" aria-hidden="true"></i>
+              <span>73</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="service-card-bottom-padding">
+        <h6>$2,100</h6>
+        <p>由<a>NYIS Law Firm</a>提供</p>
+      </div>
+    </div>
+    <div class="col-md-3 service-card">
+      <div class="service-card-bg-sm" style="background-image: url('/images/1-7.jpg')">
+        <div class="mask-caption v1-dark-mask">
+          <h3 class="left-top">NYIS</h3>
+          <div class="mask-content">
+            <a class="btn btn-link btn-link-hdr">H1-B申请</a>
+            <br>
+            <div>
+              <i class="fa fa-star golden-star" aria-hidden="true"></i>
+              <i class="fa fa-star golden-star" aria-hidden="true"></i>
+              <i class="fa fa-star golden-star" aria-hidden="true"></i>
+              <i class="fa fa-star golden-star" aria-hidden="true"></i>
+              <i class="fa fa-star golden-star" aria-hidden="true"></i>
+              <span>73</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="service-card-bottom-padding">
+        <h6>$2,100</h6>
+        <p>由<a>NYIS Law Firm</a>提供</p>
+      </div>
+    </div>
+    <div class="col-md-3 service-card">
+      <div class="service-card-bg-sm" style="background-image: url('/images/1-7.jpg')">
+        <div class="mask-caption v1-dark-mask">
+          <h3 class="left-top">NYIS</h3>
+          <div class="mask-content">
+            <a class="btn btn-link btn-link-hdr">H1-B申请</a>
+            <br>
+            <div>
+              <i class="fa fa-star golden-star" aria-hidden="true"></i>
+              <i class="fa fa-star golden-star" aria-hidden="true"></i>
+              <i class="fa fa-star golden-star" aria-hidden="true"></i>
+              <i class="fa fa-star golden-star" aria-hidden="true"></i>
+              <i class="fa fa-star golden-star" aria-hidden="true"></i>
+              <span>73</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="service-card-bottom-padding">
+        <h6>$2,100</h6>
+        <p>由<a>NYIS Law Firm</a>提供</p>
+      </div>
+    </div>
+  </div>
+</div>
+<footer id="footer">
+  <div class="dark-ft">
+    <div class="container">
+      <div class="ft-content-row">
+        <div class="col-md-6">
+          <div class="ft-group">
+            <h6 class="caption">关注我们</h6>
+            <div class="qr-container">
+              <img src="/images/qr-gz.png">
+              <p>公众平台</p>
+            </div>
+            <div class="qr-container">
+              <img src="/images/qr-gz.png">
+              <p>公众平台</p>
+            </div>
+          </div>
+          <div class="ft-group">
+            <h6>海量干货，热点新闻</h6>
+            <div class="inline-form-wrapper">
+              <div class="inline-form">
+                <form action="/e">
+                  <div class="ipt-btn-group border-tsp-theme">
+                    <label for="email"></label>
+                    <input type="text" id="email" name="email" placeholder="输入邮箱地址">
+                    <button type="submit"><i class="fa fa-chevron-right" aria-hidden="true"></i></button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          <a class="btn btn-circle btn-circle-ft" href="//google.com"><div class="btn-circle-font-wrapper"> <i class="fa fa-facebook" aria-hidden="true"></i></div></a>
+          <a class="btn btn-circle btn-circle-ft" href="//google.com"><div class="btn-circle-font-wrapper"> <i class="fa fa-weibo" aria-hidden="true"></i></div></a>
+          <a class="btn btn-circle btn-circle-ft" href="//google.com"><div class="btn-circle-font-wrapper"> <i class="fa fa-twitter" aria-hidden="true"></i></div></a>
+          <a class="btn btn-circle btn-circle-ft" href="//google.com"><div class="btn-circle-font-wrapper"> <i class="fa fa-envelope" aria-hidden="true"></i></div></a>
+        </div>
+        <div class="col-md-2 ft-group">
+          <h6 class="caption">关于</h6>
+          <a class="text-a"><p>NYIS团队</p></a>
+          <a class="text-a"><p>联系我们</p></a>
+          <a class="text-a"><p>合作伙伴</p></a>
+        </div>
+        <div class="col-md-2 ft-group">
+          <h6 class="caption">工作机会</h6>
+          <a class="text-a"><p>空缺职位</p></a>
+          <a class="text-a"><p>校园大使</p></a>
+        </div>
+        <div class="col-md-2 ft-group">
+          <h6 class="caption">发现</h6>
+          <a class="text-a"><p>转载协议</p></a>
+          <a class="text-a"><p>条款与隐私</p></a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="primary-ft">
+    <div class="container">
+      <div class="ft-copyright-row">
+        <div class="pull-left">&copy; 2016, NYIS Inc</div>
+        <div class="pull-left">All Rights Reserved</div>
+        <div class="pull-right">+1(800)685-NYIS(6947)</div>
+      </div>
+    </div>
+  </div>
+</footer>
+<!-- login modal -->
+<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="btn btn-link btn-link-modal active" id="login-btn"><b>登录</b></button>
+        <button class="btn btn-link btn-link-modal" id="signup-btn"><b>注册</b></button>
+      </div>
+      <div class="modal-body">
+        <div id="signup-form" class="hidden">
+          <form action="\signup">
+            <div class="signup-option">
+              <label class="control control-radio">
+                注册用户
+                <input type="radio" name="userType" value="client">
+                <div class="control__indicator"></div>
+              </label>
+              <label class="control control-radio">
+                注册律师
+                <input type="radio" name="userType" value="lawyer">
+                <div class="control__indicator"></div>
+              </label>
+            </div>
+            <div class="full-size-ipt-wrapper">
+              <label for="username"></label>
+              <input  type="text" id="username" name="username" class="full-size-ipt underline-ipt" placeholder="邮箱">
+              <span><i class="fa fa-user"></i></span>
+            </div>
+            <div class="full-size-ipt-wrapper">
+              <label for="password"></label>
+              <input  type="password" id="password" name="password" class="full-size-ipt underline-ipt" placeholder="密码">
+              <span><i class="fa fa-key"></i></span>
+            </div>
+            <div class="full-size-ipt-wrapper">
+              <label for="retypePassword"></label>
+              <input  type="password" id="retypePassword" name="retypePassword" class="full-size-ipt underline-ipt" placeholder="确认密码">
+              <span><i class="fa fa-key"></i></span>
+            </div>
+            <div class="login-button-wrapper">
+              <button type="submit" class="btn btn-primary btn-login">注册</button>
+            </div>
+          </form>
+        </div>
+        <div id="login-form">
+          <form action="\login">
+            <div class="full-size-ipt-wrapper">
+              <label for="username-login"></label>
+              <input  type="text" id="username-login" name="username" class="full-size-ipt underline-ipt" placeholder="邮箱">
+              <span><i class="fa fa-user"></i></span>
+            </div>
+            <div class="full-size-ipt-wrapper">
+              <label for="password-login"></label>
+              <input  type="password" id="password-login" name="password" class="full-size-ipt underline-ipt" placeholder="密码">
+              <span><i class="fa fa-key"></i></span>
+            </div>
+            <div class="option-block">
+              <label class="control control-checkbox">
+                记住我
+                <input type="checkbox" id="remember" name="remember">
+                <div class="control__indicator"></div>
+              </label>
+              <a href="/forget" class="pull-right">忘记密码?</a>
+            </div>
+            <div class="login-button-wrapper">
+              <button type="submit" class="btn btn-primary btn-login">登录</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="responseModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="caption">
+          <img src="images/check%20mark.png">
+          提交成功
+        </div>
+      </div>
+      <div class="modal-body">
+        <p>温馨提示:系统已将您的订单请求发送给律师,律师会在48小时内给您答复。请耐心等待。</p>
+        <div class="order-info-block">
+          <p>订单号: PK007921742YJ</p>
+          <p>服务提供商:NYIS Law Firm</p>
+          <p>定价: $1,500</p>
+        </div>
+        <p>如需要帮助,请联系客服人员: <span style="color: #fc7777">(800) 685-6947</span></p>
+        <a class="btn btn-lg btn-primary" href="/case-history.html">查看历史订单</a>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  $('document').ready(function () {
+    $('#login-btn').on('click', function () {
+      var $this = $(this);
+      if (!$this.hasClass('active')) {
+        $this.addClass('active');
+        $('#signup-form').addClass('hidden');
+        $('#signup-btn').removeClass('active');
+        $('#login-form').removeClass('hidden')
+      }
+    });
+    $('#signup-btn').on('click', function () {
+      var $this = $(this);
+      if (!$this.hasClass('active')) {
+        $('#login-btn').removeClass('active');
+        $('#login-form').addClass('hidden');
+        $this.addClass('active');
+        $('#signup-form').removeClass('hidden')
+      }
+    });
+    $('#search-service-form [type="submit"]').on('click', function (e) {
+      e.preventDefault();
+      window.location.href = "/search-result.html";
+    });
+  });
+</script>
+</body>
+</html>

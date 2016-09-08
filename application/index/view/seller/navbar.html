@@ -1,0 +1,31 @@
+<div id="navbar" class="navbar clearfix navbar-dark">
+  <div class="comp pull-left nav-logo">
+    <a href="/index.html"><i class="icon-nyis-logo" style="font-size: 20px"></i></a>
+  </div>
+  <div class="inline-form nav-form-theme combo-nav-form">
+    <form action="/s" id="search-service-form">
+      <div class="sig-ipt group">
+        <label for="law-service"></label>
+        <input type="text" id="law-service" name="lawService" placeholder="法律服务...">
+      </div>
+      <div class="ipt-btn-group group">
+        <label for="location"></label>
+        <input type="text" id="location" name="location" placeholder="地点">
+        <button type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
+      </div>
+    </form>
+  </div>
+  <div class="comp pull-right">
+	{empty name="nickname"}
+    <button class="btn btn-sm btn-hdr" data-toggle="modal" data-target="#loginModal">登录</button>
+	{/empty}
+    <a href="/?lang=en-us" class="btn btn-lang btn-hdr">EN</a>
+  </div>
+  <div class="comp pull-right">
+    <a class="btn btn-link" href="//ask.nyis.com">小纽问答</a>
+  </div>
+  <div class="comp pull-right">
+    <a class="btn btn-link" href="/market-index.html">服务商城</a>
+  </div>
+</div>
+
