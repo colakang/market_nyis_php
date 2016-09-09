@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Search Results</title>
+	{include file="index/header" /}
+</head>
+<body>
+        {include file="index/navbar" nickname=$nickname /}
+        {notempty name="nickname"}
+                {include file="index/navbar_login" nickname=$nickname /}
+        {/notempty}
+<div class="jumbo-show-container_sm">
+  <div class="jumbo-show-background" style="background-image: url('/static/images/2-1.jpg')">
+  </div>
+  <div class="jumbo-content__container text-center">
+    <div class="v-full v-middle-container">
+      <div class="v-middle">
+        <div class="jumbo-caption">
+          {$keyword}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{include file="index/promotion" /}
+
+{empty name="result"}
+	{include file="index/no_result" /}
+{else /}
+
+<div class="srh-rst-block">
+  <div class="container">
+	{volist name="result" id="vo"}	
+    <div class="col-md-4 srh-service-card" >
+      <div class="service-card">
+        <div class="service-card-bg" style="background-image: url('/static/images/1-7.jpg')">
+          <div class="mask-caption v1-dark-mask">
+            <h2 class="left-top">NYIS</h2>
+            <div class="mask-content">
+              <a class="btn btn-link btn-link-hdr" href="/view/{$vo._id ?? ''}">{$vo.name ?? ''}</a>
+              <br>
+              <div>
+                <i class="fa fa-star golden-star" aria-hidden="true"></i>
+                <i class="fa fa-star golden-star" aria-hidden="true"></i>
+                <i class="fa fa-star golden-star" aria-hidden="true"></i>
+                <i class="fa fa-star golden-star" aria-hidden="true"></i>
+                <i class="fa fa-star golden-star" aria-hidden="true"></i>
+                <span>73</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="service-card-bottom-padding">
+          <h5>{$vo.price ?? ''}</h5>
+          <p>由<a>{$vo.sellerName ?? ''}</a>提供</p>
+        </div>
+      </div>
+    </div>
+	{/volist}
+  </div>
+  <div class="pagination text-center">
+	{$result->render()}
+  </div>
+</div>
+
+{/empty}
+<div class="mosaic-row">
+  <div class="mosaic-block-sm">
+    <div class="mosaic-background" style="background-image: url('/static/images/2-3.jpg')"></div>
+    <div class="mask-caption dark-mask-static">
+      <div class="mask-content">
+        <h1>在律师大全中找到 <span style="color:#fc7777">1586</span> 结果</h1>
+        <br>
+        <a class="btn btn-hdr btn-lg" href="//lawyer.nyis.com/index/index/search_result?param1=name&param2=smith&param3=new+york">查看律师列表</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+{include file="index/browser_history" /}
+{include file="index/footer" /}
+{include file="index/login_modal" /}
+
+</body>
+</html>

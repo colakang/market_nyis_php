@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Service Specification</title>
+	{include file="index/header" /}
+</head>
+<body>
+        {include file="index/navbar" nickname=$nickname /}
+        {notempty name="nickname"}
+                {include file="index/navbar_login" nickname=$nickname /}
+        {/notempty}
+
+<div class="jumbo-show-container_sm">
+  <div class="jumbo-show-background" style="background-image: url('/static/images/5-1 6-1 7-1.jpg')">
+  </div>
+</div>
+<div class="container">
+  <div class="service-specification">
+    <div class="provider-info-card">
+      <div class="photo-container">
+        <img src="/static/images/profile-07.png">
+      </div>
+      <div class="info-container">
+        <h3><b>{$result.name ?? ''}</b></h3>
+        <p>{$result.area ?? ''}</p>
+        <div class="score">
+          <span><i class="fa fa-star golden-star"></i></span>
+          <span><i class="fa fa-star golden-star"></i></span>
+          <span><i class="fa fa-star golden-star"></i></span>
+          <span><i class="fa fa-star golden-star"></i></span>
+          <span><i class="fa fa-star golden-star"></i></span>
+          <span>189</span>
+        </div>
+      </div>
+    </div>
+    <div class="paragraph">
+      <h4><b>{$result.name ?? ''}</b></h4>
+      <p>{$result.description ?? "没有简介"}</p>
+    </div>
+    <div class="paragraph">
+      <h4><b>律所介绍</b></h4>
+      <p>{$result.sellerName ?? 'NYISLaw Firm致力于为移民提供广泛的美国法律服务,包括各项美国公司注、绿卡申请服务(杰出人才绿卡、职业移民绿卡、投资移民绿卡、亲属移民绿卡等)
+      、各项签证相关服务等多元化移民服务。另外律所也接受跨境商业诉讼案件的委托代理,在证劵法及投资诈骗案件中也为客户提供相关法律服务。'}</p>
+    </div>
+    <div class="comment-list">
+      <h4 class="caption"><b>用户评价</b>
+        <ul>
+          <li><i class="fa fa-star golden-star"></i></li>
+          <li><i class="fa fa-star golden-star"></i></li>
+          <li><i class="fa fa-star golden-star"></i></li>
+          <li><i class="fa fa-star golden-star"></i></li>
+          <li><i class="fa fa-star golden-star"></i></li>
+          <span>189</span>
+        </ul>
+      </h4>
+      <ul>
+        <li>
+          <div class="user-info">
+            <img src="/static/images/profile-07.png">
+            <p>Axlew231</p>
+          </div>
+          <div class="review-info">
+            <div>
+              <span><i class="fa fa-star golden-star"></i></span>
+              <span><i class="fa fa-star golden-star"></i></span>
+              <span><i class="fa fa-star golden-star"></i></span>
+              <span><i class="fa fa-star golden-star"></i></span>
+              <span><i class="fa fa-star golden-star"></i></span>
+            </div>
+            <p>非常好,很负责任,速度也非常快。微信联系很方便,也可以随时拨打电话找到我的律师。很靠谱,推荐这一家。</p>
+            <div class="history-info">
+              <span>2016年8月9日 14:25</span>&nbsp;&nbsp;
+              使用服务:<span>H1-B办理</span>
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="user-info">
+            <img src="/images/profile-07.png">
+            <p>小明明</p>
+          </div>
+          <div class="review-info">
+            <div>
+              <span><i class="fa fa-star golden-star"></i></span>
+              <span><i class="fa fa-star golden-star"></i></span>
+              <span><i class="fa fa-star golden-star"></i></span>
+              <span><i class="fa fa-star golden-star"></i></span>
+              <span><i class="fa fa-star golden-star"></i></span>
+            </div>
+            <p>H1-B是他们给办的,老顾客了。有什么问题直接一个电话就帮忙解决了,比其他律所方便多了。不用来回跑,也不怕联系不到人。这次是拿了个超速罚单,也不算太严重,就是不想留下什么
+            记录。律师帮我把影响降到了最低,真的非常开心,太感谢了!小纽太给力了!</p>
+            <div class="history-info">
+              <span>2016年8月7日 11:56</span>&nbsp;&nbsp;
+              使用服务:<span>交通罚单</span>
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="user-info">
+            <img src="/images/profile-07.png">
+            <p>小明明</p>
+          </div>
+          <div class="review-info">
+            <div>
+              <span><i class="fa fa-star golden-star"></i></span>
+              <span><i class="fa fa-star golden-star"></i></span>
+              <span><i class="fa fa-star golden-star"></i></span>
+              <span><i class="fa fa-star golden-star"></i></span>
+              <span><i class="fa fa-star golden-star"></i></span>
+            </div>
+            <div class="history-info">
+              <span>2016年8月6日 22:56</span>&nbsp;&nbsp;
+              使用服务:<span>H1-B Transfer</span>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div class="pagination text-center">
+      <ul>
+        <li><a href="/1" class="active">1</a></li>
+        <li><a href="/2">2</a></li>
+        <li><a href="/3">3</a></li>
+        <li><a href="/4" class="next"><i class="fa fa-angle-right"></i> </a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="price-tag-container">
+    <div class="price-tag primary-price-tag">
+      <h4>H1-B申请</h4>
+      <h3>$1,500</h3>
+      <table>
+        <tr>
+          <td>材料准备</td>
+          <td>$300</td>
+        </tr>
+        <tr>
+          <td>律师服务费用</td>
+          <td>$800</td>
+        </tr>
+        <tr>
+          <td>材料写作</td>
+          <td>$300</td>
+        </tr>
+        <tr>
+          <td>材料投递</td>
+          <td>$100</td>
+        </tr>
+      </table>
+      <p>费用不包含向移民局递交的申请费用</p>
+      <a class="btn btn-lg" href="/order-query.html">申请办理</a>
+    </div>
+  </div>
+</div>
+
+<div class="service-rc-block">
+  <div class="container">
+    <h4 class="bottom-space-2"><b>相关服务</b></h4>
+    <div class="col-md-3 service-card">
+      <div class="service-card-bg-sm" style="background-image: url('/images/1-7.jpg')">
+        <div class="mask-caption v1-dark-mask">
+          <h3 class="left-top">NYIS</h3>
+          <div class="mask-content">
+            <a class="btn btn-link btn-link-hdr">H1-B申请</a>
+            <br>
+            <div>
+              <i class="fa fa-star golden-star" aria-hidden="true"></i>
+              <i class="fa fa-star golden-star" aria-hidden="true"></i>
+              <i class="fa fa-star golden-star" aria-hidden="true"></i>
+              <i class="fa fa-star golden-star" aria-hidden="true"></i>
+              <i class="fa fa-star golden-star" aria-hidden="true"></i>
+              <span>73</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="service-card-bottom-padding">
+        <h6>$2,100</h6>
+        <p>由<a>NYIS Law Firm</a>提供</p>
+      </div>
+    </div>
+    <div class="col-md-3 service-card">
+      <div class="service-card-bg-sm" style="background-image: url('/images/1-7.jpg')">
+        <div class="mask-caption v1-dark-mask">
+          <h3 class="left-top">NYIS</h3>
+          <div class="mask-content">
+            <a class="btn btn-link btn-link-hdr">H1-B申请</a>
+            <br>
+            <div>
+              <i class="fa fa-star golden-star" aria-hidden="true"></i>
+              <i class="fa fa-star golden-star" aria-hidden="true"></i>
+              <i class="fa fa-star golden-star" aria-hidden="true"></i>
+              <i class="fa fa-star golden-star" aria-hidden="true"></i>
+              <i class="fa fa-star golden-star" aria-hidden="true"></i>
+              <span>73</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="service-card-bottom-padding">
+        <h6>$2,100</h6>
+        <p>由<a>NYIS Law Firm</a>提供</p>
+      </div>
+    </div>
+    <div class="col-md-3 service-card">
+      <div class="service-card-bg-sm" style="background-image: url('/images/1-7.jpg')">
+        <div class="mask-caption v1-dark-mask">
+          <h3 class="left-top">NYIS</h3>
+          <div class="mask-content">
+            <a class="btn btn-link btn-link-hdr">H1-B申请</a>
+            <br>
+            <div>
+              <i class="fa fa-star golden-star" aria-hidden="true"></i>
+              <i class="fa fa-star golden-star" aria-hidden="true"></i>
+              <i class="fa fa-star golden-star" aria-hidden="true"></i>
+              <i class="fa fa-star golden-star" aria-hidden="true"></i>
+              <i class="fa fa-star golden-star" aria-hidden="true"></i>
+              <span>73</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="service-card-bottom-padding">
+        <h6>$2,100</h6>
+        <p>由<a>NYIS Law Firm</a>提供</p>
+      </div>
+    </div>
+    <div class="col-md-3 service-card">
+      <div class="service-card-bg-sm" style="background-image: url('/images/1-7.jpg')">
+        <div class="mask-caption v1-dark-mask">
+          <h3 class="left-top">NYIS</h3>
+          <div class="mask-content">
+            <a class="btn btn-link btn-link-hdr">H1-B申请</a>
+            <br>
+            <div>
+              <i class="fa fa-star golden-star" aria-hidden="true"></i>
+              <i class="fa fa-star golden-star" aria-hidden="true"></i>
+              <i class="fa fa-star golden-star" aria-hidden="true"></i>
+              <i class="fa fa-star golden-star" aria-hidden="true"></i>
+              <i class="fa fa-star golden-star" aria-hidden="true"></i>
+              <span>73</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="service-card-bottom-padding">
+        <h6>$2,100</h6>
+        <p>由<a>NYIS Law Firm</a>提供</p>
+      </div>
+    </div>
+  </div>
+</div>
+<footer id="footer">
+  <div class="dark-ft">
+    <div class="container">
+      <div class="ft-content-row">
+        <div class="col-md-6">
+          <div class="ft-group">
+            <h6 class="caption">关注我们</h6>
+            <div class="qr-container">
+              <img src="/images/qr-gz.png">
+              <p>公众平台</p>
+            </div>
+            <div class="qr-container">
+              <img src="/images/qr-gz.png">
+              <p>公众平台</p>
+            </div>
+          </div>
+          <div class="ft-group">
+            <h6>海量干货，热点新闻</h6>
+            <div class="inline-form-wrapper">
+              <div class="inline-form">
+                <form action="/e">
+                  <div class="ipt-btn-group border-tsp-theme">
+                    <label for="email"></label>
+                    <input type="text" id="email" name="email" placeholder="输入邮箱地址">
+                    <button type="submit"><i class="fa fa-chevron-right" aria-hidden="true"></i></button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          <a class="btn btn-circle btn-circle-ft" href="//google.com"><div class="btn-circle-font-wrapper"> <i class="fa fa-facebook" aria-hidden="true"></i></div></a>
+          <a class="btn btn-circle btn-circle-ft" href="//google.com"><div class="btn-circle-font-wrapper"> <i class="fa fa-weibo" aria-hidden="true"></i></div></a>
+          <a class="btn btn-circle btn-circle-ft" href="//google.com"><div class="btn-circle-font-wrapper"> <i class="fa fa-twitter" aria-hidden="true"></i></div></a>
+          <a class="btn btn-circle btn-circle-ft" href="//google.com"><div class="btn-circle-font-wrapper"> <i class="fa fa-envelope" aria-hidden="true"></i></div></a>
+        </div>
+        <div class="col-md-2 ft-group">
+          <h6 class="caption">关于</h6>
+          <a class="text-a"><p>NYIS团队</p></a>
+          <a class="text-a"><p>联系我们</p></a>
+          <a class="text-a"><p>合作伙伴</p></a>
+        </div>
+        <div class="col-md-2 ft-group">
+          <h6 class="caption">工作机会</h6>
+          <a class="text-a"><p>空缺职位</p></a>
+          <a class="text-a"><p>校园大使</p></a>
+        </div>
+        <div class="col-md-2 ft-group">
+          <h6 class="caption">发现</h6>
+          <a class="text-a"><p>转载协议</p></a>
+          <a class="text-a"><p>条款与隐私</p></a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="primary-ft">
+    <div class="container">
+      <div class="ft-copyright-row">
+        <div class="pull-left">&copy; 2016, NYIS Inc</div>
+        <div class="pull-left">All Rights Reserved</div>
+        <div class="pull-right">+1(800)685-NYIS(6947)</div>
+      </div>
+    </div>
+  </div>
+</footer>
+<!-- login modal -->
+<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="btn btn-link btn-link-modal active" id="login-btn"><b>登录</b></button>
+        <button class="btn btn-link btn-link-modal" id="signup-btn"><b>注册</b></button>
+      </div>
+      <div class="modal-body">
+        <div id="signup-form" class="hidden">
+          <form action="\signup">
+            <div class="signup-option">
+              <label class="control control-radio">
+                注册用户
+                <input type="radio" name="userType" value="client">
+                <div class="control__indicator"></div>
+              </label>
+              <label class="control control-radio">
+                注册律师
+                <input type="radio" name="userType" value="lawyer">
+                <div class="control__indicator"></div>
+              </label>
+            </div>
+            <div class="full-size-ipt-wrapper">
+              <label for="username"></label>
+              <input  type="text" id="username" name="username" class="full-size-ipt underline-ipt" placeholder="邮箱">
+              <span><i class="fa fa-user"></i></span>
+            </div>
+            <div class="full-size-ipt-wrapper">
+              <label for="password"></label>
+              <input  type="password" id="password" name="password" class="full-size-ipt underline-ipt" placeholder="密码">
+              <span><i class="fa fa-key"></i></span>
+            </div>
+            <div class="full-size-ipt-wrapper">
+              <label for="retypePassword"></label>
+              <input  type="password" id="retypePassword" name="retypePassword" class="full-size-ipt underline-ipt" placeholder="确认密码">
+              <span><i class="fa fa-key"></i></span>
+            </div>
+            <div class="login-button-wrapper">
+              <button type="submit" class="btn btn-primary btn-login">注册</button>
+            </div>
+          </form>
+        </div>
+        <div id="login-form">
+          <form action="\login">
+            <div class="full-size-ipt-wrapper">
+              <label for="username-login"></label>
+              <input  type="text" id="username-login" name="username" class="full-size-ipt underline-ipt" placeholder="邮箱">
+              <span><i class="fa fa-user"></i></span>
+            </div>
+            <div class="full-size-ipt-wrapper">
+              <label for="password-login"></label>
+              <input  type="password" id="password-login" name="password" class="full-size-ipt underline-ipt" placeholder="密码">
+              <span><i class="fa fa-key"></i></span>
+            </div>
+            <div class="option-block">
+              <label class="control control-checkbox">
+                记住我
+                <input type="checkbox" id="remember" name="remember">
+                <div class="control__indicator"></div>
+              </label>
+              <a href="/forget" class="pull-right">忘记密码?</a>
+            </div>
+            <div class="login-button-wrapper">
+              <button type="submit" class="btn btn-primary btn-login">登录</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  $('document').ready(function () {
+    $('#login-btn').on('click', function () {
+      var $this = $(this);
+      if (!$this.hasClass('active')) {
+        $this.addClass('active');
+        $('#signup-form').addClass('hidden');
+        $('#signup-btn').removeClass('active');
+        $('#login-form').removeClass('hidden')
+      }
+    });
+    $('#signup-btn').on('click', function () {
+      var $this = $(this);
+      if (!$this.hasClass('active')) {
+        $('#login-btn').removeClass('active');
+        $('#login-form').addClass('hidden');
+        $this.addClass('active');
+        $('#signup-form').removeClass('hidden')
+      }
+    });
+    $('#search-service-form [type="submit"]').on('click', function (e) {
+      e.preventDefault();
+      window.location.href = "/search-result.html";
+    });
+  });
+</script>
+</body>
+</html>

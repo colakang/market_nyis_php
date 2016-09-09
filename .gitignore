@@ -1,0 +1,5 @@
+application/database.php
+application/config.php
+public/*.php
+public/*.txt
+public/*.gz

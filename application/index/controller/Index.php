@@ -116,4 +116,53 @@ class Index extends Controller
 				break;
 	   	} 
 	}
+
+	public function search()
+	{
+		$services = controller('Service','event');
+		$categories = input('category');
+		$area = input('stdLocation');
+		$keyword = input('legalService');
+		$like = "=";
+		switch(true) {
+			case (empty($categories)):
+				$result = $services->findByName($keyword,$area);
+				break;
+			case (count($categories)!=8):
+				$like = "like";
+				$categories = "^".$categories;
+			default:	
+				$result = $services->findByCategories($categories,$like,$area);
+				break;
+	   	} 
+		$nickname = false;
+		if (Session::has('isLogin'))
+		{
+			$nickname = Session::get('nickname');
+		}
+	 	$view = new View();
+		$view->nickname = $nickname;
+		$view->keyword = $keyword;
+		$view->assign('result',$result);
+		return $view->fetch();
+
+	}
+
+	public function view()
+	{
+		$services = controller('Service','event');
+		$id = input('id');
+		$result = $services->findById($id);
+		$nickname = false;
+		if (Session::has('isLogin'))
+		{
+			$nickname = Session::get('nickname');
+		}
+	 	$view = new View();
+		$view->nickname = $nickname;
+		$view->assign('result',$result);
+		return $view->fetch();
+
+	}
+
 }

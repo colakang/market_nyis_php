@@ -19,6 +19,8 @@ return [
     'register' => 'index/index/register',
     'profile' => 'index/index/profile',
     'seller' => '/seller/',
+    's' => 'index/index/search',
+    'view/:id' => 'index/index/view',
     '__alias__' =>  [
         'seller'  =>  'index/seller',
     ],

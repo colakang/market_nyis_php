@@ -8,14 +8,19 @@ class Service
 {
 
 
-	public function findByName($name)
+	public function findByName($name,$area)
 	{
-		return Db::name('services')->field()->where('name','=',$name)->limit(1)->find();
+		return Db::name('services')->where('name','like',$name)->where('area','like',$area)->paginate(30,true);
 	}
 
 	public function findById($id)
 	{
 		return Db::name('services')->where('_id','=',$id)->limit(1)->find();
+	}
+
+	public function findByCategories($categories,$like,$area)
+	{
+		return Db::name('services')->where('categories',$like,$categories)->where('area','like',$area)->paginate(30,true);
 	}
 
 	public function encryptPw($char)

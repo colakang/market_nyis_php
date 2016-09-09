@@ -6,7 +6,7 @@
 	{include file="index/header" /}
 </head>
 <body>
-	{include file="index/navbar_index" nickname=$nickname /}
+	{include file="index/navbar" nickname=$nickname /}
 	{notempty name="nickname"}
 		{include file="index/navbar_login" nickname=$nickname /}
 	{/notempty}
