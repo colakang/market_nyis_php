@@ -5,12 +5,16 @@
   <div class="inline-form nav-form-theme combo-nav-form">
     <form action="/s" id="search-service-form">
       <div class="sig-ipt group">
-        <label for="law-service"></label>
-        <input type="text" id="law-service" name="lawService" placeholder="法律服务...">
+        <label for="category"></label>
+        <input type="text" id="category" name="category" style="display:none">
+        <label for="legal-service"></label>
+        <input type="text" class="tt-input" id="legal-service" name="legalService" placeholder="法律服务...">
       </div>
       <div class="ipt-btn-group group">
         <label for="location"></label>
-        <input type="text" id="location" name="location" placeholder="地点">
+        <input type="text" id="location" class="tt-input" name="location" placeholder="所在州...">
+        <label for="std-location"></label>
+        <input type="text" id="std-location" name="stdLocation" style="display: none">
         <button type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
       </div>
     </form>
