@@ -5,8 +5,9 @@
   <title>Service Specification</title>
 	{include file="index/header" /}
   <link rel="stylesheet" href="/static/stylesheets/sass/service-stylesheet.css">
+  <script src="/static/javascripts/signup-form-validation.module.js"></script>
 </head>
-<body>
+<body ng-app="signUpFormValidator">
         {include file="index/navbar" nickname=$nickname /}
         {notempty name="nickname"}
                 {include file="index/navbar_login" nickname=$nickname /}
@@ -317,77 +318,7 @@
   </div>
 </footer>
 <!-- login modal -->
-<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button class="btn btn-link btn-link-modal active" id="login-btn"><b>登录</b></button>
-        <button class="btn btn-link btn-link-modal" id="signup-btn"><b>注册</b></button>
-      </div>
-      <div class="modal-body">
-        <div id="signup-form" class="hidden">
-          <form action="\signup">
-            <div class="signup-option">
-              <label class="control control-radio">
-                注册用户
-                <input type="radio" name="userType" value="client">
-                <div class="control__indicator"></div>
-              </label>
-              <label class="control control-radio">
-                注册律师
-                <input type="radio" name="userType" value="lawyer">
-                <div class="control__indicator"></div>
-              </label>
-            </div>
-            <div class="full-size-ipt-wrapper">
-              <label for="username"></label>
-              <input  type="text" id="username" name="username" class="full-size-ipt underline-ipt" placeholder="邮箱">
-              <span><i class="fa fa-user"></i></span>
-            </div>
-            <div class="full-size-ipt-wrapper">
-              <label for="password"></label>
-              <input  type="password" id="password" name="password" class="full-size-ipt underline-ipt" placeholder="密码">
-              <span><i class="fa fa-key"></i></span>
-            </div>
-            <div class="full-size-ipt-wrapper">
-              <label for="retypePassword"></label>
-              <input  type="password" id="retypePassword" name="retypePassword" class="full-size-ipt underline-ipt" placeholder="确认密码">
-              <span><i class="fa fa-key"></i></span>
-            </div>
-            <div class="login-button-wrapper">
-              <button type="submit" class="btn btn-primary btn-login">注册</button>
-            </div>
-          </form>
-        </div>
-        <div id="login-form">
-          <form action="\login">
-            <div class="full-size-ipt-wrapper">
-              <label for="username-login"></label>
-              <input  type="text" id="username-login" name="username" class="full-size-ipt underline-ipt" placeholder="邮箱">
-              <span><i class="fa fa-user"></i></span>
-            </div>
-            <div class="full-size-ipt-wrapper">
-              <label for="password-login"></label>
-              <input  type="password" id="password-login" name="password" class="full-size-ipt underline-ipt" placeholder="密码">
-              <span><i class="fa fa-key"></i></span>
-            </div>
-            <div class="option-block">
-              <label class="control control-checkbox">
-                记住我
-                <input type="checkbox" id="remember" name="remember">
-                <div class="control__indicator"></div>
-              </label>
-              <a href="/forget" class="pull-right">忘记密码?</a>
-            </div>
-            <div class="login-button-wrapper">
-              <button type="submit" class="btn btn-primary btn-login">登录</button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+{include file="index/login_modal" /}
 
 <script type="text/javascript" src="/static/javascripts/autocomplete.js"></script>
 <script type="text/javascript" src="/static/javascripts/login-signup-toggle.js"></script>

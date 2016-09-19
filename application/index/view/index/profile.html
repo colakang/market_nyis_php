@@ -4,14 +4,15 @@
   <meta charset="UTF-8">
   <title>user profile</title>
 	{include file="index/header" /}
+  <script type="text/javascript" src="/static/javascripts/profile-edit.js"></script>
 </head>
-<body>
+<body ng-app="profileEdit">
 	{include file="index/navbar" nickname=$nickname /}
 	{notempty name="nickname"}
 		{include file="index/navbar_login" nickname=$nickname /}
 	{/notempty}
 
-<div class="profile-header">
+<!--<div class="profile-header">
   <div class="container">
     <div class="profile-photo">
       <img src="/static/images/profile-07.png">
@@ -32,6 +33,157 @@
 <div>
 {$profile.email}
 {$profile.nickname}
+</div>-->
+<div class="profile-header">
+  <div class="container">
+    <div class="profile-photo">
+      <img src="/static/images/profile-07.png">
+    </div>
+    <div class="caption">
+      我的账号
+    </div>
+    <div class="pull-right icon-container active">
+      <div class="icon-lg">
+        <i class="icon-profile-icon"></i>
+      </div>
+      <h6>个人资料</h6>
+    </div>
+    <a href="/case-history.html">
+      <div class="pull-right icon-container">
+        <div class="icon-lg">
+          <i class="fa fa-folder-open-o" aria-hidden="true"></i>
+        </div>
+        <h6>我的案件</h6>
+      </div>
+    </a>
+  </div>
+</div>
+<div class="container">
+  <div class="profile-block">
+    <h4>个人资料</h4>
+    <div class="profile-group" id="accordion" role="tablist" aria-multiselectable="true" ng-controller="profileCtrl">
+      <div class="profile-row panel">
+        <div class="profile-panel-heading" role="tab" id="headingOne">
+          <h5 class="panel-title">
+            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne" ng-click="basicInfo.toggleCollapse()">
+              基本信息
+            </a>
+            <span class="clickable-icon" ng-click="basicInfo.enableEdit()"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></span>
+          </h5>
+        </div>
+        <form>
+          <div id="collapseOne" class="profile-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+            <div class="profile-table">
+              <div class="profile-table-row">
+                <div class="profile-td col-md-2">用户名</div>
+                <div class="profile-td col-md-10"
+                     ng-hide="basicInfo.edit"
+                     ng-init="basicInfo.nickname='{$profile.nickname}'" ng-cloak>{{basicInfo.nickname}}</div>
+                <div class="profile-td col-md-10" ng-show="basicInfo.edit">
+                  <label><input id="profile-username"
+                                ng-model="basicInfo.nickname"
+                                class="profile-input-md left-indent white-no-border" ng-cloak></label>
+                </div>
+              </div>
+              <div class="profile-table-row">
+                <div class="profile-td col-md-2">性别</div>
+                <div class="profile-td col-md-10" ng-hide="basicInfo.edit" ng-cloak>{{basicInfo.gender.name}}</div>
+                <div class="profile-td col-md-10" ng-show="basicInfo.edit" ng-cloak>
+                  <div class="select-sm left-indent">
+                    <select id="gender" name="gender"
+                            ng-model="basicInfo.gender" ng-init="basicInfo.genderInit('male')"
+                            ng-options="gender.name for gender in genders">
+                    </select>
+                    <div class="select-arrow"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="profile-table-row">
+                <div class="profile-td col-md-2">电话</div>
+                <div class="profile-td col-md-10"
+                     ng-hide="basicInfo.edit" ng-init="basicInfo.phoneNum='888-888-8888'"
+                     ng-cloak>{{basicInfo.phoneNum}}</div>
+                <div class="profile-td col-md-10" ng-show="basicInfo.edit" ng-cloak>
+                  <label><input class="profile-input-md left-indent white-no-border" ng-model="basicInfo.phoneNum"></label>
+                </div>
+              </div>
+              <div class="profile-table-row">
+                <div class="profile-td col-md-2">现住地址</div>
+                <div class="profile-td col-md-10"
+                     ng-hide="basicInfo.edit"
+                     ng-init="basicInfo.address=''"
+                     ng-cloak>{{basicInfo.address}}</div>
+                <div class="profile-td col-md-10" ng-show="basicInfo.edit" ng-cloak>
+                  <label><input class="profile-input-lg left-indent white-no-border" ng-model="basicInfo.address"></label>
+                </div>
+              </div>
+              <div class="profile-table-row">
+                <div class="profile-td col-md-2">邮寄地址</div>
+                <div class="profile-td col-md-10"
+                     ng-hide="basicInfo.edit"
+                     ng-init="basicInfo.mailAddress=''"
+                     ng-cloak>{{basicInfo.mailAddress}}</div>
+                <div class="profile-td col-md-10" ng-show="basicInfo.edit" ng-cloak>
+                  <label><input class="profile-input-lg left-indent white-no-border" ng-model="basicInfo.mailAddress"></label>
+                </div>
+              </div>
+              <div class="profile-table-row">
+                <div class="profile-td col-md-2">邮箱</div>
+                <div class="profile-td col-md-10" ng-hide="basicInfo.edit" ng-init="basicInfo.email='{$profile.email}'" ng-cloak>{{basicInfo.email}}</div>
+                <div class="profile-td col-md-10" ng-show="basicInfo.edit" ng-cloak>
+                  <label><input class="profile-input-md left-indent white-no-border" ng-model="basicInfo.email"></label>
+                </div>
+              </div>
+              <br>
+              <button class="btn btn-sm btn-primary" ng-show="basicInfo.edit" ng-click="basicInfo.save()" ng-cloak>保存</button>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="profile-row panel">
+        <div class="profile-panel-heading" role="tab" id="headingTwo">
+          <h5 class="panel-title">
+            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+              实名信息
+            </a>
+            <span class="clickable-icon"><i ng-click="idInfo.enableEdit()" class="fa fa-pencil-square-o" aria-hidden="true"></i></span>
+          </h5>
+        </div>
+        <div id="collapseTwo" class="profile-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="profile-table">
+            <div class="profile-table-row">
+              <div class="profile-td col-md-2">出生日期</div>
+              <div class="profile-td col-md-10" ng-init="idInfo.dob=''" ng-hide="idInfo.edit" ng-cloak="">{{idInfo.dob}}</div>
+              <div class="profile-td col-md-10" ng-show="idInfo.edit" ng-cloak>
+                <label><input class="profile-input-md left-indent white-no-border" ng-model="idInfo.dob"></label>
+              </div>
+            </div>
+            <div class="profile-table-row">
+              <div class="profile-td col-md-2">国籍</div>
+              <div class="profile-td col-md-10" ng-init="idInfo.nationality=''" ng-cloak ng-hide="idInfo.edit">{{idInfo.nationality}}</div>
+              <div class="profile-td col-md-10" ng-show="idInfo.edit" ng-cloak>
+                <label><input class="profile-input-sm left-indent white-no-border" ng-model="idInfo.nationality" ng-cloak></label>
+              </div>
+            </div>
+            <div class="profile-table-row">
+              <div class="profile-td col-md-2">护照号</div>
+              <div class="profile-td col-md-10">G***23</div>
+            </div>
+            <div class="profile-table-row">
+              <div class="profile-td col-md-2">护照签发国</div>
+              <div class="profile-td col-md-10">中国</div>
+            </div>
+            <div class="profile-table-row">
+              <div class="profile-td col-md-2">SSN</div>
+              <div class="profile-td col-md-10">***-***-1234</div>
+            </div>
+            <br>
+            <button class="btn btn-sm btn-primary" ng-show="idInfo.edit" ng-click="idInfo.save()" ng-cloak>保存</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 	{include file="index/footer_clean"  /}

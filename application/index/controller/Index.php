@@ -165,4 +165,55 @@ class Index extends Controller
 
 	}
 
+	public function update()
+	{
+	 	$users = controller('User','event');
+		$uid = Session::get('uid');
+		if (empty($_POST))
+		{
+			$put=file_get_contents('php://input');
+			$put=json_decode($put,1);
+			if (is_array($put))
+			{
+				foreach ($put as $key=>$value)
+				{
+					$_POST[$key] = $value;
+				}
+			}
+		}
+		switch(input('oper')) 
+		{
+			case ('profile'):
+				$data = array();
+				if (input('nickname'))
+					$data['nickname'] = input('nickname');
+				if (!empty($_POST['baseInfo']))
+					$data['baseInfo'] = $_POST['baseInfo'];
+				if (!empty($_POST['idInfo']))
+					$data['idInfo'] = $_POST['idInfo'];
+				if (empty($data))
+				{
+					$data['update'] = 'Fail';
+					$data['reasons'] = 'Empty Data!!';
+				} else {
+					$result = $users->updateUser($data,$uid);
+					if ($result)
+						$data['update'] = 'Success';
+					else
+					{
+						$data['update'] = 'Fail';
+						$data['reasons'] = 'Data Save Error!!';
+
+					}						
+				}
+				return json($data,200);
+				break;
+			default:	
+				$data['update'] = 'Fail';
+				$data['reasons'] = 'Oper Not Found';
+				return json($data,200);	
+				break;
+	   	} 
+	}
+
 }

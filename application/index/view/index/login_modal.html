@@ -6,9 +6,9 @@
           <button class="btn btn-link btn-link-modal active" id="login-btn"><b>登录</b></button>
           <button class="btn btn-link btn-link-modal" id="signup-btn"><b>注册</b></button>
         </div>
-        <div class="modal-body">
+        <div class="modal-body" ng-controller="mainCtrl">
           <div id="signup-form" class="hidden">
-            <form action="/register" method="post">
+            <form action="/register" method="post" name="signUpForm">
 		<!-- 
               <div class="signup-option">
                 <label class="control control-radio">
@@ -25,26 +25,58 @@
 		-->
               <div class="full-size-ipt-wrapper">
                 <label for="email"></label>
-                <input  type="text" id="email" name="email" class="full-size-ipt underline-ipt" placeholder="邮箱">
+                <input  type="email" id="email" name="email"
+                        class="full-size-ipt underline-ipt" placeholder="邮箱"
+                        autocomplete="off"
+                        required ng-model="username"
+                >
                 <span><i class="fa fa-user"></i></span>
+              </div>
+              <div ng-show="signUpForm.email.$touched" class="warning-sm">
+                <span ng-show="signUpForm.email.$error.required">请填写邮箱</span>
+                <span ng-show="signUpForm.email.$error.email">邮箱格式不正确</span>
               </div>
               <div class="full-size-ipt-wrapper">
                 <label for="nickname"></label>
-                <input  type="text" id="nickname" name="nickname" class="full-size-ipt underline-ipt" placeholder="姓名">
+                <input  type="text" id="nickname" name="nickname"
+                        class="full-size-ipt underline-ipt" placeholder="用户名"
+                        autocomplete="off"
+                        required ng-model="nickname"
+                >
                 <span><i class="fa fa-user"></i></span>
+              </div>
+              <div ng-show="signUpForm.nickname.$touched" class="warning-sm">
+                <span ng-show="signUpForm.nickname.$error.required">请填写用户名</span>
               </div>
               <div class="full-size-ipt-wrapper">
                 <label for="password"></label>
-                <input  type="password" id="password" name="password" class="full-size-ipt underline-ipt" placeholder="密码">
+                <input  type="password" id="password" name="password"
+                        class="full-size-ipt underline-ipt" placeholder="密码"
+                        autocomplete="off"
+                        required ng-model="password"
+                >
                 <span><i class="fa fa-key"></i></span>
+              </div>
+              <div ng-show="signUpForm.password.$touched" class="warning-sm">
+                <span ng-show="signUpForm.password.$error.required">请输入密码</span>
               </div>
               <div class="full-size-ipt-wrapper">
                 <label for="retypePassword"></label>
-                <input  type="password" id="retypePassword" name="retypePassword" class="full-size-ipt underline-ipt" placeholder="确认密码">
+                <input  type="password" id="retypePassword" name="retypePassword"
+                        class="full-size-ipt underline-ipt" placeholder="确认密码"
+                        autocomplete="off"
+                        required ng-model="rePassword"
+                >
                 <span><i class="fa fa-key"></i></span>
               </div>
+              <div ng-show="signUpForm.retypePassword.$touched" class="warning-sm">
+                <span ng-show="rePassword != password">两次输入不一致</span>
+              </div>
               <div class="login-button-wrapper">
-                <button type="submit" class="btn btn-primary btn-login">注册</button>
+                <button type="submit" class="btn btn-primary btn-login"
+                        ng-disabled="!signUpForm.email.$valid ||
+                             !signUpForm.password.$valid ||
+                             rePassword != password">注册</button>
               </div>
             </form>
           </div>
@@ -78,30 +110,4 @@
     </div>
   </div>
 
-  <!-- <script>
-    $('document').ready(function () {
-      $('#login-btn').on('click', function () {
-        var $this = $(this);
-        if (!$this.hasClass('active')) {
-          $this.addClass('active');
-          $('#signup-form').addClass('hidden');
-          $('#signup-btn').removeClass('active');
-          $('#login-form').removeClass('hidden')
-        }
-      });
-      $('#signup-btn').on('click', function () {
-        var $this = $(this);
-        if (!$this.hasClass('active')) {
-          $('#login-btn').removeClass('active');
-          $('#login-form').addClass('hidden');
-          $this.addClass('active');
-          $('#signup-form').removeClass('hidden')
-        }
-      });
-      $('#search-service-form [type="submit"]').on('click', function (e) {
-        e.preventDefault();
-        window.location.href = "/search-result.html";
-      });
-    });
-  </script>-->
 

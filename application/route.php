@@ -18,6 +18,7 @@ return [
     'logout' => 'index/index/logout',
     'register' => 'index/index/register',
     'profile' => 'index/index/profile',
+    'update' => 'index/index/update',
     'seller' => '/seller/',
     's' => 'index/index/search',
     'view/:id' => 'index/index/view',

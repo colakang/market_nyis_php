@@ -4,8 +4,9 @@
   <meta charset="UTF-8">
   <title>Search Results</title>
 	{include file="index/header" /}
+  <script type="text/javascript" src="/static/javascripts/signup-form-validation.module.js"></script>
 </head>
-<body>
+<body ng-app="signUpFormValidator">
         {include file="index/navbar" nickname=$nickname /}
         {notempty name="nickname"}
                 {include file="index/navbar_login" nickname=$nickname /}

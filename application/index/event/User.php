@@ -46,26 +46,14 @@ class User
 		$encrypt = "Nyis.Market";
 		return $char.$encrypt;
 	}
-	public function find($search,$cond){
-		if(!empty($search)){
-			switch($cond)
-			{
-				case 1:
-					$query = array("name" => new \MongoRegex("/$search.*/i"));
-					return $this->collection->find($query)->limit(1);
-				break;
-				case 2:
-					return $this->collection->find(array("contact.address.city" => "$search"))->limit(1);
-				break;
-				case 3:
-					return $this->collection->find(array("contact.address.zipcode" => "$search"))->limit(1);
-				break;
-				default:
-					return $this->collection->find(array("avvo_id" => (int)$search));
-			}
-		}else{
-			return $this->collection->find()->limit(1);
-		}
-		
+
+	public function updateUser($user,$uid)
+	{
+		$update = Db::name('users')->where('_id', $uid)->update($user);
+		if ($update==0)
+			return false;
+		else
+			return true;
 	}
+
 }

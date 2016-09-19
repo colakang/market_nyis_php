@@ -5,8 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, max-scale=1">
   <title>Market Index</title>
 	{include file="index/header" /}
+  <script type="text/javascript" src="static/javascripts/signup-form-validation.module.js"></script>
 </head>
-<body>
+<body ng-app="signUpFormValidator">
 
 	{include file="index/navbar_index" nickname=$nickname /}
 	{notempty name="nickname"}
