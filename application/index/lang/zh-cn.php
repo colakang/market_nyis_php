@@ -35,6 +35,8 @@ return [
      'view_visaInfo' => '签证信息',
      'view_driverLicense' => '驾照信息',
      'view_addButton' => '添加',
+     'view_seller_status' => '账号等级',
+     'view_my_cases' => '我的案件',
 ];
 
 

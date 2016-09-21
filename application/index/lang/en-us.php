@@ -36,6 +36,8 @@ return [
      'view_visaInfo' => 'Visa Information',
      'view_driverLicense' => 'Drivers License',
      'view_addButton' => 'Add',
+     'view_seller_status' => 'Status',
+     'view_my_cases' => 'My Cases',
 
 ];
 

@@ -165,6 +165,18 @@ class Index extends Controller
 
 	}
 
+	public function mycases()
+	{
+		$uid = Session::get('uid');
+	 	$cases = controller('Cases','event');
+		$case = $cases->findAllById($uid);
+		$view = new View();
+		$view->assign('cases',$case);
+		$view->nickname = Session::get('nickname');
+		return $view->fetch();
+
+	}
+
 	public function update()
 	{
 	 	$users = controller('User','event');
@@ -183,12 +195,28 @@ class Index extends Controller
 		}
 		switch(input('oper')) 
 		{
+			case ('password'):
+				$data = array();
+				$emial = input('email');
+				$opw = input('opw');
+				$npw = input('npw');
+				$result = $users->changePassword($uid,$email,$opw,$npw);
+				if ($result)
+					$data['update'] = "Success";
+				else {
+					$data = $_POST;
+					$data['update'] = 'Fail';
+					$data['reasons'] = 'Data Save Error!!';
+
+				}
+				return json($data,200);
+				break;
 			case ('profile'):
 				$data = array();
 				if (input('nickname'))
 					$data['nickname'] = input('nickname');
-				if (!empty($_POST['baseInfo']))
-					$data['baseInfo'] = $_POST['baseInfo'];
+				if (!empty($_POST['basicInfo']))
+					$data['basicInfo'] = $_POST['basicInfo'];
 				if (!empty($_POST['idInfo']))
 					$data['idInfo'] = $_POST['idInfo'];
 				if (empty($data))

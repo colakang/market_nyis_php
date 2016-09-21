@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Seller My Service</title>
+	<link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+	{include file="seller/header" /}
+	<link rel="stylesheet" href="/assets/css/ace.min.css" class="ace-main-stylesheet" id="main-ace-style">
+</head>
+<body>
+	{include file="index/navbar_index" nickname=$nickname /}
+	{notempty name="nickname"}
+		{include file="index/navbar_login" nickname=$nickname /}
+	{/notempty}
+
+<div class="profile-header">
+  <div class="container">
+    <div class="profile-photo">
+      <img src="/static/images/profile-07.png">
+    </div>
+    <div class="caption">
+      {$Think.lang.view_my_account}
+    </div>
+    <a href="/profile">
+      <div class="pull-right icon-container">
+        <div class="icon-lg">
+          <i class="icon-profile-icon"></i>
+        </div>
+        <h6>{$Think.lang.view_my_info}</h6>
+      </div>
+    </a>
+
+    <a href="/mycase">
+      <div class="pull-right icon-container">
+        <div class="icon-lg">
+          <i class="fa fa-folder-open-o"></i>
+        </div>
+        <h6>{$Think.lang.view_my_cases}</h6>
+      </div>
+    </a>
+<!--
+    <a href="/seller/addservice">
+      <div class="pull-right icon-container">
+        <div class="icon-lg">
+          <i class="icon-profile-icon"></i>
+        </div>
+        <h6>{$Think.lang.view_add_service}</h6>
+      </div>
+    </a>
+--!>
+  </div>
+</div>
+
+<div class="main-content">
+	<div class="main-content-inner">
+		<div class="page-content">
+			<div class="row  container panel-container">
+				{include file="index/left_menu" /}
+
+				<div class="col-xs-10">
+					<!-- PAGE CONTENT BEGINS -->
+  					<div class="case-block">
+		  			    <div class="case-table-container">
+		  			      <h4>{$Think.lang.view_my_cases}</h4>
+		  			      <div class="case-table">
+						{volist name="cases" id="vo"}
+		  			        <div class="case-row">
+		  			          <div class="case-date">
+		  			            <h6>{$vo.cMM ?? ''}</h6>
+		  			            <h5>{$vo.cDD ?? ''}</h5>
+		  			          </div>
+		  			          <div class="case-title">
+		  			            {$vo.name ?? ''}
+		  			          </div>
+		  			          <div class="case-provider">
+		  			            {$vo.price ?? ''}
+		  			          </div>
+		  			          <div class="case-provider">
+		  			            {$vo.sellerName ?? ''}
+		  			          </div>
+		  			          <div class="case-status">
+		  			            <div class="btn status-badge">
+		  			            {$vo.status ?? ''}
+		  			            </div>
+		  			          </div>
+		  			        </div>
+						{/volist}
+		  			      </div>
+		  			    </div>
+  					  </div>
+
+					<!-- PAGE CONTENT BEGINS -->
+				<!-- PAGE CONTENT ENDS -->
+				</div>
+			<!-- /.col -->
+			</div>
+		</div>
+	</div>
+</div>
+
+
+	{include file="index/footer_clean"  /}
+<script>
+  $('document').ready(function () {
+    $('#search-service-form [type="submit"]').on('click', function (e) {
+      e.preventDefault();
+      window.location.href = "/search-result.html";
+    });
+  });
+</script>
+</body>
+</html>

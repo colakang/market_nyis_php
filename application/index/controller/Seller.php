@@ -28,11 +28,7 @@ class Seller extends Controller
 
     	public function index()
      	{
-		$nickname = Session::get('sName');
-	 	$view = new View();
-		//$nickname = Lang::get('data type error');	使用多语言输出;
-		$view->nickname = $nickname;
-	 	return $view->fetch();
+		$this->redirect('/seller/myservice');
      	}
 
 	public function logout()
@@ -212,10 +208,9 @@ class Seller extends Controller
                                                 'sellerid' => $sid,
                                                 'categories' => input('categories'),
                                                 'checklist' => $_POST['checklist'],
-                                                'price' => input('price'),
+                                                'price' => $_POST['price'],
                                                 'area' => implode($_POST['state'],","),
-                                                'fees' => input('fees'),
-                                                'info' => input('info'),
+                                                'fees' => $_POST['fees'],
                                                 'type' => input('type'),
 						'createTime' => time(),
                                                 'status' => 0,
@@ -232,6 +227,124 @@ class Seller extends Controller
                 }
         }
 
+	public function update()
+	{
+		$sid = Session::get('sid');
+		if (empty($_POST))
+		{
+			$put=file_get_contents('php://input');
+			$put=json_decode($put,1);
+			if (is_array($put))
+			{
+				foreach ($put as $key=>$value)
+				{
+					$_POST[$key] = $value;
+				}
+			}
+		}
+		switch(input('oper')) 
+		{
+			case ('password'):
+				$data = array();
+	 			$sellers = controller('Seller','event');
+				$emial = input('email');
+				$opw = input('opw');
+				$npw = input('npw');
+				$result = $sellers->changePassword($sid,$email,$opw,$npw);
+				if ($result)
+					$data['update'] = "Success";
+				else {
+					$data = $_POST;
+					$data['update'] = 'Fail';
+					$data['reasons'] = 'Data Save Error!!';
+
+				}
+				return json($data,200);
+				break;
+			case ('profile'):
+	 			$sellers = controller('Seller','event');
+				$data = array();
+				if (input('name'))
+					$data['name'] = input('name');
+				if (input('phone'))
+					$data['phone'] = input('phone');
+				if (input('wechat'))
+					$data['wechat'] = input('wechat');
+				if (input('area'))
+					$data['area'] = input('area');
+				if (input('address'))
+					$data['address'] = input('address');
+				if (input('practice'))
+					$data['practice'] = input('practice');
+				if (input('descript'))
+					$data['descript'] = input('descript');
+				//if (input('status'))				//系统管理员才能更改
+				//	$data['status'] = input('status');
+				//if (input('lawyerId'))			//系统管理员才能更改；关联lawyer
+				//	$data['lawyerId'] = input('lawyerId');
+				if (empty($data))
+				{
+					$data['update'] = 'Fail';
+					$data['reasons'] = 'Empty Data!!';
+				} else {
+					$result = $sellers->updateUser($data,$sid);
+					if ($result)
+						$data['update'] = 'Success';
+					else
+					{
+						$data['update'] = 'Fail';
+						$data['reasons'] = 'Data Save Error!!';
+
+					}						
+				}
+				return json($data,200);
+				break;
+			case ('service'):
+	 			$services = controller('Service','event');
+				$serviceId = input('id');
+				$data = array();
+				if (input('name'))
+					$data['name'] = input('name');
+				if (input('description'))
+					$data['description'] = input('description');
+				if (input('categories'))
+					$data['categories'] = input('categories');
+				if (input('type'))
+					$data['type'] = input('type');
+				if (!empty($_POST['checklist']))
+					$data['checklist'] = $_POST['checklist'];
+				if (!empty($_POST['price']))
+					$data['price'] = $_POST['price'];
+				if (!empty($_POST['fees']))
+					$data['fees'] = $_POST['fees'];
+				if (!empty($_POST['state']))
+					$data['state'] = implode($_POST['price'],",");
+				if (empty($data))
+				{
+					$data['update'] = 'Fail';
+					$data['reasons'] = 'Empty Data!!';
+				} else {
+					$data['sellerName'] = Session::get('sName');
+					$result = $services->updateService($data,$sid,$serviceId);	//sid & serviceId 
+					if ($result)
+						$data['update'] = 'Success';
+					else
+					{
+						$data['update'] = 'Fail';
+						$data['reasons'] = 'Data Save Error!!';
+
+					}						
+				}
+				return json($data,200);
+				break;
+
+			default:	
+				$data['update'] = 'Fail';
+				$data['reasons'] = 'Oper Not Found';
+				return json($data,200);	
+				break;
+	   	} 
+	}
 
 
 }

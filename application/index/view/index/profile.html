@@ -48,7 +48,7 @@
       </div>
       <h6>个人资料</h6>
     </div>
-    <a href="/case-history.html">
+    <a href="/mycases">
       <div class="pull-right icon-container">
         <div class="icon-lg">
           <i class="fa fa-folder-open-o" aria-hidden="true"></i>
@@ -101,7 +101,7 @@
               <div class="profile-table-row">
                 <div class="profile-td col-md-2">电话</div>
                 <div class="profile-td col-md-10"
-                     ng-hide="basicInfo.edit" ng-init="basicInfo.phoneNum='888-888-8888'"
+                     ng-hide="basicInfo.edit" ng-init="basicInfo.phoneNum='{$profile.basicInfo.phoneNum ?? \'888-888-8888\'}'"
                      ng-cloak>{{basicInfo.phoneNum}}</div>
                 <div class="profile-td col-md-10" ng-show="basicInfo.edit" ng-cloak>
                   <label><input class="profile-input-md left-indent white-no-border" ng-model="basicInfo.phoneNum"></label>
@@ -111,7 +111,7 @@
                 <div class="profile-td col-md-2">现住地址</div>
                 <div class="profile-td col-md-10"
                      ng-hide="basicInfo.edit"
-                     ng-init="basicInfo.address=''"
+                     ng-init="basicInfo.address='{$profile.basicInfo.address ?? \'888-888-8888\'}'"
                      ng-cloak>{{basicInfo.address}}</div>
                 <div class="profile-td col-md-10" ng-show="basicInfo.edit" ng-cloak>
                   <label><input class="profile-input-lg left-indent white-no-border" ng-model="basicInfo.address"></label>
@@ -121,7 +121,7 @@
                 <div class="profile-td col-md-2">邮寄地址</div>
                 <div class="profile-td col-md-10"
                      ng-hide="basicInfo.edit"
-                     ng-init="basicInfo.mailAddress=''"
+                     ng-init="basicInfo.mailAddress='{$profile.basicInfo.mailAddress ?? \'888-888-8888\'}'"
                      ng-cloak>{{basicInfo.mailAddress}}</div>
                 <div class="profile-td col-md-10" ng-show="basicInfo.edit" ng-cloak>
                   <label><input class="profile-input-lg left-indent white-no-border" ng-model="basicInfo.mailAddress"></label>
@@ -129,10 +129,7 @@
               </div>
               <div class="profile-table-row">
                 <div class="profile-td col-md-2">邮箱</div>
-                <div class="profile-td col-md-10" ng-hide="basicInfo.edit" ng-init="basicInfo.email='{$profile.email}'" ng-cloak>{{basicInfo.email}}</div>
-                <div class="profile-td col-md-10" ng-show="basicInfo.edit" ng-cloak>
-                  <label><input class="profile-input-md left-indent white-no-border" ng-model="basicInfo.email"></label>
-                </div>
+                <div class="profile-td col-md-10">{$profile.email}</div>
               </div>
               <br>
               <button class="btn btn-sm btn-primary" ng-show="basicInfo.edit" ng-click="basicInfo.save()" ng-cloak>保存</button>
@@ -187,13 +184,6 @@
 </div>
 
 	{include file="index/footer_clean"  /}
-<script>
-  $('document').ready(function () {
-    $('#search-service-form [type="submit"]').on('click', function (e) {
-      e.preventDefault();
-      window.location.href = "/search-result.html";
-    });
-  });
-</script>
+  <script src="/static/javascripts/autocomplete.js"></script>
 </body>
 </html>

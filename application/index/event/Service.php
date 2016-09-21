@@ -60,9 +60,9 @@ class Service
         	return date($p,$value);
     	}
 
-	public function updateService($data,$sid)
+	public function updateService($data,$sid,$serviceId)
 	{
-		$update = Db::name('services')->where('_id', $sid)->update($data);
+		$update = Db::name('services')->where('sellerId',$sid)->where('_id', $serviceId)->update($data);
 		if ($update==0)
 			return false;
 		else

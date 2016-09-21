@@ -6,39 +6,21 @@ use \think\Db;
 
 class Cases
 {
-	public function checkPassword($email,$pw)
+
+
+	public function findByName($name,$area)
 	{
-		$pw = $this->encryptPw($pw);
-		return Db::name('users')->field('nickname')->where('email','=',$email)->where('password','=',md5($pw))->find();
+		return Db::name('cases')->where('name','like',$name)->where('area','like',$area)->paginate(30,true);
 	}
 
-	public function changeNickname($uid,$email,$nickname)
+	public function findById($id)
 	{
-		return Db::name('users')->where('email','=',$email)->setField('nickname',$nickname);
+		return Db::name('cases')->where('_id','=',$id)->limit(1)->find();
 	}
 
-	public function changePassword($uid,$email,$opw,$npw)
+	public function findByCategories($categories,$like,$area)
 	{
-		$npw = $this->encryptPw($npw);
-		$opw = $this->encryptPw($opw);
-		return Db::name('users')->where('email','=',$email)->where('_id','=',$uid)->where('password','=',md5($opw))->setField('password',md5($npw));
-	}
-
-	public function findUser($email)
-	{
-		return Db::name('users')->field('id')->where('email','=',$email)->limit(1)->find();
-	}
-
-	public function findUserById($uid)
-	{
-		return Db::name('users')->field('password','_id',true)->where('_id','=',$uid)->limit(1)->find();
-	}
-
-	public function addUser($user)
-	{
-
-		$user['password'] = md5($this->encryptPw($user['password']));
-		return Db::name('users')->insertGetId($user);
+		return Db::name('cases')->where('categories',$like,$categories)->where('area','like',$area)->paginate(30,true);
 	}
 
 	public function encryptPw($char)
@@ -46,26 +28,44 @@ class Cases
 		$encrypt = "Nyis.Market";
 		return $char.$encrypt;
 	}
-	public function find($search,$cond){
-		if(!empty($search)){
-			switch($cond)
+
+	public function addService($data)
+	{
+		return Db::name('cases')->insertGetId($data);
+	}
+
+	public function findAllById($sid)
+	{
+		$services = Db::name('cases')->where('sellerid',"=",$sid)->select();
+		foreach ($services as $key=>$service)
+		{
+			$services[$key]['status'] = $this->getStatusAttr($service['status']);
+			if (!empty($service['createTime']))
 			{
-				case 1:
-					$query = array("name" => new \MongoRegex("/$search.*/i"));
-					return $this->collection->find($query)->limit(1);
-				break;
-				case 2:
-					return $this->collection->find(array("contact.address.city" => "$search"))->limit(1);
-				break;
-				case 3:
-					return $this->collection->find(array("contact.address.zipcode" => "$search"))->limit(1);
-				break;
-				default:
-					return $this->collection->find(array("avvo_id" => (int)$search));
+				$services[$key]['cMM'] = $this->getDateAttr($service['createTime'],'F');
+				$services[$key]['cDD'] = $this->getDateAttr($service['createTime'],'d');
 			}
-		}else{
-			return $this->collection->find()->limit(1);
 		}
-		
+		return $services;
+	}
+
+    	public function getStatusAttr($value)
+    	{
+        	$status = [-1=>'删除',0=>'待审核',1=>'正常',2=>'审核中'];
+        	return $status[$value];
+    	}
+
+    	public function getDateAttr($value,$p)
+    	{
+        	return date($p,$value);
+    	}
+
+	public function updateCases($data,$uid,$casesId)
+	{
+		$update = Db::name('cases')->where('sellerId',$sid)->where('_id', $serviceId)->update($data);
+		if ($update==0)
+			return false;
+		else
+			return true;
 	}
 }

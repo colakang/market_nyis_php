@@ -31,7 +31,11 @@ class Seller
 
 	public function findUserById($sid)
 	{
-		return Db::name('sellers')->field('password','_id',true)->where('_id','=',$sid)->limit(1)->find();
+		$seller = Db::name('sellers')->field('password','_id',true)->where('_id','=',$sid)->limit(1)->find();
+		if(empty($seller['status']))
+			$seller['status'] = 0;
+		$seller['status'] = $this->getStatusAttr($seller['status']);
+		return $seller;
 	}
 
 	public function addUser($user)
@@ -60,6 +64,13 @@ class Seller
 	{
 		return Db::name('services')->insertGetId($data);
 	}
+
+    	public function getStatusAttr($value)
+    	{
+        	$status = [0=>'Registered',1=>'Certified',2=>'VIP'];
+        	return $status[$value];
+    	}
+
 
 
 }
