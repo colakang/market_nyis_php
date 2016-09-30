@@ -4,8 +4,17 @@
   <meta charset="UTF-8">
   <title>Seller My Service</title>
 	<link rel="stylesheet" href="/assets/css/bootstrap.min.css">
-	{include file="seller/header" /}
 	<link rel="stylesheet" href="/assets/css/ace.min.css" class="ace-main-stylesheet" id="main-ace-style">
+	{include file="seller/header" /}
+	<style>
+		.breadcrumbs {
+			padding: 0;
+		}
+		.page-content {
+			min-height: 700px;
+			padding-top: 60px;
+		}
+	</style>
 </head>
 <body>
 	{include file="seller/navbar_index" nickname=$nickname /}
@@ -31,9 +40,9 @@
     </a>
 
     <a href="/seller/myservice">
-      <div class="pull-right icon-container">
+      <div class="pull-right icon-container active">
         <div class="icon-lg">
-          <i class="icon-profile-icon"></i>
+          <i class="icon-case-folder"></i>
         </div>
         <h6>{$Think.lang.view_my_service}</h6>
       </div>
@@ -42,7 +51,7 @@
     <a href="/seller/addservice">
       <div class="pull-right icon-container">
         <div class="icon-lg">
-          <i class="icon-profile-icon"></i>
+          <i class="icon-add-new-document"></i>
         </div>
         <h6>{$Think.lang.view_add_service}</h6>
       </div>
@@ -50,14 +59,14 @@
   </div>
 </div>
 
-<div class="main-content">
+<!--<div class="main-content">
 	<div class="main-content-inner">
 		<div class="page-content">
 			<div class="row  container panel-container">
 				{include file="seller/left_menu" /}
 
 				<div class="col-xs-10">
-					<!-- PAGE CONTENT BEGINS -->
+					&lt;!&ndash; PAGE CONTENT BEGINS &ndash;&gt;
   					<div class="case-block">
 		  			    <div class="case-table-container">
 		  			      <h4>{$Think.lang.view_my_service}</h4>
@@ -88,24 +97,519 @@
 		  			    </div>
   					  </div>
 
-					<!-- PAGE CONTENT BEGINS -->
-				<!-- PAGE CONTENT ENDS -->
+					&lt;!&ndash; PAGE CONTENT BEGINS &ndash;&gt;
+				&lt;!&ndash; PAGE CONTENT ENDS &ndash;&gt;
 				</div>
-			<!-- /.col -->
+			&lt;!&ndash; /.col &ndash;&gt;
 			</div>
 		</div>
 	</div>
-</div>
+</div>-->
+
+	<div class="main-content">
+		<div class="main-content-inner">
+			<div class="breadcrumbs ace-save-state" id="breadcrumbs">
+				<div class="page-content">
+					<div class="row">
+						<div class="col-xs-8 col-xs-offset-2">
+							<table id="simple-table" class="table  table-bordered table-hover">
+								<thead>
+								<tr>
+									<th class="detail-col">详情</th>
+									<th>服务名称</th>
+									<th>服务价格</th>
+									<th class="hidden-480">创建日期</th>
+
+									<th>
+										<i class="ace-icon fa fa-clock-o bigger-110 hidden-480"></i>
+										更新日期
+									</th>
+									<th class="hidden-480">状态</th>
+
+									<th></th>
+								</tr>
+								</thead>
+								<tbody>
+								{volist name="service" id="vo"}
+								<tr>
+
+									<td class="center">
+										<div class="action-buttons">
+											<a href="#" class="green bigger-140 show-details-btn" title="Show Details">
+												<i class="ace-icon fa fa-angle-double-down"></i>
+												<span class="sr-only">Details</span>
+											</a>
+										</div>
+									</td>
+
+									<td>
+										{$vo.name ?? ''}
+									</td>
+									<td>
+										<?php
+											if ($vo["type"] == "customized"){
+												echo $vo["minPrice"] + " - " + $vo["maxPrice"];
+											}
+											else{
+												echo isset($vo["price"]) ? $vo["price"] : "";
+											}
+										?>
+									</td>
+									<td class="hidden-480">{$vo.cMM ?? ''}-{$vo.cDD ?? ''}</td>
+									<td>{$vo.cMM ?? ''}-{$vo.cDD ?? ''}</td>
+
+									<td class="hidden-480">
+										<span class="label label-sm label-warning">{$vo.status ?? ''}</span>
+									</td>
+
+									<td>
+										<div class="hidden-sm hidden-xs btn-group">
+
+											<button class="btn btn-xs btn-info">
+												<i class="ace-icon fa fa-pencil bigger-120"></i>
+											</button>
+
+											<button class="btn btn-xs btn-danger">
+												<i class="ace-icon fa fa-trash-o bigger-120"></i>
+											</button>
+
+										</div>
+
+										<div class="hidden-md hidden-lg">
+											<div class="inline pos-rel">
+												<button class="btn btn-minier btn-primary dropdown-toggle" data-toggle="dropdown"
+																data-position="auto">
+													<i class="ace-icon fa fa-cog icon-only bigger-110"></i>
+												</button>
+
+												<ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
+													<li>
+														<a href="#" class="tooltip-info" data-rel="tooltip" title="" data-original-title="View">
+																			<span class="blue">
+																				<i class="ace-icon fa fa-search-plus bigger-120"></i>
+																			</span>
+														</a>
+													</li>
+
+													<li>
+														<a href="#" class="tooltip-success" data-rel="tooltip" title="" data-original-title="Edit">
+																			<span class="green">
+																				<i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
+																			</span>
+														</a>
+													</li>
+
+													<li>
+														<a href="#" class="tooltip-error" data-rel="tooltip" title="" data-original-title="Delete">
+																			<span class="red">
+																				<i class="ace-icon fa fa-trash-o bigger-120"></i>
+																			</span>
+														</a>
+													</li>
+												</ul>
+											</div>
+										</div>
+									</td>
+								</tr>
+								<tr class="detail-row">
+									<td colspan="8">
+										<div class="table-detail">
+											<div class="row">
+
+												<div class="col-xs-12 col-sm-8 col-sm-offset-2">
+													<div class="space visible-xs"></div>
+
+													<div class="profile-user-info profile-user-info-striped">
+
+														<div class="profile-info-row">
+															<div class="profile-info-name">服务地区</div>
+
+															<div class="profile-info-value">
+																<i class="fa fa-map-marker light-orange bigger-110"></i>
+																<span>{$vo.area ?? ""}</span>
+															</div>
+														</div>
+
+														<div class="profile-info-row">
+															<div class="profile-info-name">所属分类</div>
+
+															<div class="profile-info-value">
+																<span class="category-js">{$vo.categories ?? ""}</span>
+															</div>
+														</div>
+
+														<div class="profile-info-row">
+															<div class="profile-info-name">服务类型</div>
+
+															<div class="profile-info-value">
+																<span>{$vo.type ?? ""}</span>
+															</div>
+														</div>
+
+														<div class="profile-info-row">
+															<div class="profile-info-name">服务描述</div>
+
+															<div class="profile-info-value">
+                              <span>{$vo.description ?? ""}</span>
+															</div>
+														</div>
+
+													</div>
+												</div>
+
+											</div>
+										</div>
+									</td>
+								</tr>
+								{/volist}
+								</tbody>
+							</table>
+						</div><!-- /.span -->
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
 
 	{include file="seller/footer_clean"  /}
-<script>
-  $('document').ready(function () {
-    $('#search-service-form [type="submit"]').on('click', function (e) {
-      e.preventDefault();
-      window.location.href = "/search-result.html";
-    });
-  });
-</script>
+	<script type="text/javascript">
+		jQuery(function($) {
+			//initiate dataTables plugin
+
+			////
+
+			setTimeout(function() {
+				$($('.tableTools-container')).find('a.dt-button').each(function() {
+					var div = $(this).find(' > div').first();
+					if(div.length == 1) div.tooltip({container: 'body', title: div.parent().text()});
+					else $(this).tooltip({container: 'body', title: $(this).text()});
+				});
+			}, 500);
+
+
+			//And for the first simple table, which doesn't have TableTools or dataTables
+			//select/deselect all rows according to table header checkbox
+			var active_class = 'active';
+			$('#simple-table > thead > tr > th input[type=checkbox]').eq(0).on('click', function(){
+				var th_checked = this.checked;//checkbox inside "TH" table header
+
+				$(this).closest('table').find('tbody > tr').each(function(){
+					var row = this;
+					if(th_checked) $(row).addClass(active_class).find('input[type=checkbox]').eq(0).prop('checked', true);
+					else $(row).removeClass(active_class).find('input[type=checkbox]').eq(0).prop('checked', false);
+				});
+			});
+			//select/deselect a row when the checkbox is checked/unchecked
+			$('#simple-table').on('click', 'td input[type=checkbox]' , function(){
+				var $row = $(this).closest('tr');
+				if($row.is('.detail-row ')) return;
+				if(this.checked) $row.addClass(active_class);
+				else $row.removeClass(active_class);
+			});
+			/***************/
+			$('.show-details-btn').on('click', function(e) {
+				e.preventDefault();
+				$(this).closest('tr').next().toggleClass('open');
+			});
+
+			/*定义三级分类数据*/
+//一级分类
+			var province = {
+				"00":"Immigration",
+				"01":"Immigration",
+				"02":"Immigration",
+				//"03":"Immigration",
+				//"04":"Immigration",
+				//"05":"Immigration",
+				//"06":"Immigration",
+				//"07":"Immigration",
+			};
+
+//二级分类
+			var city = {
+				"00":{	"00":"Family Based Immigration",
+					"01":"Employment Based Immigration",
+					"02":"Nonimmigrant Workers Classifications",
+					"03":"Visit Classifications",
+					"04":"Common Services",
+				},
+				"01":{	"00":"Family Based Immigration",
+					"01":"Employment Based Immigration",
+					"02":"Nonimmigrant Workers Classifications",
+					"03":"Visit Classifications",
+					"04":"Common Services",
+				},
+				"02":{	"00":"Family Based Immigration",
+					"01":"Employment Based Immigration",
+					"02":"Nonimmigrant Workers Classifications",
+					"03":"Visit Classifications",
+					"04":"Common Services",
+				},
+//	"03":{	"00":"Family Based Immigration",
+//		"01":"Employment Based Immigration",
+//		"02":"Nonimmigrant Workers Classifications",
+//		"03":"Visit Classifications",
+//		"04":"Common Services",
+//	},
+			};
+//三级分类
+			var district = {
+				/*Immigration*/
+				"00":{
+					"00":{	"00":"Family of U.S. Citizens",
+						"01":"Family of Green Card Holders (Permanent Residents)",
+					},
+					"01":{	"00":"Employment-Based Immigration: First Preference EB-1",
+						"01":"Employment-Based Immigration: Second Preference EB-2",
+						"02":"Employment-Based Immigration: Third Preference EB-3",
+						"03":"Employment-Based Immigration: Fourth Preference EB-4",
+						"04":"Employment-Based Immigration: Fifth Preference EB-5",
+					},
+					"02":{	"00":"H-1B Specialty Occupations and Fashion Models",
+						"01":"H-4 Dependent Spouses of H-1B Holder",
+						"02":"H-1C Registered Nurse",
+						"03":"H-2A Agricultural Workers",
+						"04":"H-2B Non-Agricultural Workers",
+						"05":"H-3 Nonimmigrant Trainee",
+						"06":"L-1 Intracompany Transferee",
+						"07":"L-2 Dependent Spouses and Children of L-1 Holder",
+						"08":"O-1 Individuals with Extraordinary Ability or Achievement",
+						"09":"O-2 Associate of O-1 Holder",
+						"0A":"O-3 Dependent Spouses and Children of O-1 Holder",
+						"0B":"TN NAFTA Professionals - Initial",
+						"0C":"R Religious Worker Visa",
+						"0D":"P Athletes, Artists and Entertainment Groups Visa",
+						"0E":"E Treaty Trader & Investor Visa",
+						"0F":"CW-1: CNMI-Only Transitional Worker",
+						"10":"I Representatives of Foreign Media",
+					},
+					"03":{	"00":"B Visitor Visa",
+						"01":"F Student Visa",
+						"02":"M Student Visa",
+						"03":"J Exchange Visitor Visa",
+					},
+					"04":{	"00":"Application to Register Permanent Residence or Adjust Status",
+						"01":"Advance Parole Document",
+						"02":"Reentry Permit",
+						"03":"Refugee Travel Document",
+						"04":"Employment Authorization Document",
+						"05":"Renew or Replace Green Card",
+						"06":"Naturalization",
+						"07":"Immigrant Visa",
+						"08":"Petition for Amerasian, Widow(er), or Special Immigrant",
+						"09":"Refugee/Asylee Relative Petition",
+						"0A":"Application to Extend/Change Nonimmigrant Status",
+						"0B":"F-1 Reinstatement",
+						"0C":"J1 Wavier",
+					},
+				},
+				/*   */
+				"01":{
+					"00":{	"00":"Family of U.S. Citizens",
+						"01":"Family of Green Card Holders (Permanent Residents)",
+					},
+					"01":{	"00":"Employment-Based Immigration: First Preference EB-1",
+						"01":"Employment-Based Immigration: Second Preference EB-2",
+						"02":"Employment-Based Immigration: Third Preference EB-3",
+						"03":"Employment-Based Immigration: Fourth Preference EB-4",
+						"04":"Employment-Based Immigration: Fifth Preference EB-5",
+					},
+					"02":{	"00":"H-1B Specialty Occupations and Fashion Models",
+						"01":"H-4 Dependent Spouses of H-1B Holder",
+						"02":"H-1C Registered Nurse",
+						"03":"H-2A Agricultural Workers",
+						"04":"H-2B Non-Agricultural Workers",
+						"05":"H-3 Nonimmigrant Trainee",
+						"06":"L-1 Intracompany Transferee",
+						"07":"L-2 Dependent Spouses and Children of L-1 Holder",
+						"08":"O-1 Individuals with Extraordinary Ability or Achievement",
+						"09":"O-2 Associate of O-1 Holder",
+						"0A":"O-3 Dependent Spouses and Children of O-1 Holder",
+						"0B":"TN NAFTA Professionals - Initial",
+						"0C":"R Religious Worker Visa",
+						"0D":"P Athletes, Artists and Entertainment Groups Visa",
+						"0E":"E Treaty Trader & Investor Visa",
+						"0F":"CW-1: CNMI-Only Transitional Worker",
+						"10":"I Representatives of Foreign Media",
+					},
+					"03":{	"00":"B Visitor Visa",
+						"01":"F Student Visa",
+						"02":"M Student Visa",
+						"03":"J Exchange Visitor Visa",
+					},
+					"04":{	"00":"Application to Register Permanent Residence or Adjust Status",
+						"01":"Advance Parole Document",
+						"02":"Reentry Permit",
+						"03":"Refugee Travel Document",
+						"04":"Employment Authorization Document",
+						"05":"Renew or Replace Green Card",
+						"06":"Naturalization",
+						"07":"Immigrant Visa",
+						"08":"Petition for Amerasian, Widow(er), or Special Immigrant",
+						"09":"Refugee/Asylee Relative Petition",
+						"0A":"Application to Extend/Change Nonimmigrant Status",
+						"0B":"F-1 Reinstatement",
+						"0C":"J1 Wavier",
+					},
+				},
+
+			};
+			var end = {
+				/* Immigration*/
+				"00":{
+					"00":{	"00":{	"00":"Spouse And Children (unmarried and under 21)",
+						"01":"Sons and daughters (married)",
+						"02":"Sons and daughters (21 or over)",
+						"03":"Parents, if you are 21 or over",
+						"04":"Siblings, if you are 21 or over",
+						"05":"A fiancé(e) residing outside the United States and children of fiancé(e) under 21",
+						"06":"Remove Conditions ",
+					},
+						"01":{	"00":"Spouse (husband or wife)",
+							"01":"Unmarried children under 21",
+							"02":"Unmarried children under 21",
+						},
+					},
+					"01":{	"00":{	"00":"Extraordinary Ability",
+						"01":"Outstanding professors and researchers",
+						"02":"Multinational manager or executive",
+					},
+						"01":{	"00":"Advanced Degree",
+							"01":"National Interest Waiver",
+							"02":"Exceptional Ability",
+							"03":"Immigrant Petition for Alien Worker",
+						},
+						"02":{	"00":"Professionals",
+							"01":"Skilled Workers",
+							"02":"PERM",
+							"03":"Immigrant Petition for Alien Worker",
+						},
+						"03":{	"00":"special immigrants",
+						},
+						"04":{	"00":"Immigrant Investor",
+							"01":"Immigrant Investor (Remove Condition)",
+						},
+
+					},
+					"02":{	"00":{	"00":"H-1B Specialty Occupations and Fashion Models - Initial",
+						"01":"H-1B Specialty Occupations and Fashion Models - Extension",
+						"02":"H-1B Specialty Occupations and Fashion Models - Transfer",
+						"03":"H-1B Specialty Occupations and Fashion Models - RFE",
+					},
+						"01":{	"00":"Dependent Spouses of H-1B Holder - Initial",
+							"01":"Dependent Spouses of H-1B Holder - Extension",
+						},
+						"02":{	"00":"H-1C Registered Nurse",
+						},
+						"03":{	"00":"H-2A Agricultural Workers",
+						},
+						"04":{	"00":"H-2B Non-Agricultural Workers",
+						},
+						"05":{	"00":"H-3 Nonimmigrant Trainee",
+						},
+						"06":{	"00":"L1 - Initial",
+							"01":"L1 - Extension",
+						},
+						"07":{	"00":"L-2 application",
+							"01":"L-2 EAD",
+						},
+						"08":{	"00":"O-1 Individuals with Extraordinary Ability or Achievement - Initial",
+							"01":"O-1 Individuals with Extraordinary Ability or Achievement - Extension",
+						},
+						"09":{	"00":"O-2 Associate of O-1 Holder - Initial",
+							"01":"O2 - Extension",
+						},
+						"0A":{	"00":"O-3 Dependent Spouses and Children of O-1 Holder - Initial",
+							"01":"O-3 Dependent Spouses and Children of O-1 Holder - Extension",
+						},
+						"0B":{	"00":"TN NAFTA Professionals - Initial",
+							"01":"TN - Extension",
+						},
+						"0C":{	"00":"R-1 Temporary Religious Workers",
+							"01":"R-2 Dependent Spouses and Children of R-1 Holder",
+						},
+						"0D":{	"00":"P-1A Internationally Recognized Athlete",
+							"01":"P-1B A Member of an Internationally Recognized Entertainment Group",
+							"02":"P-2 Performer or Group Performing under Reciprocal Exchange Program",
+							"03":"P-3 Artist or Entertainer Part of a Culturally Unique Program",
+						},
+						"0E":{	"00":"E-1 Treaty Traders",
+							"01":"E-2 CNMI Investor/E-2 Treaty Investors",
+							"02":"E-3 Certain Specialty Occupation Professionals from Australia",
+						},
+						"0F":{	"00":"CW-1: CNMI-Only Transitional Worker",
+						},
+						"10":{	"00":"I Representatives of Foreign Media",
+						},
+
+					},
+					"03":{	"00":{	"00":"B-1 Temporary Business Visitor / B-2 Tourist Visa",
+					},
+						"01":{	"00":"F-1 Full-time Student / F-2 - Dependent Spouses and Children of F-1 Holder",
+						},
+						"02":{	"00":"M-1 Nonacademic or Vocational Student / M-2 - Dependent Spouses and Children of M-1 Holder",
+						},
+						"03":{	"00":"J-1 Exchange Visitor Visa / J-2 Dependent Spouses and Children of J-1 Holder",
+						},
+					},
+					"04":{	"00":{	"00":"I-485",
+					},
+						"01":{	"00":"I-131",
+						},
+						"02":{	"00":"I-131",
+						},
+						"03":{	"00":"I-131",
+						},
+						"04":{	"00":"I-765",
+						},
+						"05":{	"00":"I-90",
+						},
+						"06":{	"00":"N-400",
+						},
+						"07":{	"00":"DS-260",
+						},
+						"08":{	"00":"I-360",
+						},
+						"09":{	"00":"I-730",
+						},
+						"0A":{	"00":"I-539",
+						},
+						"0B":{	"00":"I-539",
+						},
+						"0C":{	"00":"J1 Wavier",
+						},
+
+					},
+
+				},
+
+			};
+
+			$('.category-js').each(function () {
+				var num = $(this).text();
+				var category = "";
+				if(num) {
+					var ol = num.substring(0, 2);
+					$(this).html(province[ol] + "<br>");
+					num = num.substring(2, 8);
+					if(num) {
+						var sl = num.substring(0, 2);
+						$(this).html($(this).html() + city[ol][sl] + "<br>");
+						num = num.substring(2, 6);
+						if(num) {
+							var tl = num.substring(0, 2);
+							$(this).html($(this).html() + district[ol][sl][tl] + "<br>");
+							num = num.substring(2, 4);
+							if(num) {
+								category += end[ol][sl][tl][num];
+								$(this).html($(this).html() + end[ol][sl][tl][num]);
+							}
+						}
+					}
+				}
+			})
+		});
+	</script>
 </body>
 </html>

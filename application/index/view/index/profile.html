@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <title>user profile</title>
 	{include file="index/header" /}
+  <script src="assets/js/jquery.maskedinput.min.js"></script>
   <script type="text/javascript" src="/static/javascripts/profile-edit.js"></script>
 </head>
 <body ng-app="profileEdit">
@@ -51,7 +52,7 @@
     <a href="/mycases">
       <div class="pull-right icon-container">
         <div class="icon-lg">
-          <i class="fa fa-folder-open-o" aria-hidden="true"></i>
+          <i class="icon-case-folder" aria-hidden="true"></i>
         </div>
         <h6>我的案件</h6>
       </div>
@@ -91,7 +92,7 @@
                 <div class="profile-td col-md-10" ng-show="basicInfo.edit" ng-cloak>
                   <div class="select-sm left-indent">
                     <select id="gender" name="gender"
-                            ng-model="basicInfo.gender" ng-init="basicInfo.genderInit('male')"
+                            ng-model="basicInfo.gender" ng-init="basicInfo.genderInit('{$profile.basicInfo.gender ? $profile.basicInfo.gender.value : \'male\'}')"
                             ng-options="gender.name for gender in genders">
                     </select>
                     <div class="select-arrow"></div>
@@ -101,17 +102,17 @@
               <div class="profile-table-row">
                 <div class="profile-td col-md-2">电话</div>
                 <div class="profile-td col-md-10"
-                     ng-hide="basicInfo.edit" ng-init="basicInfo.phoneNum='{$profile.basicInfo.phoneNum ?? \'888-888-8888\'}'"
+                     ng-hide="basicInfo.edit" ng-init="basicInfo.phoneNum='{$profile.basicInfo.phoneNum ?? \'(888) 888-8888\'}'"
                      ng-cloak>{{basicInfo.phoneNum}}</div>
                 <div class="profile-td col-md-10" ng-show="basicInfo.edit" ng-cloak>
-                  <label><input class="profile-input-md left-indent white-no-border" ng-model="basicInfo.phoneNum"></label>
+                  <label><input class="profile-input-md left-indent white-no-border input-mask-phone" ng-model="basicInfo.phoneNum"></label>
                 </div>
               </div>
               <div class="profile-table-row">
                 <div class="profile-td col-md-2">现住地址</div>
                 <div class="profile-td col-md-10"
                      ng-hide="basicInfo.edit"
-                     ng-init="basicInfo.address='{$profile.basicInfo.address ?? \'888-888-8888\'}'"
+                     ng-init="basicInfo.address='{$profile.basicInfo.address ?? \'\'}'"
                      ng-cloak>{{basicInfo.address}}</div>
                 <div class="profile-td col-md-10" ng-show="basicInfo.edit" ng-cloak>
                   <label><input class="profile-input-lg left-indent white-no-border" ng-model="basicInfo.address"></label>
@@ -121,7 +122,7 @@
                 <div class="profile-td col-md-2">邮寄地址</div>
                 <div class="profile-td col-md-10"
                      ng-hide="basicInfo.edit"
-                     ng-init="basicInfo.mailAddress='{$profile.basicInfo.mailAddress ?? \'888-888-8888\'}'"
+                     ng-init="basicInfo.mailAddress='{$profile.basicInfo.mailAddress ?? \'\'}'"
                      ng-cloak>{{basicInfo.mailAddress}}</div>
                 <div class="profile-td col-md-10" ng-show="basicInfo.edit" ng-cloak>
                   <label><input class="profile-input-lg left-indent white-no-border" ng-model="basicInfo.mailAddress"></label>
@@ -150,29 +151,48 @@
           <div class="profile-table">
             <div class="profile-table-row">
               <div class="profile-td col-md-2">出生日期</div>
-              <div class="profile-td col-md-10" ng-init="idInfo.dob=''" ng-hide="idInfo.edit" ng-cloak="">{{idInfo.dob}}</div>
+              <div class="profile-td col-md-10" ng-init="idInfo.dob='{$profile.idInfo.dob ?? \'\'}'" ng-hide="idInfo.edit" ng-cloak="">{{idInfo.dob}}</div>
               <div class="profile-td col-md-10" ng-show="idInfo.edit" ng-cloak>
-                <label><input class="profile-input-md left-indent white-no-border" ng-model="idInfo.dob"></label>
+                <label><input class="profile-input-md left-indent white-no-border input-mask-date" ng-model="idInfo.dob"></label>
               </div>
             </div>
             <div class="profile-table-row">
               <div class="profile-td col-md-2">国籍</div>
-              <div class="profile-td col-md-10" ng-init="idInfo.nationality=''" ng-cloak ng-hide="idInfo.edit">{{idInfo.nationality}}</div>
+              <div class="profile-td col-md-10" ng-init="idInfo.nationality='{$profile.idInfo.nationality ?? \'\'}'" ng-cloak ng-hide="idInfo.edit">{{idInfo.nationality}}</div>
               <div class="profile-td col-md-10" ng-show="idInfo.edit" ng-cloak>
                 <label><input class="profile-input-sm left-indent white-no-border" ng-model="idInfo.nationality" ng-cloak></label>
               </div>
             </div>
             <div class="profile-table-row">
               <div class="profile-td col-md-2">护照号</div>
-              <div class="profile-td col-md-10">G***23</div>
+              <div class="profile-td col-md-10" ng-init="idInfo.passportNum ='{$profile.idInfo.passportNum ?? \'\'}'"
+                   ng-cloak ng-hide="idInfo.edit"
+              >{{idInfo.passportNum}}</div>
+              <div class="profile-td col-md-10" ng-show="idInfo.edit" ng-cloak>
+                <label><input class="profile-input-md left-indent white-no-border" ng-model="idInfo.passportNum" ng-cloak></label>
+              </div>
             </div>
             <div class="profile-table-row">
               <div class="profile-td col-md-2">护照签发国</div>
-              <div class="profile-td col-md-10">中国</div>
+              <div class="profile-td col-md-10" ng-init="idInfo.passportIssueCountry='{$profile.idInfo.passportIssueCountry ?? \'\'}'"
+                   ng-cloak ng-hide="idInfo.edit"
+              >
+                {{idInfo.passportIssueCountry}}
+              </div>
+              <div class="profile-td col-md-10" ng-show="idInfo.edit" ng-cloak>
+                <label><input class="profile-input-md left-indent white-no-border" ng-model="idInfo.passportIssueCountry" ng-cloak></label>
+              </div>
             </div>
             <div class="profile-table-row">
               <div class="profile-td col-md-2">SSN</div>
-              <div class="profile-td col-md-10">***-***-1234</div>
+              <div class="profile-td col-md-10" ng-init="idInfo.SSN='{$profile.idInfo.ssn ?? \'\'}'"
+                   ng-cloak ng-hide="idInfo.edit"
+              >
+                {{idInfo.SSN}}
+              </div>
+              <div class="profile-td col-md-10" ng-show="idInfo.edit" ng-cloak>
+                <label><input class="profile-input-md left-indent white-no-border input-mask-ssn" ng-model="idInfo.SSN" ng-cloak></label>
+              </div>
             </div>
             <br>
             <button class="btn btn-sm btn-primary" ng-show="idInfo.edit" ng-click="idInfo.save()" ng-cloak>保存</button>
@@ -185,5 +205,15 @@
 
 	{include file="index/footer_clean"  /}
   <script src="/static/javascripts/autocomplete.js"></script>
+  <!-- inline scripts related to this page -->
+  <script type="text/javascript">
+    jQuery(function($) {
+
+      $.mask.definitions['~'] = '[+-]';
+      $('.input-mask-date').mask('99/99/9999');
+      $('.input-mask-phone').mask('(999) 999-9999');
+      $('.input-mask-ssn').mask('999-99-9999');
+    });
+  </script>
 </body>
 </html>

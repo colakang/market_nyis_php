@@ -1,64 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<title>NYIS后台管理</title>
+  <meta charset="UTF-8">
+  <title>NYIS后台管理</title>
 	<link rel="stylesheet" href="/assets/css/bootstrap.min.css">
-	<link rel="stylesheet" href="/assets/css/ace.min.css" class="ace-main-stylesheet" id="main-ace-style">
 	{include file="seller/header" /}
+	<link rel="stylesheet" href="/assets/css/ace.min.css" class="ace-main-stylesheet" id="main-ace-style">
 	{include file="seller/categories_css"  /}
 	<link rel="stylesheet" href="/assets/css/select2.min.css" />
 
+
 </head>
 <body>
-{include file="seller/navbar_index" nickname=$nickname /}
-{notempty name="nickname"}
-{include file="seller/navbar_login" nickname=$nickname /}
-{/notempty}
+	{include file="seller/navbar_index" nickname=$nickname /}
+	{notempty name="nickname"}
+		{include file="seller/navbar_login" nickname=$nickname /}
+	{/notempty}
 
 <div class="profile-header">
-	<div class="container">
-		<div class="profile-photo">
-			<img src="/static/images/profile-07.png">
-		</div>
-		<div class="caption">
-			{$Think.lang.view_my_account}
-		</div>
-		<a href="/seller/profile">
-			<div class="pull-right icon-container">
-				<div class="icon-lg">
-					<i class="icon-profile-icon"></i>
-				</div>
-				<h6>{$Think.lang.view_my_info}</h6>
-			</div>
-		</a>
+  <div class="container">
+    <div class="profile-photo">
+      <img src="/static/images/profile-07.png">
+    </div>
+    <div class="caption">
+      {$Think.lang.view_my_account}
+    </div>
+    <a href="/seller/profile">
+      <div class="pull-right icon-container">
+        <div class="icon-lg">
+          <i class="icon-profile-icon"></i>
+        </div>
+        <h6>{$Think.lang.view_my_info}</h6>
+      </div>
+    </a>
 
-		<a href="/seller/myservice">
-			<div class="pull-right icon-container">
-				<div class="icon-lg">
-					<i class="icon-case-folder"></i>
-				</div>
-				<h6>{$Think.lang.view_my_service}</h6>
-			</div>
-		</a>
+    <a href="/seller/myservice">
+      <div class="pull-right icon-container">
+        <div class="icon-lg">
+          <i class="icon-profile-icon"></i>
+        </div>
+        <h6>{$Think.lang.view_my_service}</h6>
+      </div>
+    </a>
 
-		<a href="/seller/addservice">
-			<div class="pull-right icon-container active">
-				<div class="icon-lg">
-					<i class="icon-add-new-document"></i>
-				</div>
-				<h6>{$Think.lang.view_add_service}</h6>
-			</div>
-		</a>
-	</div>
+    <a href="/seller/addservice">
+      <div class="pull-right icon-container">
+        <div class="icon-lg">
+          <i class="icon-profile-icon"></i>
+        </div>
+        <h6>{$Think.lang.view_add_service}</h6>
+      </div>
+    </a>
+  </div>
 </div>
 
 <div class="main-content">
 	<div class="main-content-inner">
 		<div class="page-content">
-			<div class="container panel-container">
+			<div class="row  container panel-container">
+				{include file="seller/left_menu" /}
 				<div class="col-xs-10">
-					<!-- PAGE CONTENT BEGINS -->
+				<!-- PAGE CONTENT BEGINS -->
 					<form class="form-horizontal" role="form" action="/seller/addservice" method="post">
 						<div class="form-group">
 							<div class="wareSort clearfix">
@@ -77,12 +79,12 @@
 						</div>
 
 						<div class="form-group">
-							<label class="col-sm-3 control-label no-padding-right">{$Think.lang.view_type}</label>
-							<label class="col-sm-3 control-label no-padding-right service-type-js" >
-								<input name="type" type="radio" class="ace" value="fixed" checked>
+							<label class="col-sm-3 control-label no-padding-right" for="type">{$Think.lang.view_type}</label>
+							<label class="col-sm-3 control-label no-padding-right">
+								<input name="type" type="radio" class="ace" value="fixed">
 								<span class="lbl">{$Think.lang.view_fixed}</span>
 							</label>
-							<label class="col-sm-3 control-label no-padding-right service-type-js">
+							<label class="col-sm-3 control-label no-padding-right">
 								<input name="type" type="radio" class="ace" value="customized">
 								<span class="lbl">{$Think.lang.view_customized}</span>
 							</label>
@@ -94,19 +96,10 @@
 							</div>
 						</div>
 
-						<div class="form-group fixed-block-js">
+						<div class="form-group">
 							<label class="col-sm-3 control-label no-padding-right" for="price">{$Think.lang.view_price}</label>
-							<div class="col-sm-9" id="fix-price">
+							<div class="col-sm-9">
 								<input type="text" id="price" name="price"  placeholder="{$Think.lang.view_price}" class="col-xs-10 col-sm-5" value="{$service.price ?? ''}">
-							</div>
-						</div>
-						<div class="form-group customized-block-js hide">
-							<label class="col-sm-3 control-label no-padding-right">{$Think.lang.view_price}</label>
-							<div class="col-sm-9" id="customize-price">
-								<input type="text" id="min-price" name="price['start']"  placeholder="{$Think.lang.view_price}"
-											 class="col-xs-5 col-sm-3" value="{$service.price ?? ''}">
-								<input type="text" id="max-price" name="price['max']"  placeholder="{$Think.lang.view_price}"
-											 class="col-xs-1 col-sm-3 col-xs-1 col-sm-offset-1" value="{$service.price ?? ''}">
 							</div>
 						</div>
 						<div class="form-group">
@@ -217,60 +210,48 @@
 
 						<div class="space-4"></div>
 						<div class="login-button-wrapper">
-							<button type="submit" class="btn btn-primary btn-login">{$Think.lang.view_addButton}</button>
-						</div>
+                					<button type="submit" class="btn btn-primary btn-login">{$Think.lang.view_addButton}</button>
+              					</div>
 
 					</form>
-					<!-- PAGE CONTENT ENDS -->
+				<!-- PAGE CONTENT ENDS -->
 				</div>
-				<!-- /.col -->
+			<!-- /.col -->
 			</div>
 		</div>
 	</div>
 </div>
 
 
-{include file="seller/footer_clean"  /}
-<script src="/assets/js/select2.min.js"></script>
-<script src="/assets/js/autosize.min.js"></script>
+	{include file="seller/footer_clean"  /}
+	<script src="/assets/js/select2.min.js"></script>
+	<script src="/assets/js/autosize.min.js"></script>
 
-{include file="seller/categories"  /}
+	{include file="seller/categories"  /}
 <script>
-	jQuery(function($){
+			jQuery(function($){
+			
+				//////////////////
+				//select2
+				$('.select2').css('width','200px').select2({allowClear:true})
+				$('#select2-multiple-style .btn').on('click', function(e){
+					var target = $(this).find('input[type=radio]');
+					var which = parseInt(target.val());
+					if(which == 2) $('.select2').addClass('tag-input-style');
+					 else $('.select2').removeClass('tag-input-style');
+				});
+				$(document).one('ajaxloadstart.page', function(e) {
+					$('[class*=select2]').remove();
+					$('select[name="duallistbox_demo1[]"]').bootstrapDualListbox('destroy');
+					$('.rating').raty('destroy');
+					$('.multiselect').multiselect('destroy');
+				});
+			
+			});
+			autosize($('textarea[class*=autosize]'));
 
-		//////////////////
-		//select2
-		$('.select2').css('width','200px').select2({allowClear:true})
-		$('#select2-multiple-style .btn').on('click', function(e){
-			var target = $(this).find('input[type=radio]');
-			var which = parseInt(target.val());
-			if(which == 2) $('.select2').addClass('tag-input-style');
-			else $('.select2').removeClass('tag-input-style');
-		});
-		$(document).one('ajaxloadstart.page', function(e) {
-			$('[class*=select2]').remove();
-			$('select[name="duallistbox_demo1[]"]').bootstrapDualListbox('destroy');
-			$('.rating').raty('destroy');
-			$('.multiselect').multiselect('destroy');
-		});
 
-		var serviceType = "fixed";
-		$(".service-type-js").click(function () {
-			var newType = $(this).find('input').attr('value');
-			if(newType != serviceType){
-				var oldType = serviceType;
-				serviceType = newType;
-				var oldClsName = "." + oldType + "-block-js";
-				var newClsName = "." + newType + "-block-js";
-				console.log("old class name is " + oldClsName);
-				$(oldClsName).addClass('hide');
-				$(newClsName).removeClass('hide');
-			}
-		});
 
-		autosize($('textarea[class*=autosize]'));
-
-	});
 
 </script>
 

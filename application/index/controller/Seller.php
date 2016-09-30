@@ -21,7 +21,8 @@ class Seller extends Controller
 		);
 		$action = strtolower($request->action());	
 		if (!Session::has('isSellerLogin') and !in_array($action,$whiteList) )
-			return $this->error(Lang::get('login_first'),'/seller/login');
+			return $this->redirect('/seller/login');	//Disable message page
+			//return $this->error(Lang::get('login_first'),'/seller/login');
 		//此版本未生效;
     	}
 
@@ -36,7 +37,8 @@ class Seller extends Controller
 		Session::delete('isSellerLogin');
 		Session::delete('sid');
 		Session::delete('sName');
-		return $this->success(Lang::get('logout_success'), '/seller');
+		return $this->redirect('/seller/login');	//Disable message page
+		//return $this->success(Lang::get('logout_success'), '/seller');
 	}
 
 	public function profile()
@@ -79,7 +81,8 @@ class Seller extends Controller
 					Session::set('isSellerLogin',true);
 					Session::set('sid',$isSellerId);
 					Session::set('sName',$isSellerName);
-					return $this->success(Lang::get('login_success'), '/seller');
+					return $this->redirect('/seller');	//Disable message page
+					//return $this->success(Lang::get('login_success'), '/seller');
 		    		}
 	   	}	 
 	}
@@ -117,7 +120,8 @@ class Seller extends Controller
 					Session::set('isSellerLogin',true);
 					Session::set('sid',$isSellerId);
 					Session::set('sName',$isSellerName);
-					return $this->success(Lang::get('registered'), '/seller');
+					return $this->redirect('/seller');	//Disable message page
+					//return $this->success(Lang::get('registered'), '/seller');
 		    		}
 				break;
 	   	} 
@@ -201,6 +205,8 @@ class Seller extends Controller
                                 break;
                         default:
                                 $sid = Session::get('sid');
+                                if (empty($_POST['fees']))
+					$_POST['fees'] = 0;
                                 $data = array (
                                                 'name'=> input('name'),
                                                 'sellerName'=> Session::get('sName'),
@@ -325,6 +331,29 @@ class Seller extends Controller
 					$data['reasons'] = 'Empty Data!!';
 				} else {
 					$data['sellerName'] = Session::get('sName');
+					$result = $services->updateService($data,$sid,$serviceId);	//sid & serviceId 
+					if ($result)
+						$data['update'] = 'Success';
+					else
+					{
+						$data['update'] = 'Fail';
+						$data['reasons'] = 'Data Save Error!!';
+
+					}						
+				}
+				return json($data,200);
+				break;
+			case ('delete'):
+	 			$services = controller('Service','event');
+				$serviceId = input('id');
+				$data = array();
+				if (empty($serviceId))
+				{
+					$data = $_POST;
+					$data['update'] = 'Fail';
+					$data['reasons'] = 'Empty Data!!';
+				} else {
+					$data['status'] = 9;
 					$result = $services->updateService($data,$sid,$serviceId);	//sid & serviceId 
 					if ($result)
 						$data['update'] = 'Success';

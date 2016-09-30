@@ -4,8 +4,9 @@
   <meta charset="UTF-8">
   <title>Seller Profile</title>
 	<link rel="stylesheet" href="/assets/css/bootstrap.min.css">
-	{include file="seller/header" /}
 	<link rel="stylesheet" href="/assets/css/ace.min.css" class="ace-main-stylesheet" id="main-ace-style">
+	{include file="seller/header" /}
+
 </head>
 <body>
 	{include file="seller/navbar_index" nickname=$nickname /}
@@ -22,7 +23,7 @@
       {$Think.lang.view_my_account}
     </div>
     <a href="/seller/profile">
-      <div class="pull-right icon-container">
+      <div class="pull-right icon-container active">
         <div class="icon-lg">
           <i class="icon-profile-icon"></i>
         </div>
@@ -33,7 +34,7 @@
     <a href="/seller/myservice">
       <div class="pull-right icon-container">
         <div class="icon-lg">
-          <i class="icon-profile-icon"></i>
+          <i class="icon-case-folder"></i>
         </div>
         <h6>{$Think.lang.view_my_service}</h6>
       </div>
@@ -42,7 +43,7 @@
     <a href="/seller/addservice">
       <div class="pull-right icon-container">
         <div class="icon-lg">
-          <i class="icon-profile-icon"></i>
+          <i class="icon-add-new-document"></i>
         </div>
         <h6>{$Think.lang.view_add_service}</h6>
       </div>

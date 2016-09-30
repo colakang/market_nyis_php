@@ -51,7 +51,7 @@ class Service
 
     	public function getStatusAttr($value)
     	{
-        	$status = [-1=>'删除',0=>'待审核',1=>'正常',2=>'审核中'];
+        	$status = [9=>'删除',0=>'待审核',1=>'正常',2=>'审核中'];
         	return $status[$value];
     	}
 
