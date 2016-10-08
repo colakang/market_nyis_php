@@ -59,53 +59,6 @@
   </div>
 </div>
 
-<!--<div class="main-content">
-	<div class="main-content-inner">
-		<div class="page-content">
-			<div class="row  container panel-container">
-				{include file="seller/left_menu" /}
-
-				<div class="col-xs-10">
-					&lt;!&ndash; PAGE CONTENT BEGINS &ndash;&gt;
-  					<div class="case-block">
-		  			    <div class="case-table-container">
-		  			      <h4>{$Think.lang.view_my_service}</h4>
-		  			      <div class="case-table">
-						{volist name="service" id="vo"}
-		  			        <div class="case-row">
-		  			          <div class="case-date">
-		  			            <h6>{$vo.cMM ?? ''}</h6>
-		  			            <h5>{$vo.cDD ?? ''}</h5>
-		  			          </div>
-		  			          <div class="case-title">
-		  			            {$vo.name ?? ''}
-		  			          </div>
-		  			          <div class="case-provider">
-		  			            {$vo.price ?? ''}
-		  			          </div>
-		  			          <div class="case-provider">
-		  			            {$vo.sellerName ?? ''}
-		  			          </div>
-		  			          <div class="case-status">
-		  			            <div class="btn status-badge">
-		  			            {$vo.status ?? ''}
-		  			            </div>
-		  			          </div>
-		  			        </div>
-						{/volist}
-		  			      </div>
-		  			    </div>
-  					  </div>
-
-					&lt;!&ndash; PAGE CONTENT BEGINS &ndash;&gt;
-				&lt;!&ndash; PAGE CONTENT ENDS &ndash;&gt;
-				</div>
-			&lt;!&ndash; /.col &ndash;&gt;
-			</div>
-		</div>
-	</div>
-</div>-->
-
 	<div class="main-content">
 		<div class="main-content-inner">
 			<div class="breadcrumbs ace-save-state" id="breadcrumbs">
@@ -131,7 +84,7 @@
 								</thead>
 								<tbody>
 								{volist name="service" id="vo"}
-								<tr>
+								<tr  service-id="{$vo._id}">
 
 									<td class="center">
 										<div class="action-buttons">
@@ -148,10 +101,10 @@
 									<td>
 										<?php
 											if ($vo["type"] == "customized"){
-												echo $vo["minPrice"] + " - " + $vo["maxPrice"];
+												echo $vo["price"]["start"] + " - " + $vo["price"]["max"];
 											}
 											else{
-												echo isset($vo["price"]) ? $vo["price"] : "";
+												echo isset($vo["price"]["start"]) ? $vo["price"]["start"] : "";
 											}
 										?>
 									</td>
@@ -159,15 +112,17 @@
 									<td>{$vo.cMM ?? ''}-{$vo.cDD ?? ''}</td>
 
 									<td class="hidden-480">
-										<span class="label label-sm label-warning">{$vo.status ?? ''}</span>
+										<span class="label label-sm label-warning service-status-js">{$vo.status ?? ''}</span>
 									</td>
 
 									<td>
 										<div class="hidden-sm hidden-xs btn-group">
 
-											<button class="btn btn-xs btn-info">
-												<i class="ace-icon fa fa-pencil bigger-120"></i>
-											</button>
+											<a href="/seller/view/id/{$vo._id}">
+												<button class="btn btn-xs btn-info">
+													<i class="ace-icon fa fa-pencil bigger-120"></i>
+												</button>
+											</a>
 
 											<button class="btn btn-xs btn-danger">
 												<i class="ace-icon fa fa-trash-o bigger-120"></i>
@@ -211,7 +166,7 @@
 										</div>
 									</td>
 								</tr>
-								<tr class="detail-row">
+								<tr class="detail-row"  service-id="{$vo._id}">
 									<td colspan="8">
 										<div class="table-detail">
 											<div class="row">
@@ -311,6 +266,26 @@
 			$('.show-details-btn').on('click', function(e) {
 				e.preventDefault();
 				$(this).closest('tr').next().toggleClass('open');
+			});
+
+			$('tr[service-id]').each(function () {
+				var serviceRow = $(this);
+				var serviceId = serviceRow.attr('service-id');
+				serviceRow.find('button.btn-danger').click(function () {
+					$.ajax({
+						url: "/seller/update",
+						data: {
+							oper: "delete",
+							id: serviceId
+						},
+						dataType: "json",
+						method: "post"
+					}).done(function (data) {
+						serviceRow.find('.service-status-js').text("删除");
+					}).fail(function (data) {
+						console.log(data);
+					});
+				});
 			});
 
 			/*定义三级分类数据*/
@@ -608,7 +583,7 @@
 						}
 					}
 				}
-			})
+			});
 		});
 	</script>
 </body>

@@ -18,6 +18,23 @@ class Service
 		return Db::name('services')->where('_id','=',$id)->limit(1)->find();
 	}
 
+	public function editById($sid,$id)
+	{
+		$service = Db::name('services')->where('sellerid','=',$sid)->where('_id','=',$id)->limit(1)->find();
+		if (empty($service))
+			$service = Db::name('services')->where('sellerid','=',$sid)->limit(1)->find();
+		
+		if (empty($service))
+			return false;
+		$service['status'] = $this->getStatusAttr($service['status']);
+		if (!empty($service['createTime']))
+		{
+			$service['cMM'] = $this->getDateAttr($service['createTime'],'F');
+			$service['cDD'] = $this->getDateAttr($service['createTime'],'d');
+		}
+		return $service;
+	}
+
 	public function findByCategories($categories,$like,$area)
 	{
 		return Db::name('services')->where('categories',$like,$categories)->where('area','like',$area)->paginate(30,true);
@@ -62,7 +79,7 @@ class Service
 
 	public function updateService($data,$sid,$serviceId)
 	{
-		$update = Db::name('services')->where('sellerId',$sid)->where('_id', $serviceId)->update($data);
+		$update = Db::name('services')->where('sellerid',$sid)->where('_id', $serviceId)->update($data);
 		if ($update==0)
 			return false;
 		else

@@ -151,6 +151,26 @@ class Index extends Controller
 	public function view()
 	{
 		$services = controller('Service','event');
+		$sellers = controller('Seller','event');
+		$id = input('id');
+		$result = $services->findById($id);
+		$seller = $sellers->findUserById($result['sellerid']);
+		$nickname = false;
+		if (Session::has('isLogin'))
+		{
+			$nickname = Session::get('nickname');
+		}
+	 	$view = new View();
+		$view->nickname = $nickname;
+		$view->assign('result',$result);
+		$view->assign('seller',$seller);
+		return $view->fetch();
+
+	}
+
+	public function apply()
+	{
+		$services = controller('Service','event');
 		$id = input('id');
 		$result = $services->findById($id);
 		$nickname = false;
@@ -164,7 +184,6 @@ class Index extends Controller
 		return $view->fetch();
 
 	}
-
 	public function mycases()
 	{
 		$uid = Session::get('uid');

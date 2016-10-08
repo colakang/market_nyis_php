@@ -23,6 +23,7 @@ return [
     'seller' => '/seller/',
     's' => 'index/index/search',
     'view/:id' => 'index/index/view',
+    'apply/:id' => 'index/index/apply',
     '__alias__' =>  [
         'seller'  =>  'index/seller',
     ],

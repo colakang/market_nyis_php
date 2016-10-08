@@ -144,7 +144,7 @@ class Seller extends Controller
 						'address' => input('address'),
 						'practice' => input('practice'),
 						'descript' => input('descript'),
-						'status' => input('status'),
+						//'status' => input('status'),
 				);
 				$sid = Session::get('sid');
 				$isSellerId = $sellers->updateUser($data,$sid);
@@ -175,8 +175,8 @@ class Seller extends Controller
 	
 
 	}
-
-	public function updateservcie()
+/*			
+	public function updateservice()
 	{
 	 	$services = controller('Service','event');
 		$service = $services->findById(input('_id'));
@@ -189,10 +189,10 @@ class Seller extends Controller
 			$service['sellerName'] = Session::get('sName');
 		//$update = $services->updateService($service,input('_id'));
 		exit();
-	
+
 
 	}
-
+*/
         public function addservice()
         {
                 $services = controller('Service','event');
@@ -324,22 +324,36 @@ class Seller extends Controller
 				if (!empty($_POST['fees']))
 					$data['fees'] = $_POST['fees'];
 				if (!empty($_POST['state']))
-					$data['state'] = implode($_POST['price'],",");
-				if (empty($data))
+					$data['state'] = implode($_POST['state'],",");
+				switch(true)
 				{
-					$data['update'] = 'Fail';
-					$data['reasons'] = 'Empty Data!!';
-				} else {
-					$data['sellerName'] = Session::get('sName');
-					$result = $services->updateService($data,$sid,$serviceId);	//sid & serviceId 
-					if ($result)
-						$data['update'] = 'Success';
-					else
+					case (empty($serviceId)):
 					{
-						$data['update'] = 'Fail';
-						$data['reasons'] = 'Data Save Error!!';
+						$data['update'] = 'fail';
+						$data['reasons'] = 'empty ServiceId!!';
+						break;
+					}
 
-					}						
+					case (empty($data)):
+					{
+						$data['update'] = 'fail';
+						$data['reasons'] = 'empty data!!';
+						break;
+					}
+					default: 
+					{
+						$data['sellerName'] = Session::get('sName');
+						$result = $services->updateService($data,$sid,$serviceId);	//sid & serviceId 
+						if ($result)
+							$data['update'] = 'Success';
+						else
+						{
+							$data['update'] = 'Fail';
+							$data['reasons'] = 'Data Save Error!!';
+
+						}
+						break;						
+					}
 				}
 				return json($data,200);
 				break;
@@ -374,6 +388,20 @@ class Seller extends Controller
 				break;
 	   	} 
 	}
+
+        public function view()
+        {
+		$sid = Session::get('sid');
+	 	$services = controller('Service','event');
+		$serviceid = input('id')?input('id'):'57d13e59421aa90dd56fcaa3';	//Using FAKE ServiceId when id is emtpy;
+		$service = $services->editById($sid,$serviceid);
+		$view = new View();
+		$view->assign('service',$service);
+		$view->nickname = Session::get('sName');
+		return $view->fetch();
+
+               }
+
 
 
 }

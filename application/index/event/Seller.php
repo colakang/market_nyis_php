@@ -32,7 +32,7 @@ class Seller
 	public function findUserById($sid)
 	{
 		$seller = Db::name('sellers')->field('password','_id',true)->where('_id','=',$sid)->limit(1)->find();
-		if(empty($seller['status']))
+		if(empty($seller['status']) or !is_int($seller['status']) or (count($seller['status'])>1))
 			$seller['status'] = 0;
 		$seller['status'] = $this->getStatusAttr($seller['status']);
 		return $seller;
