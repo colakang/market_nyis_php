@@ -1,0 +1,123 @@
+<div class="query-block" style="width: 400px;display:none;">
+  <form action="/aa" id="employment-info-query-form">
+    <div class="quote-form primary-theme">
+      <div class="quote-form-title">申请人1-工作信息</div>
+      <div class="row">
+        <div class="col-md-3">
+          <div class="row">
+            <button class="btn btn-sm btn-primary" type="button" id="add-employment">添加工作</button>
+          </div>
+        </div>
+      </div>
+      <br>
+      <div id="employment-list">
+      </div>
+      <div class="row text-center">
+        <button class="btn btn-lg btn-primary next-step" type="submit">下一步</button>
+      </div>
+    </div>
+  </form>
+</div>
+<script type="text/javascript">
+  jQuery(function ($) {
+    $('#employment-info-query-form').validate({
+      focusInvalid: false,
+      ignore: "",
+      highlight: function (e) {
+        $(e).addClass('warning');
+      },
+      unhighlight: function (e) {
+        $(e).removeClass('warning');
+      },
+      submitHandler: function(form){
+        $(form).parent().css('display', 'none').next().css('display', 'block');
+      },
+      invalidHandler: function(form){
+        $('.tip-info.warning').removeClass('hidden');
+      }
+    });
+    var employmentList = $('#employment-list');
+    var employmentNum = 0;
+    function appendRelativeNode(index){
+      var node = "<div id='employment-entry" + index + "' class='employment-entry-js'>" +
+          "<div class='row'>" +
+          "<div class='col-md-6'>" +
+          "<input name='employmentName" + index + "' type='text' placeholder='雇主名称' class='employment-name-js'>" +
+          "</div>" +
+          "<div class='col-md-6'>" +
+          "<input name='jobTitle" + index + "' type='text' placeholder='职位' class='job-title-js'>" +
+          "</div>" +
+          "<div class='col-md-12'>" +
+          "<textarea name='jobDescription" + index + "' placeholder='职位描述' class='job-description-js'></textarea>" +
+          "</div>" +
+          "<div class='col-md-6'>" +
+          "<input type='text' name='employmentCity" + index + "' placeholder='城市' class='employment-city-js'>" +
+          "</div> " +
+          "<div class='col-md-6'>" +
+          "<input type='text' name='employmentState" + index + "' placeholder='州' class='employment-state-js'>" +
+          "</div> " +
+          "<div class='col-md-6'>" +
+          "<input type='text' name='employmentZip" + index + "' placeholder='邮政编码' class='employment-zip-js'>" +
+          "</div> " +
+          "<div class='col-md-6'>" +
+          "<input type='text' name='employmentCountry" + index + "' placeholder='国家' class='employment-country-js'>" +
+          "</div> " +
+          "<div class='col-md-6'>" +
+          "<input type='text' name='employmentStart" + index + "' placeholder='从' class='employment-start-js'>" +
+          "</div> " +
+          "<div class='col-md-6'>" +
+          "<input type='text' name='employmentEnd" + index + "' placeholder='到' class='employment-end-js'>" +
+          "</div> " +
+          (employmentNum == 1 ? "<div class='row'>" +
+          "<div class='col-md-12' style='text-align: right'>" +
+          "<label class='control control-checkbox'>当前工作 " +
+          "<input type='checkbox' name='currentJob'>" +
+          "<div class='control__indicator'></div> </label>" +
+          "</div>" +
+          "</div> " : "")
+          +
+          "</div>" +
+          (employmentNum > 1 ?"<div class='row' style='text-align: right'>" +
+          "<a style='text-decoration: underline; line-height: 1.6' class='delete-link-js' target='employment-entry" + index + "'>删除</a> " +
+          "</div>" : "") +
+          "<br></div>";
+      employmentList.append(node);
+      $('a.delete-link-js').click(function (e) {
+        $('#employment-entry' + index).remove();
+        e.preventDefault();
+      });
+      $('input[name="employmentStart' + index + '"]').datepicker({
+        autoclose: true
+      });
+      $('input[name="employmentEnd' + index + '"]').datepicker({
+        autoclose: true
+      });
+      var propsProto = ["employmentName", "jobTitle", "employmentCity", "employmentState", "employmentZip",
+        "employmentCountry", "employmentStart", "employmentEnd"];
+      $.each(propsProto, function (i, v) {
+        $("[name=" + v + index + "]").rules("add",{
+          required: true,
+          messages: {
+            required: ""
+          }
+        });
+      });
+    }
+    (function () {
+      employmentNum++;
+      appendRelativeNode(employmentNum);
+    })();
+    $('#add-employment').click(function () {
+      employmentNum++;
+      appendRelativeNode(employmentNum);
+    });
+    $('input[name="currentJob"]').change(function (e) {
+      var target = $('input[name="employmentEnd1"]');
+      if($(this).prop('checked')){
+        target.val('present').addClass('hide');
+      }
+      else
+        target.val("").removeClass('hide');
+    });
+  })
+</script>

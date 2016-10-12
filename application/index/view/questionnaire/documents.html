@@ -1,0 +1,66 @@
+<div class="query-block" style="width: 400px;display:none;">
+  <form action="/aa" id="documents-info-query-form">
+    <div class="quote-form primary-theme">
+      <div class="quote-form-title">申请人1-身份信息</div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="sub-block-title">身份信息</div>
+            </div>
+            <div class="col-md-12">
+              <label for="status"></label>
+              <input type="text" id='status' name="status" placeholder="身份" autocomplete="off">
+            </div>
+            <div class="col-sm-12">
+              <label for="status-expire-date"></label>
+              <input type="text" id='status-expire-date' name="statusExpireDate" placeholder="身份失效日期" autocomplete="off">
+            </div>
+          </div>
+        </div>
+      </div>
+      <br>
+      <div class="row text-center">
+        <button class="btn btn-lg btn-primary next-step" type="submit">下一步</button>
+      </div>
+    </div>
+  </form>
+</div>
+<script type="text/javascript">
+  jQuery(function ($) {
+    $.validator.addMethod('mdy', function (value, element) {
+      if(!this.optional(element)) {
+        var mdy = value.split('/');
+        if(mdy[0] > 12 || mdy[0] <= 0)
+          return false;
+        return mdy[1] > 0 && mdy[1] <= 31;
+      }
+      return true;
+    }, "please provide a valid date");
+    $('#documents-info-query-form').validate({
+      focusInvalid: false,
+      ignore: "",
+      highlight: function (e) {
+        $(e).addClass('warning');
+      },
+      unhighlight: function (e) {
+        $(e).removeClass('warning');
+      },
+      rules: {
+        status: 'required',
+        statusExpireDate: 'required'
+      },
+      messages: {
+        status: "",
+        statusExpireDate: ""
+      },
+      submitHandler: function(form){
+        $(form).parent().css('display', 'none').next().css('display', 'block');
+      },
+      invalidHandler: function(form){
+        $('.tip-info.warning').removeClass('hidden');
+      }
+    });
+    $('#status-expire-date').datepicker();
+  })
+</script>

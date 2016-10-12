@@ -300,7 +300,38 @@
 </footer>
 <!-- login modal -->
 {include file="index/login_modal" /}
-
+<div class="modal fade" id="quote-modal"
+     data-backdrop="static" data-keyboard="false"
+     tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <!-- question checklist is inserted here-->
+        <div style="width: 718px; display: none;" id="responseModal">
+          <div class="modal-header">
+            <div class="caption">
+              <img src="images/check%20mark.png">
+              提交成功
+            </div>
+          </div>
+          <div class="modal-body">
+            <p>温馨提示:系统已将您的订单请求发送给律师,律师会在48小时内给您答复。请耐心等待。</p>
+            <div class="order-info-block">
+              <p>订单号: PK007921742YJ</p>
+              <p>服务提供商:NYIS Law Firm</p>
+              <p>定价: $1,500</p>
+            </div>
+            <p>如需要帮助,请联系客服人员: <span style="color: #fc7777">(800) 685-6947</span></p>
+            <a class="btn btn-lg btn-primary" href="/case-history.html">查看历史订单</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 <script type="text/javascript" src="/static/javascripts/autocomplete.js"></script>
 <script type="text/javascript" src="/static/javascripts/login-signup-toggle.js"></script>
 </body>

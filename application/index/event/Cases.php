@@ -29,7 +29,7 @@ class Cases
 		return $char.$encrypt;
 	}
 
-	public function addService($data)
+	public function addCases($data)
 	{
 		return Db::name('cases')->insertGetId($data);
 	}
@@ -60,9 +60,9 @@ class Cases
         	return date($p,$value);
     	}
 
-	public function updateCases($data,$uid,$casesId)
+	public function updateCases($data,$uid,$caseid)
 	{
-		$update = Db::name('cases')->where('sellerId',$sid)->where('_id', $serviceId)->update($data);
+		$update = Db::name('cases')->where('uid',$uid)->where('_id', $caseid)->update($data);
 		if ($update==0)
 			return false;
 		else

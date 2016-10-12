@@ -255,6 +255,71 @@ class Index extends Controller
 				}
 				return json($data,200);
 				break;
+			case ('addcase'):
+				$data = array();
+				if (input('serviceid'))
+					$data['serviceid'] = input('serviceid');
+				if (empty($data))
+				{
+					$data['addcase'] = 'Fail';
+					$data['reasons'] = 'Empty Data!!';
+				} else {
+	 				$services = controller('Service','event');
+					$result = $services->findById($data['serviceid']);
+					if ($result)
+					{
+						$data['sellerName'] = $result['sellerName'];
+						$data['sellerid'] = $result['sellerid'];
+						$data['submitPrice'] = $result['price'];
+						$data['finalPrice'] = 0;
+						$data['isComment'] = false;
+						$data['uid'] = $uid;
+						$data['status'] = 0;	//0=待审核; 1=成交;2=退回;3=拒绝
+						$data['checklist']['include'] = $result['checklist'];
+	 					$cases = controller('Cases','event');
+						$case = $cases->addCases($data);
+						if ($case)
+						{
+							$data = $case;
+							$data['addcase'] = 'success';
+						} else {
+							$data['addcase'] = 'Fail';
+							$data['reasons'] = 'Data Save Error!!';
+
+						}
+					} else
+					{
+						$data['addcase'] = 'Fail';
+						$data['reasons'] = 'Serviceid not found!!';
+
+					}						
+				}
+				return json($data,200);
+			case ('addInfo'):
+				$data = array();
+				if (input('caseid'))
+					$caseid = input('caseid');
+				if (!empty($_POST['checklist']))
+					$data['checklist'] = $_POST['checklist'];
+				if (empty($data))
+				{
+					$data['update'] = 'Fail';
+					$data['reasons'] = 'Empty Data!!';
+				} else {
+	 				$cases = controller('Cases','event');
+					$result = $cases->updateCases($data,$uid,$caseid);
+					if ($result)
+						$data['update'] = 'Success';
+					else
+					{
+						$data['update'] = 'Fail';
+						$data['reasons'] = 'Data Save Error!!';
+
+					}						
+				}
+				return json($data,200);
+				break;
+
 			default:	
 				$data['update'] = 'Fail';
 				$data['reasons'] = 'Oper Not Found';
