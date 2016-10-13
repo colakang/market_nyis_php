@@ -76,7 +76,8 @@ class Index extends Controller
 					Session::set('isLogin',true);
 					Session::set('uid',$isUserId);
 					Session::set('nickname',$isUserName);
-					return $this->success('登陆成功', '/');
+					$this->redirect('/');
+					//return $this->success('登陆成功', '/');
 		    		}
 	   	}	 
 	}
@@ -280,7 +281,7 @@ class Index extends Controller
 						$case = $cases->addCases($data);
 						if ($case)
 						{
-							$data = $case;
+							$data['caseid'] = $case;
 							$data['addcase'] = 'success';
 						} else {
 							$data['addcase'] = 'Fail';

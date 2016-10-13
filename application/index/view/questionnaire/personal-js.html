@@ -1,0 +1,122 @@
+<script type="text/javascript">
+  jQuery(function ($) {
+    $.validator.addMethod("phone", function (value, element) {
+      return this.optional(element) || /^\(\d{3}\)\d{3}-\d{4}$/.test(value);
+    }, "please provide a valid phone number");
+    $.validator.addMethod("ssn", function (value, element) {
+      return this.optional(element) || /^\d{3}-\d{2}-\d{4}$/.test(value);
+    }, "please provide a valid social security number");
+    $.validator.addMethod('mdy', function (value, element) {
+      if(!this.optional(element)) {
+        var mdy = value.split('/');
+        if(mdy[0] > 12 || mdy[0] <= 0)
+          return false;
+        return mdy[1] > 0 && mdy[1] <= 31;
+      }
+      return true;
+    }, "please provide a valid date");
+    $('#personal-info-query-form').validate({
+      focusInvalid: false,
+      ignore: "",
+      highlight: function (e) {
+        $(e).addClass('warning');
+      },
+      unhighlight: function (e) {
+        $(e).removeClass('warning');
+      },
+      rules: {
+        firstName: {
+          required: true
+        },
+        gender: {
+          required: true
+        },
+        lastName: 'required',
+        personalEmail: {
+          required: true,
+          email: true
+        },
+        personalCellphone: {
+          required: true,
+          phone: 'required'
+        },
+        ssn: {
+          required: true,
+          ssn: 'required'
+        },
+        dob: {
+          required: true,
+          mdy: 'required'
+        },
+        birthCity: 'required',
+        bornState: 'required',
+        bornCountry: 'required',
+        nationality: 'required',
+        alienNumber: 'required',
+        maritalStatus: 'required',
+        major: 'required',
+        degree: 'required',
+        passportIssueCountry: 'required',
+        passportIssueDate: {
+          required: true,
+          mdy: 'required'
+        },
+        passportExpireDate: {
+          required: true,
+          mdy: 'required'
+        }
+      },
+      messages: {
+        firstName: "",
+        gender: "",
+        lastName: "",
+        personalEmail: "",
+        personalCellphone: "",
+        ssn: "",
+        dob: "",
+        birthCity: "",
+        bornState: "",
+        bornCountry: "",
+        nationality: "",
+        alienNumber: "",
+        maritalStatus: "",
+        major: "",
+        degree: "",
+        passportIssueCountry: "",
+        passportIssueDate: "",
+        passportExpireDate: ""
+      },
+      submitHandler: function(form){
+        var inputFields = $(form).find('[name]');
+        var data = {};
+        inputFields.each(function () {
+          console.log($(this));
+          data[$(this).attr('name')] = $(this).val();
+        });
+        console.log(data);
+        var checklist = {
+          0: [{
+            personal: data
+          }]
+        };
+        var ajaxData = {
+          oper: 'addInfo',
+          caseid: caseId,
+          checklist: checklist
+        };
+        console.log(ajaxData);
+        $.ajax({
+          url: '/update',
+          method: 'POST',
+          data: ajaxData
+        }).done(function (data) {
+          $(form).parent().css('display', 'none').next().css('display', 'block');
+          console.log(data);
+        });
+      },
+      invalidHandler: function(form){
+        $('.tip-info.warning').removeClass('hidden');
+      }
+    });
+  })
+</script>

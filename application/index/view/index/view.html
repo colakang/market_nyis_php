@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Service Specification</title>
-	{include file="index/header" /}
+	{include file="index/header_service" /}
   <link rel="stylesheet" href="/static/stylesheets/sass/service-stylesheet.css">
   <script src="/static/javascripts/signup-form-validation.module.js"></script>
 </head>
@@ -119,6 +119,7 @@
         </li>
       </ul>
     </div>
+<!--		不显示翻页，只显示静态评论
     <div class="pagination text-center">
       <ul>
         <li><a href="/1" class="active">1</a></li>
@@ -127,12 +128,13 @@
         <li><a href="/4" class="next"><i class="fa fa-angle-right"></i> </a></li>
       </ul>
     </div>
+--!>
   </div>
   <div class="price-tag-container">
     <div class="price-tag primary-price-tag">
       <h4>{$result.name ?? ''}</h4>
       <h3>${$result.price.start ?? ''}</h3>
-      <a class="btn btn-lg" href="/order-query.html">申请办理</a>
+      <a class="btn btn-lg service-application">申请办理</a>
     </div>
   </div>
 </div>
@@ -300,20 +302,23 @@
 </footer>
 <!-- login modal -->
 {include file="index/login_modal" /}
-<div class="modal fade" id="quote-modal"
-     data-backdrop="static" data-keyboard="false"
-     tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<div class="modal fade" id="quote-modal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-body">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
-        <!-- question checklist is inserted here-->
+        {include file="questionnaire/personal" /}
+        {include file="questionnaire/address" /}
+        {include file="questionnaire/documents" /}
+        {include file="questionnaire/relatives" /}
+        {include file="questionnaire/employment" /}
+        {include file="questionnaire/education" /}
         <div style="width: 718px; display: none;" id="responseModal">
           <div class="modal-header">
             <div class="caption">
-              <img src="images/check%20mark.png">
+              <img src="/static/images/check%20mark.png">
               提交成功
             </div>
           </div>
@@ -334,5 +339,115 @@
 </div>
 <script type="text/javascript" src="/static/javascripts/autocomplete.js"></script>
 <script type="text/javascript" src="/static/javascripts/login-signup-toggle.js"></script>
+<script>
+  var caseId = "";
+  jQuery(function ($) {
+    $('.input-mask-phone').mask('(999)999-9999');
+    $('.input-mask-ssn').mask('999-99-9999');
+    $('.input-mask-date').mask('99/99/9999');
+    $('.service-application').click(function (e) {
+      console.log('申请服务事件');
+      var tokenizedUrl = window.location.href.split('/');
+      var serviceId = tokenizedUrl[tokenizedUrl.length - 1];
+      console.log(serviceId);
+      if($('#login-navbar').length > 0) {
+        if (!caseId) {
+          $.ajax({
+            url: "/update",
+            method: "POST",
+            data: {
+              oper: 'addcase',
+              serviceid: serviceId
+            }
+          }).done(function (data) {
+            caseId = data.caseid;
+            $('.query-block').eq(0).css('display', 'block');
+            $('#quote-modal').modal('toggle');
+          });
+        }
+        else{
+          $('#quote-modal').modal('toggle');
+        }
+      }else{
+        $('.login-warning').css('display', 'block');
+        $('#loginModal').modal('toggle');
+      }
+    });
+    function ajaxIndicatorStart(text)
+    {
+      if($('body').find('#resultLoading').attr('id') != 'resultLoading')
+      {
+        $('body').append(
+            '<div id="resultLoading" style="display:none">' +
+            '<div><img src="/static/images/ajax-loader.gif">' +
+            '<div>'+text+'</div>' +
+            '</div>' +
+            '<div class="bg"></div></div>');
+      }
+
+      $('#resultLoading').css({
+        'width':'100%',
+        'height':'100%',
+        'position':'fixed',
+        'z-index':'10000000',
+        'top':'0',
+        'left':'0',
+        'right':'0',
+        'bottom':'0',
+        'margin':'auto'
+      });
+
+      $('#resultLoading .bg').css({
+        'background':'#000000',
+        'opacity':'0.7',
+        'width':'100%',
+        'height':'100%',
+        'position':'absolute',
+        'top':'0'
+      });
+
+      $('#resultLoading>div:first').css({
+        'width': '250px',
+        'height':'75px',
+        'text-align': 'center',
+        'position': 'fixed',
+        'top':'0',
+        'left':'0',
+        'right':'0',
+        'bottom':'0',
+        'margin':'auto',
+        'font-size':'16px',
+        'z-index':'10',
+        'color':'#ffffff'
+
+      });
+
+      $('#resultLoading .bg').height('100%');
+      $('#resultLoading').fadeIn(300);
+      $('body').css('cursor', 'wait');
+    }
+
+    function ajaxIndicatorStop()
+    {
+      $('#resultLoading .bg').height('100%');
+      $('#resultLoading').fadeOut(300);
+      $('body').css('cursor', 'default');
+    }
+
+    $(document).ajaxStart(function () {
+      //show ajax indicator
+      ajaxIndicatorStart('loading data.. please wait..');
+    }).ajaxStop(function () {
+      //hide ajax indicator
+      ajaxIndicatorStop();
+    });
+  });
+</script>
+{include file="questionnaire/personal-js" /}
+{include file="questionnaire/address-js" /}
+{include file="questionnaire/documents-js" /}
+{include file="questionnaire/relatives-js" /}
+{include file="questionnaire/employment-js" /}
+{include file="questionnaire/education-js" /}
 </body>
 </html>

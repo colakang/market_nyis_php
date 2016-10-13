@@ -1,0 +1,37 @@
+<script type="text/javascript">
+  jQuery(function ($) {
+    $.validator.addMethod('mdy', function (value, element) {
+      if(!this.optional(element)) {
+        var mdy = value.split('/');
+        if(mdy[0] > 12 || mdy[0] <= 0)
+          return false;
+        return mdy[1] > 0 && mdy[1] <= 31;
+      }
+      return true;
+    }, "please provide a valid date");
+    $('#documents-info-query-form').validate({
+      focusInvalid: false,
+      ignore: "",
+      highlight: function (e) {
+        $(e).addClass('warning');
+      },
+      unhighlight: function (e) {
+        $(e).removeClass('warning');
+      },
+      rules: {
+        status: 'required',
+        statusExpireDate: 'required'
+      },
+      messages: {
+        status: "",
+        statusExpireDate: ""
+      },
+      submitHandler: function(form){
+        $(form).parent().css('display', 'none').next().css('display', 'block');
+      },
+      invalidHandler: function(form){
+        $('.tip-info.warning').removeClass('hidden');
+      }
+    });
+  })
+</script>

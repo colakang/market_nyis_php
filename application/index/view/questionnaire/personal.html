@@ -1,7 +1,7 @@
-<div style="width: 700px;display:inline-block;">
+<div style="width: 700px;display:none;" class="query-block">
   <form action="/aa" id="personal-info-query-form">
     <div class="quote-form primary-theme">
-      <div class="quote-form-title">申请人1-个人信息</div>
+      <div class="quote-form-title">申请人-个人信息</div>
       <div class="row">
         <div class="col-md-6">
           <div class="row">
@@ -58,7 +58,7 @@
             </div>
             <div class="col-sm-6">
               <label for="personal-cellphone"></label>
-              <input type="text" id='personal-cellphone' name="personalCellphone" placeholder="手机号码" autocomplete="off">
+              <input type="text" id='personal-cellphone' class="input-mask-phone" name="personalCellphone" placeholder="手机号码" autocomplete="off">
             </div>
           </div>
         </div>
@@ -69,127 +69,25 @@
             </div>
             <div class="col-sm-6">
               <label for="passport-issue-country"></label>
-              <input type="text" id='passport-issue-country' name="passportIssueCountry" placeholder="护照签发国" autocomplete="off">
+              <input type="text" id='passport-issue-country' name="passportIssueCountry" placeholder="护照签发国家" autocomplete="off">
             </div>
           </div>
           <div class="row">
             <div class="col-sm-6">
               <label for="passport-issue-date"></label>
-              <input type="text" id='passport-issue-date' name="passportIssueDate" placeholder="护照签发日期" autocomplete="off">
+              <input type="text" id='passport-issue-date' class="input-mask-date" name="passportIssueDate" placeholder="护照签发日期" autocomplete="off">
             </div>
             <div class="col-sm-6">
               <label for="passport-expire-date"></label>
-              <input type="text" id='passport-expire-date' name="passportExpireDate" placeholder="护照过期日期" autocomplete="off">
+              <input type="text" id='passport-expire-date' class="input-mask-date" name="passportExpireDate" placeholder="护照过期日期" autocomplete="off">
             </div>
           </div>
         </div>
       </div>
       <br>
       <div class="row text-center">
-        <button class="btn btn-lg btn-primary" id="next-step" type="submit">下一步</button>
+        <button class="btn btn-lg btn-primary next-step" type="submit">下一步</button>
       </div>
     </div>
   </form>
 </div>
-<script type="text/javascript">
-  jQuery(function ($) {
-    $('.input-mask-phone').mask('(999)999-9999');
-    $('.input-mask-ssn').mask('999-99-9999');
-    $('.input-mask-date-mdy').mask('99/99/9999');
-    $.validator.addMethod("phone", function (value, element) {
-      return this.optional(element) || /^\(\d{3}\)\d{3}-\d{4}$/.test(value);
-    }, "please provide a valid phone number");
-    $.validator.addMethod("ssn", function (value, element) {
-      return this.optional(element) || /^\d{3}-\d{2}-\d{4}$/.test(value);
-    }, "please provide a valid social security number");
-    $.validator.addMethod('mdy', function (value, element) {
-      if(!this.optional(element)) {
-        var mdy = value.split('/');
-        if(mdy[0] > 12 || mdy[0] <= 0)
-          return false;
-        return mdy[1] > 0 && mdy[1] <= 31;
-      }
-      return true;
-    }, "please provide a valid date");
-    $('#personal-info-query-form').validate({
-      focusInvalid: false,
-      ignore: "",
-      highlight: function (e) {
-        $(e).addClass('warning');
-      },
-      unhighlight: function (e) {
-        $(e).removeClass('warning');
-      },
-      rules: {
-        firstName: {
-          required: true
-        },
-        gender: {
-          required: true
-        },
-        lastName: 'required',
-        personalEmail: {
-          required: true,
-          email: true
-        },
-        personalCellphone: {
-          required: true,
-          phone: 'required'
-        },
-        ssn: {
-          required: true,
-          ssn: 'required'
-        },
-        dob: {
-          required: true,
-          mdy: 'required'
-        },
-        birthCity: 'required',
-        bornState: 'required',
-        bornCountry: 'required',
-        nationality: 'required',
-        alienNumber: 'required',
-        maritalStatus: 'required',
-        major: 'required',
-        degree: 'required',
-        passportIssueCountry: 'required',
-        passportIssueDate: {
-          required: true,
-          mdy: 'required'
-        },
-        passportExpireDate: {
-          required: true,
-          mdy: 'required'
-        }
-      },
-      messages: {
-        firstName: "",
-        gender: "",
-        lastName: "",
-        personalEmail: "",
-        personalCellphone: "",
-        ssn: "",
-        dob: "",
-        birthCity: "",
-        bornState: "",
-        bornCountry: "",
-        nationality: "",
-        alienNumber: "",
-        maritalStatus: "",
-        major: "",
-        degree: "",
-        passportIssueCountry: "",
-        passportIssueDate: "",
-        passportExpireDate: ""
-      },
-      submitHandler: function(form){
-        $(form).parent().css('display', 'none').next().css('display', 'block');
-      },
-      invalidHandler: function(form){
-        $('.tip-info.warning').removeClass('hidden');
-      }
-    });
-    $('#passport-issue-date').datepicker();
-    $('#passport-expire-date').datepicker();
-  })
-</script>
