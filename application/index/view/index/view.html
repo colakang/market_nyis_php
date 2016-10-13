@@ -341,6 +341,37 @@
 <script type="text/javascript" src="/static/javascripts/login-signup-toggle.js"></script>
 <script>
   var caseId = "";
+  var addInfoData = {
+    oper: "addInfo"
+  };
+  function checklistFormSubmit(form, tabName, personNum) {
+    var inputFields = $(form).find('[name]');
+    var data = {};
+    inputFields.each(function () {
+      console.log($(this));
+      data[$(this).attr('name')] = $(this).val();
+    });
+    var exist = false;
+    for(var i = 0; i < addInfoData['checklist'][personNum].length; i++) {
+      if(addInfoData['checklist'][personNum][i].hasOwnProperty(tabName)) {
+        exist = true;
+        addInfoData['checklist'][personNum][i][tabName] = data;
+      }
+    }
+    if(!exist) {
+      var temp = {}; temp[tabName] = data;
+      addInfoData['checklist'][personNum].push(temp);
+    }
+    console.log(addInfoData);
+    $.ajax({
+      url: '/update',
+      method: 'POST',
+      data: addInfoData
+    }).done(function (data) {
+      $(form).parent().css('display', 'none').next().css('display', 'block');
+      console.log(data);
+    });
+  }
   jQuery(function ($) {
     $('.input-mask-phone').mask('(999)999-9999');
     $('.input-mask-ssn').mask('999-99-9999');
@@ -360,7 +391,9 @@
               serviceid: serviceId
             }
           }).done(function (data) {
-            caseId = data.caseid;
+            addInfoData.caseid = data.caseid;
+            addInfoData['checklist'] = data['checklist'];
+            addInfoData['checklist'][0] = [];
             $('.query-block').eq(0).css('display', 'block');
             $('#quote-modal').modal('toggle');
           });

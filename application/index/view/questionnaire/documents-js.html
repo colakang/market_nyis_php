@@ -27,7 +27,7 @@
         statusExpireDate: ""
       },
       submitHandler: function(form){
-        $(form).parent().css('display', 'none').next().css('display', 'block');
+        checklistFormSubmit(form, 'documents', 0);
       },
       invalidHandler: function(form){
         $('.tip-info.warning').removeClass('hidden');

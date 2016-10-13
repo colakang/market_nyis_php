@@ -15,7 +15,9 @@
       }
       return true;
     }, "please provide a valid date");
-    $('#personal-info-query-form').validate({
+    $('#personal-info-query-form').submit(function (e) {
+      e.preventDefault();
+    }).validate({
       focusInvalid: false,
       ignore: "",
       highlight: function (e) {
@@ -87,32 +89,7 @@
         passportExpireDate: ""
       },
       submitHandler: function(form){
-        var inputFields = $(form).find('[name]');
-        var data = {};
-        inputFields.each(function () {
-          console.log($(this));
-          data[$(this).attr('name')] = $(this).val();
-        });
-        console.log(data);
-        var checklist = {
-          0: [{
-            personal: data
-          }]
-        };
-        var ajaxData = {
-          oper: 'addInfo',
-          caseid: caseId,
-          checklist: checklist
-        };
-        console.log(ajaxData);
-        $.ajax({
-          url: '/update',
-          method: 'POST',
-          data: ajaxData
-        }).done(function (data) {
-          $(form).parent().css('display', 'none').next().css('display', 'block');
-          console.log(data);
-        });
+        checklistFormSubmit(form, 'personal', 0);
       },
       invalidHandler: function(form){
         $('.tip-info.warning').removeClass('hidden');

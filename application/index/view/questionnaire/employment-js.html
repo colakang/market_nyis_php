@@ -10,7 +10,7 @@
         $(e).removeClass('warning');
       },
       submitHandler: function(form){
-        $(form).parent().css('display', 'none').next().css('display', 'block');
+        checklistFormSubmit(form, 'employment', 0);
       },
       invalidHandler: function(form){
         $('.tip-info.warning').removeClass('hidden');
@@ -62,6 +62,7 @@
           "</div>" : "") +
           "<br></div>";
       employmentList.append(node);
+      $('.input-mask-date').mask('99/99/9999');
       $('a.delete-link-js').click(function (e) {
         $('#employment-entry' + index).remove();
         e.preventDefault();

@@ -34,9 +34,9 @@ class Cases
 		return Db::name('cases')->insertGetId($data);
 	}
 
-	public function findAllById($sid)
+	public function findAllById($uid)
 	{
-		$services = Db::name('cases')->where('sellerid',"=",$sid)->select();
+		$services = Db::name('cases')->where('uid',"=",$uid)->select();
 		foreach ($services as $key=>$service)
 		{
 			$services[$key]['status'] = $this->getStatusAttr($service['status']);

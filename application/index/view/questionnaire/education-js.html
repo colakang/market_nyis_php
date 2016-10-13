@@ -25,7 +25,7 @@
         $(e).removeClass('warning');
       },
       submitHandler: function(form){
-        $(form).parent().css('display', 'none').next().css('display', 'block');
+        checklistFormSubmit(form, 'education', 0);
       },
       invalidHandler: function(form){
         $('.tip-info.warning').removeClass('hidden');
@@ -88,6 +88,7 @@
           "</div>" : "") +
           "<br></div>";
       educationList.append(node);
+      $('.input-mask-date').mask('99/99/9999');
       $('a.delete-link-js').click(function (e) {
         $('#education-entry' + index).remove();
         e.preventDefault();
