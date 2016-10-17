@@ -171,23 +171,23 @@
                 <div class="control-group">
                   <div class="checkbox">
                     <label>
-                      <input name="checklist" type="checkbox" class="ace" value="baseInfo"
-                             <?php echo in_array("baseInfo", $service["checklist"]) ? "checked" : ""?>>
-                      <span class="lbl"> {$Think.lang.view_baseInfo}</span>
+                      <input name="checklist" type="checkbox" class="ace" value="personal"
+                             <?php echo in_array("personal", $service["checklist"]) ? "checked" : ""?>>
+                      <span class="lbl"> {$Think.lang.view_personalInfo}</span>
                     </label>
                   </div>
                   <div class="checkbox">
                     <label>
-                      <input value="employerInfo" name="checklist" type="checkbox" class="ace"
-                      <?php echo in_array("employerInfo", $service["checklist"]) ? "checked" : ""?>>
-                      <span class="lbl"> {$Think.lang.view_employerInfo}</span>
+                      <input value="address" name="checklist" type="checkbox" class="ace"
+                      <?php echo in_array("address", $service["checklist"]) ? "checked" : ""?>>
+                      <span class="lbl"> {$Think.lang.view_addressInfo}</span>
                     </label>
                   </div>
                   <div class="checkbox">
                     <label>
-                      <input value="visaInfo" name="checklist" class="ace" type="checkbox"
-                      <?php echo in_array("visaInfo", $service["checklist"]) ? "checked" : ""?>>
-                      <span class="lbl"> {$Think.lang.view_visaInfo}</span>
+                      <input value="documents" name="checklist" class="ace" type="checkbox"
+                      <?php echo in_array("documents", $service["checklist"]) ? "checked" : ""?>>
+                      <span class="lbl"> {$Think.lang.view_documentsInfo}</span>
                     </label>
                   </div>
                 </div>
@@ -196,9 +196,23 @@
                 <div class="control-group">
                   <div class="checkbox">
                     <label>
-                      <input name="checklist" value="driverLicense" type="checkbox" class="ace"
-                      <?php echo in_array("driverLicense", $service["checklist"]) ? "checked" : ""?>>
-                      <span class="lbl"> {$Think.lang.view_driverLicense}</span>
+                      <input name="checklist" value="relatives" type="checkbox" class="ace"
+                      <?php echo in_array("relatives", $service["checklist"]) ? "checked" : ""?>>
+                      <span class="lbl"> {$Think.lang.view_relativesInfo}</span>
+                    </label>
+                  </div>
+                  <div class="checkbox">
+                    <label>
+                      <input name="checklist" value="employment" type="checkbox" class="ace"
+                      <?php echo in_array("employment", $service["checklist"]) ? "checked" : ""?>>
+                      <span class="lbl"> {$Think.lang.view_employmentInfo}</span>
+                    </label>
+                  </div>
+                  <div class="checkbox">
+                    <label>
+                      <input name="checklist" value="education" type="checkbox" class="ace"
+                      <?php echo in_array("education", $service["checklist"]) ? "checked" : ""?>>
+                      <span class="lbl"> {$Think.lang.view_educationInfo}</span>
                     </label>
                   </div>
                 </div>
