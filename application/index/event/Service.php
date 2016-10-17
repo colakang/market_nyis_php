@@ -8,9 +8,14 @@ class Service
 {
 
 
+	public function findByNew($action=false)
+	{
+		return Db::name('services')->limit(15)->order('createTime','desc')->select();
+	}
+
 	public function findByName($name,$area)
 	{
-		return Db::name('services')->where('name','like',$name)->where('area','like',$area)->paginate(30,true);
+		return Db::name('services')->where('name','like',$name)->where('area','like',$area)->order('createTime','desc')->paginate(30,true);
 	}
 
 	public function findById($id)

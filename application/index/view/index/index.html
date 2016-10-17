@@ -79,7 +79,37 @@
     </div>
   </div>
 
-	{include file="index/browser_history" /}
+<div class="service-rc-block">
+  <div class="container">
+    <h4 class="bottom-space-2"><b>服务推广</b></h4>
+	{volist name="promotion" id="vo" length='4'}
+    <div class="col-md-3 service-card">
+      <div class="service-card-bg-sm" style="background-image: url('/static/images/1-7.jpg')">
+        <div class="mask-caption v1-dark-mask">
+          <h3 class="left-top">NYIS</h3>
+          <div class="mask-content">
+            <a class="btn btn-link btn-link-hdr" href="/view/{$vo._id ?? ''}">{$vo.name ?? ''}</a>
+            <br>
+            <div>
+              <i class="fa fa-star golden-star" aria-hidden="true"></i>
+              <i class="fa fa-star golden-star" aria-hidden="true"></i>
+              <i class="fa fa-star golden-star" aria-hidden="true"></i>
+              <i class="fa fa-star golden-star" aria-hidden="true"></i>
+              <i class="fa fa-star golden-star" aria-hidden="true"></i>
+              <span>{php}echo rand(70,99);{/php}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="service-card-bottom-padding">
+        <h6>${$vo.price.start ?? ''}</h6>
+        <p>由<a>{$vo.sellerName ?? ''}</a>提供</p>
+      </div>
+    </div>
+	{/volist}	
+  </div>
+</div>
+
 	{include file="index/top_lawyer" /}
   <div style="width: 1080px; margin: 0 auto;">
     <div class="clearfix row-top-bottom-padding text-center">

@@ -25,8 +25,11 @@ class Index extends Controller
 		{
 			$nickname = Session::get('nickname');
 		}
+		$services = controller('Service','event');
+		$promotion = $services->findByNew('promotion');
 	 	$view = new View();
 		$view->nickname = $nickname;
+		$view->assign('promotion',$promotion);
 	 	return $view->fetch();
      	}
 
@@ -137,6 +140,8 @@ class Index extends Controller
 				break;
 	   	} 
 		$nickname = false;
+		$promotion = $services->findByNew('promotion');
+		$history = $promotion;
 		if (Session::has('isLogin'))
 		{
 			$nickname = Session::get('nickname');
@@ -145,6 +150,8 @@ class Index extends Controller
 		$view->nickname = $nickname;
 		$view->keyword = $keyword;
 		$view->assign('result',$result);
+		$view->assign('promotion',$promotion);
+		$view->assign('history',$history);
 		return $view->fetch();
 
 	}
@@ -156,6 +163,8 @@ class Index extends Controller
 		$id = input('id');
 		$result = $services->findById($id);
 		$seller = $sellers->findUserById($result['sellerid']);
+		$promotion = $services->findByNew('promotion');
+		$history = $promotion;
 		$nickname = false;
 		if (Session::has('isLogin'))
 		{
@@ -165,6 +174,8 @@ class Index extends Controller
 		$view->nickname = $nickname;
 		$view->assign('result',$result);
 		$view->assign('seller',$seller);
+		$view->assign('promotion',$promotion);
+		$view->assign('history',$history);
 		return $view->fetch();
 
 	}
