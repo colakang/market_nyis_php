@@ -10,12 +10,12 @@ class Service
 
 	public function findByNew($action=false)
 	{
-		return Db::name('services')->limit(15)->order('createTime','desc')->select();
+		return Db::name('services')->limit(15)->order('createTime','desc')->where('status',1)->select();
 	}
 
 	public function findByName($name,$area)
 	{
-		return Db::name('services')->where('name','like',$name)->where('area','like',$area)->order('createTime','desc')->paginate(30,true);
+		return Db::name('services')->where('name','like',$name)->where('area','like',$area)->where('status',1)->order('createTime','desc')->paginate(30,true);		//未支持all选项;只显示已审核的service
 	}
 
 	public function findById($id)
@@ -71,6 +71,23 @@ class Service
 		return $services;
 	}
 
+	public function findAllByStatus($status=0)
+	{
+		//$services = Db::name('services')->where('status',"=",$status)->order('createTime','desc')->paginate(10,true);
+		$services = Db::name('services')->where('status',"=",$status)->order('createTime','desc')->limit(20)->select();
+///*
+		foreach ($services as $key=>$service)
+		{
+			$services[$key]['status'] = $this->getStatusAttr($service['status']);
+			if (!empty($service['createTime']))
+			{
+				$services[$key]['cMM'] = $this->getDateAttr($service['createTime'],'F');
+				$services[$key]['cDD'] = $this->getDateAttr($service['createTime'],'d');
+			}
+		}
+//*/
+		return $services;
+	}
     	public function getStatusAttr($value)
     	{
         	$status = [9=>'删除',0=>'待审核',1=>'正常',2=>'审核中'];
@@ -85,6 +102,15 @@ class Service
 	public function updateService($data,$sid,$serviceId)
 	{
 		$update = Db::name('services')->where('sellerid',$sid)->where('_id', $serviceId)->update($data);
+		if ($update==0)
+			return false;
+		else
+			return true;
+	}
+
+	public function approveService($data,$serviceId)
+	{
+		$update = Db::name('services')->where('_id', $serviceId)->update($data);
 		if ($update==0)
 			return false;
 		else

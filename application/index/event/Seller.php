@@ -9,7 +9,7 @@ class Seller
 	public function checkPassword($email,$pw)
 	{
 		$pw = $this->encryptPw($pw);
-		return Db::name('sellers')->field('name')->where('email','=',$email)->where('password','=',md5($pw))->find();
+		return Db::name('sellers')->field('name,status')->where('email','=',$email)->where('password','=',md5($pw))->find();
 	}
 
 	public function changeName($uid,$email,$name)
@@ -67,7 +67,7 @@ class Seller
 
     	public function getStatusAttr($value)
     	{
-        	$status = [0=>'Registered',1=>'Certified',2=>'VIP'];
+        	$status = [0=>'Registered',1=>'Certified',2=>'VIP',9=>'Admin'];
         	return $status[$value];
     	}
 

@@ -6,7 +6,7 @@ use \think\View;
 use \think\Session;
 use \think\Request;
 use \think\Lang;
-
+use \think\Db;
 
 class Seller extends Controller
 {
@@ -37,6 +37,7 @@ class Seller extends Controller
 		Session::delete('isSellerLogin');
 		Session::delete('sid');
 		Session::delete('sName');
+		Session::delete('level');
 		return $this->redirect('/seller/login');	//Disable message page
 		//return $this->success(Lang::get('logout_success'), '/seller');
 	}
@@ -81,6 +82,7 @@ class Seller extends Controller
 					Session::set('isSellerLogin',true);
 					Session::set('sid',$isSellerId);
 					Session::set('sName',$isSellerName);
+					Session::set('level',$seller['status']);
 					return $this->redirect('/seller');	//Disable message page
 					//return $this->success(Lang::get('login_success'), '/seller');
 		    		}
@@ -120,6 +122,7 @@ class Seller extends Controller
 					Session::set('isSellerLogin',true);
 					Session::set('sid',$isSellerId);
 					Session::set('sName',$isSellerName);
+					Session::set('level',$data['status']);
 					return $this->redirect('/seller');	//Disable message page
 					//return $this->success(Lang::get('registered'), '/seller');
 		    		}
@@ -380,6 +383,44 @@ class Seller extends Controller
 				}
 				return json($data,200);
 				break;
+			case ('approve'):
+	 			$services = controller('Service','event');
+				$serviceId = input('id');
+				$level = Session::get('level');
+				$data = array();
+				switch(true)
+				{
+					case (empty($serviceId)):
+					{
+						$data = $_POST;
+						$data['update'] = 'Fail';
+						$data['reasons'] = 'Empty Data!!';
+						break;
+					} 
+					case ($level!=9):
+					{
+						//$data = $_POST;
+						$data['update'] = 'Fail';
+						$data['reasons'] = 'Access Denied!!';
+						break;
+					} 
+					default: 
+					{
+						$data['status'] = 1;
+						$result = $services->approveService($data,$serviceId);	//serviceId 
+						if ($result)
+							$data['update'] = 'Success';
+						else
+						{
+							$data['update'] = 'Fail';
+							$data['reasons'] = 'Data Save Error!!';
+
+						}
+						break;						
+					}
+				}
+				return json($data,200);
+				break;
 
 			default:	
 				$data['update'] = 'Fail';
@@ -400,8 +441,53 @@ class Seller extends Controller
 		$view->nickname = Session::get('sName');
 		return $view->fetch();
 
-               }
+    	}
+
+	public function setadmin()
+	{
+		var_dump(Session::get('sid'));
+		$data = array();
+		$sid = input('id');
+		$status = 9;
+	 	$sellers = controller('Seller','event');
+		$data['status'] = $status;
+				if (empty($sid))
+				{
+					$data['update'] = 'Fail';
+					$data['reasons'] = 'Empty Data!!';
+				} else {
+					$result = $sellers->updateUser($data,$sid);
+					if ($result)
+						$data['update'] = 'Success';
+					else
+					{
+						$data['update'] = 'Fail';
+						$data['reasons'] = 'Data Save Error!!';
+
+					}						
+				}
+				return json($data,200);
+				break;
 
 
+	}
+
+        public function approve()
+        {
+		$sid = Session::get('sid');
+	 	$services = controller('Service','event');
+		$level = Session::get('level');
+		if ($level!=9)
+		{
+			$data['reasons'] = "Access Denied!!";
+			return json($data,200);
+		}
+		$service = $services->findAllByStatus();
+		$view = new View();
+		$view->assign('service',$service);
+		$view->nickname = Session::get('sName');
+		return $view->fetch();
+
+    	}
 
 }

@@ -56,17 +56,6 @@
         <h6>{$Think.lang.view_add_service}</h6>
       </div>
     </a>
-	{eq name='Think.session.level' value='9'}
-    <a href="/seller/approve">
-      <div class="pull-right icon-container">
-        <div class="icon-lg">
-          <i class="icon-case-folder"></i>
-        </div>
-        <h6>{$Think.lang.view_approve_service}</h6>
-      </div>
-    </a>
-	{/eq}
-
   </div>
 </div>
 
@@ -129,14 +118,8 @@
 									<td>
 										<div class="hidden-sm hidden-xs btn-group">
 
-											<a href="/seller/view/id/{$vo._id}">
-												<button class="btn btn-xs btn-info">
-													<i class="ace-icon fa fa-pencil bigger-120"></i>
-												</button>
-											</a>
-
 											<button class="btn btn-xs btn-danger">
-												<i class="ace-icon fa fa-trash-o bigger-120"></i>
+												<i class="ace-icon fa fa-check-square bigger-120"></i>
 											</button>
 
 										</div>
@@ -168,7 +151,7 @@
 													<li>
 														<a href="#" class="tooltip-error" data-rel="tooltip" title="" data-original-title="Delete">
 																			<span class="red">
-																				<i class="ace-icon fa fa-trash-o bigger-120"></i>
+																				<i class="ace-icon fa fa-check-square bigger-120"></i>
 																			</span>
 														</a>
 													</li>
@@ -286,13 +269,13 @@
 					$.ajax({
 						url: "/seller/update",
 						data: {
-							oper: "delete",
+							oper: "approve",
 							id: serviceId
 						},
 						dataType: "json",
 						method: "post"
 					}).done(function (data) {
-						serviceRow.find('.service-status-js').text("删除");
+						serviceRow.find('.service-status-js').text("已审核");
 					}).fail(function (data) {
 						console.log(data);
 					});
