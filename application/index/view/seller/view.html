@@ -269,9 +269,10 @@
     });
     function togglePriceInput(serviceType) {
       if(serviceType == 'fixed')
-        $('#max-price').addClass('hide');
-      else
-        $('#max-price').removeClass('hide');
+        $('#max-price').addClass('hide').val("");
+      else {
+        $('#max-price').removeClass('hide').val('undefined');
+      }
     }
     function initServiceType(serviceType) {
       togglePriceInput(serviceType);
@@ -317,7 +318,7 @@
         checklist: checklist,
         price: {
           start: $('#min-price').val(),
-          end: $('#max-price').val()
+          max: $('#max-price').val()
         },
         state: $('#state').val()
       };

@@ -112,7 +112,7 @@
 									<td>
 										<?php
 											if ($vo["type"] == "customized"){
-												echo $vo["price"]["start"] + " - " + $vo["price"]["max"];
+												echo "customized price";
 											}
 											else{
 												echo isset($vo["price"]["start"]) ? $vo["price"]["start"] : "";
@@ -167,9 +167,9 @@
 
 													<li>
 														<a href="#" class="tooltip-error" data-rel="tooltip" title="" data-original-title="Delete">
-																			<span class="red">
-																				<i class="ace-icon fa fa-trash-o bigger-120"></i>
-																			</span>
+															<span class="red">
+																<i class="ace-icon fa fa-trash-o bigger-120"></i>
+															</span>
 														</a>
 													</li>
 												</ul>
