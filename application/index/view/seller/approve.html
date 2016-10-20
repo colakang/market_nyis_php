@@ -40,7 +40,7 @@
     </a>
 
     <a href="/seller/myservice">
-      <div class="pull-right icon-container active">
+      <div class="pull-right icon-container">
         <div class="icon-lg">
           <i class="icon-case-folder"></i>
         </div>
@@ -56,6 +56,16 @@
         <h6>{$Think.lang.view_add_service}</h6>
       </div>
     </a>
+		{eq name='Think.session.level' value='9'}
+		<a href="/seller/approve">
+			<div class="pull-right icon-container active">
+				<div class="icon-lg">
+					<i class="icon-case-folder"></i>
+				</div>
+				<h6>{$Think.lang.view_approve_service}</h6>
+			</div>
+		</a>
+		{/eq}
   </div>
 </div>
 
