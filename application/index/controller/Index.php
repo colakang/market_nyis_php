@@ -160,10 +160,12 @@ class Index extends Controller
 	{
 		$services = controller('Service','event');
 		$sellers = controller('Seller','event');
+		$reviews = controller('Review','event');
 		$id = input('id');
 		$result = $services->findById($id);
 		$seller = $sellers->findUserById($result['sellerid']);
 		$promotion = $services->findByNew('promotion');
+		$review = $reviews->findAllByServiceid($id);
 		$history = $promotion;
 		$nickname = false;
 		if (Session::has('isLogin'))
@@ -176,6 +178,7 @@ class Index extends Controller
 		$view->assign('seller',$seller);
 		$view->assign('promotion',$promotion);
 		$view->assign('history',$history);
+		$view->assign('review',$review);
 		return $view->fetch();
 
 	}
@@ -200,7 +203,7 @@ class Index extends Controller
 	{
 		$uid = Session::get('uid');
 	 	$cases = controller('Cases','event');
-		$case = $cases->findAllById($uid);
+		$case = $cases->findAllByUid($uid);
 		$view = new View();
 		$view->assign('cases',$case);
 		$view->nickname = Session::get('nickname');
@@ -331,6 +334,48 @@ class Index extends Controller
 				}
 				return json($data,200);
 				break;
+			case ('addReview'):
+				$data = array();
+				if (input('caseid'))
+					$data['caseid'] = input('caseid');
+				if (input('content'))
+					$data['content'] = input('content');
+				if (input('nickname'))
+					$data['nickname'] = input('nickname');
+				if (input('rank'))
+					$data['rank'] = input('rank');
+				if (empty($data))
+				{
+					$data['addReview'] = 'Fail';
+					$data['reasons'] = 'Empty Data!!';
+				} else {
+	 				$cases = controller('Cases','event');
+					$result = $cases->findById($data['caseid'],$uid);
+					if ($result)
+					{
+						$data['sellerid'] = $result['sellerid'];
+						$data['serviceid'] = $result['serviceid'];
+						$data['uid'] = $uid;
+						$data['status'] = 1;	//0=待审核; 1=成交;2=退回;3=拒绝
+	 					$reviews = controller('Review','event');
+						$review = $reviews->addReview($data);
+						if ($review)
+						{
+							$data['reviewid'] = $review;
+							$data['addReview'] = 'success';
+						} else {
+							$data['addReview'] = 'Fail';
+							$data['reasons'] = 'Data Save Error!!';
+
+						}
+					} else
+					{
+						$data['addReview'] = 'Fail';
+						$data['reasons'] = 'Caseid not found!!';
+
+					}						
+				}
+				return json($data,200);
 
 			default:	
 				$data['update'] = 'Fail';

@@ -445,13 +445,23 @@ class Seller extends Controller
 
 	public function setadmin()
 	{
-		var_dump(Session::get('sid'));
+		//var_dump(Session::get('sid'));
 		$data = array();
-		$sid = input('id');
+		//$sid = input('id');
+		$level = Session::get('level');
 		$status = 9;
+		$email = input('email');
+		var_dump($email);
 	 	$sellers = controller('Seller','event');
+		$sid = $sellers->findUser($email);
+		$sid = ((string)$sid["_id"]);
+		var_dump($sid);
+	 	$services = controller('Service','event');
+		$result = $services->findAllById($sid);
+		var_dump($result);
+		exit();	
 		$data['status'] = $status;
-				if (empty($sid))
+				if (empty($sid) or $level!=9)
 				{
 					$data['update'] = 'Fail';
 					$data['reasons'] = 'Empty Data!!';
@@ -471,6 +481,73 @@ class Seller extends Controller
 
 
 	}
+
+	public function addreviews()
+	{
+		//var_dump(Session::get('sid'));
+		$data = array();
+		$serviceid = input('id');
+		$level = Session::get('level');
+		if ($level!=9)
+			exit();
+	 	$services = controller('Service','event');
+		$result = $services->findById($serviceid);
+		//exit();	
+		if ($result)
+		{
+			$data['serviceid'] = $serviceid;
+			$data['sellerid'] = $result['sellerid'];
+			if (input('content'))
+				$data['content'] = input('content');
+			if (input('nickname'))
+				$data['nickname'] = input('nickname');
+			if (input('rank'))
+				$data['rank'] = input('rank');
+
+			$data['status'] = 1;	//0=待审核; 1=成交;2=退回;3=拒绝
+			$date['createTime'] = time();
+			switch(true)
+			{
+				case(empty($data['serviceid'])):
+					$data['addReview'] = 'Fail';
+					$data['reasons'] = 'Serviceid Empty!!';
+					break;
+				case(empty($data['sellerid'])):
+					$data['addReview'] = 'Fail';
+					$data['reasons'] = 'Sellerid Empty!!';
+					break;
+				case(empty($data['content'])):
+					$data['addReview'] = 'Fail';
+					$data['reasons'] = 'Content Empty!!';
+					break;
+				case(empty($data['rank'])):
+					$data['addReview'] = 'Fail';
+					$data['reasons'] = 'Rank Empty!!';
+					break;
+				default:
+					$reviews = controller('Review','event');
+					$review = $reviews->addReview($data);
+					if ($review)
+					{
+						$data['reviewid'] = $review;
+						$data['addReview'] = 'success';
+					} else {
+						$data['addReview'] = 'Fail';
+						$data['reasons'] = 'Data Save Error!!';
+		
+					}
+			}
+		} else
+		{
+			$data['addReview'] = 'Fail';
+			$data['reasons'] = 'Serviceid not found!!';
+
+		}						
+		return json($data,200);
+
+
+	}
+
 
         public function approve()
         {

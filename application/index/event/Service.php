@@ -10,12 +10,14 @@ class Service
 
 	public function findByNew($action=false)
 	{
-		return Db::name('services')->limit(15)->order('createTime','desc')->where('status',1)->select();
+		return Db::name('services')->limit(15)->order('createTime','desc')->where('sellerid','57e041fc421aa9293f0e5d11')->select();
+		//return Db::name('services')->limit(15)->order('createTime','desc')->where('status',0)->where('sellerid','57e041fc421aa9293f0e5d11')->select();
 	}
 
 	public function findByName($name,$area)
 	{
-		return Db::name('services')->where('name','like',$name)->where('area','like',$area)->where('status',1)->order('createTime','desc')->paginate(30,true);		//未支持all选项;只显示已审核的service
+		return Db::name('services')->where('name','like',$name)->where('status',1)->order('createTime','desc')->paginate(50,true);		//未支持all选项;只显示已审核的service；临时去除地区
+		//return Db::name('services')->where('name','like',$name)->where('area','like',$area)->where('status',1)->order('createTime','desc')->paginate(30,true);		//未支持all选项;只显示已审核的service
 	}
 
 	public function findById($id)
@@ -42,7 +44,8 @@ class Service
 
 	public function findByCategories($categories,$like,$area)
 	{
-		return Db::name('services')->where('categories',$like,$categories)->where('area','like',$area)->paginate(30,true);
+		return Db::name('services')->where('categories',$like,$categories)->where('status',1)->paginate(50,true);	//临时去除地区
+		//return Db::name('services')->where('categories',$like,$categories)->where('area','like',$area)->paginate(50,true);
 	}
 
 	public function encryptPw($char)

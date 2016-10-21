@@ -45,7 +45,9 @@
       <p>{$seller.descript ?? 'NYISLaw Firm致力于为移民提供广泛的美国法律服务,包括各项美国公司注、绿卡申请服务(杰出人才绿卡、职业移民绿卡、投资移民绿卡、亲属移民绿卡等)
       、各项签证相关服务等多元化移民服务。另外律所也接受跨境商业诉讼案件的委托代理,在证劵法及投资诈骗案件中也为客户提供相关法律服务。'}</p>
     </div>
-    <!-- <div class="comment-list">
+
+    {notempty name="review"}
+     <div class="comment-list">
       <h4 class="caption"><b>用户评价</b>
         <ul>
           <li><i class="fa fa-star golden-star"></i></li>
@@ -57,10 +59,11 @@
         </ul>
       </h4>
        <ul>
+	{volist name="review" id="vo" }
         <li>
           <div class="user-info">
             <img src="/static/images/profile-07.png">
-            <p>Axlew231</p>
+            <p><{$vo.nickname ?? ''}/p>
           </div>
           <div class="review-info">
             <div>
@@ -70,56 +73,22 @@
               <span><i class="fa fa-star golden-star"></i></span>
               <span><i class="fa fa-star golden-star"></i></span>
             </div>
-            <p>非常好,很负责任,速度也非常快。微信联系很方便,也可以随时拨打电话找到我的律师。很靠谱,推荐这一家。</p>
+            <p>{$vo.content ?? ''}</p>
             <div class="history-info">
-              <span>2016年8月9日 14:25</span>&nbsp;&nbsp;
-              使用服务:<span>H1-B办理</span>
+              <span>{$vo.createTime ?? ''}</span>&nbsp;&nbsp;
+              使用服务:<span>{$result.name ?? ''}</span>
             </div>
           </div>
         </li>
-        <li>
-          <div class="user-info">
-            <img src="/static/images/profile-07.png">
-            <p>小明明</p>
-          </div>
-          <div class="review-info">
-            <div>
-              <span><i class="fa fa-star golden-star"></i></span>
-              <span><i class="fa fa-star golden-star"></i></span>
-              <span><i class="fa fa-star golden-star"></i></span>
-              <span><i class="fa fa-star golden-star"></i></span>
-              <span><i class="fa fa-star golden-star"></i></span>
-            </div>
-            <p>H1-B是他们给办的,老顾客了。有什么问题直接一个电话就帮忙解决了,比其他律所方便多了。不用来回跑,也不怕联系不到人。这次是拿了个超速罚单,也不算太严重,就是不想留下什么
-            记录。律师帮我把影响降到了最低,真的非常开心,太感谢了!小纽太给力了!</p>
-            <div class="history-info">
-              <span>2016年8月7日 11:56</span>&nbsp;&nbsp;
-              使用服务:<span>交通罚单</span>
-            </div>
-          </div>
-        </li>
-        <li>
-          <div class="user-info">
-            <img src="/static/images/profile-07.png">
-            <p>小明明</p>
-          </div>
-          <div class="review-info">
-            <div>
-              <span><i class="fa fa-star golden-star"></i></span>
-              <span><i class="fa fa-star golden-star"></i></span>
-              <span><i class="fa fa-star golden-star"></i></span>
-              <span><i class="fa fa-star golden-star"></i></span>
-              <span><i class="fa fa-star golden-star"></i></span>
-            </div>
-            <div class="history-info">
-              <span>2016年8月6日 22:56</span>&nbsp;&nbsp;
-              使用服务:<span>H1-B Transfer</span>
-            </div>
-          </div>
-        </li>
+	{/volist}	
       </ul>
-    </div> -->
+    </div>
+        {/notempty}
 <!--		不显示翻页，只显示静态评论
+
+	{volist name="result.checklist" id="vo" }
+		{$vo}
+	{/volist}	
     <div class="pagination text-center">
       <ul>
         <li><a href="/1" class="active">1</a></li>
