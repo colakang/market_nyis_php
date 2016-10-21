@@ -39,6 +39,7 @@ return [
      'view_addButton' => '添加',
      'view_seller_status' => '账号等级',
      'view_my_cases' => '我的案件',
+    'view_approve_service' => '批准审核'
 ];
 
 

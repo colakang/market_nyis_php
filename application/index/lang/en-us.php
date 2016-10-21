@@ -40,7 +40,7 @@ return [
      'view_addButton' => 'Add',
      'view_seller_status' => 'Status',
      'view_my_cases' => 'My Cases',
-
+    'view_approve_service' => 'Approve Service'
 ];
 
 
