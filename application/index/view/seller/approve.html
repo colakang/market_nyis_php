@@ -132,10 +132,6 @@
 												<i class="ace-icon fa fa-check-square bigger-120"></i>
 											</button>
 
-											<button class="btn btn-xs btn-primary" data-toggle="modal" data-target="#reviewModal">
-												<i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
-											</button>
-
 										</div>
 
 										<div class="hidden-md hidden-lg">
@@ -229,6 +225,9 @@
 							</table>
 						</div><!-- /.span -->
 					</div>
+					<div class="row">
+						<button class="btn btn-primary" data-toggle="modal" data-target="#reviewModal">添加评论</button>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -242,6 +241,10 @@
 				</div>
 				<div class="modal-body">
 					<form>
+						<div class="form-group">
+							<label for="service-id">服务ID</label>
+							<input class="form-control" id="service-id" type="text">
+						</div>
 						<div class="form-group">
 							<label for="review-content">评论内容</label>
 							<textarea class="form-control" id="review-content"></textarea>
@@ -305,36 +308,11 @@
 				$(this).closest('tr').next().toggleClass('open');
 			});
 
-			var reviewServiceId = "";
-
-			$('tr[service-id]').each(function () {
-				var serviceRow = $(this);
-				var serviceId = serviceRow.attr('service-id');
-				serviceRow.find('button.btn-danger').click(function () {
-					$.ajax({
-						url: "/seller/update",
-						data: {
-							oper: "approve",
-							id: serviceId
-						},
-						dataType: "json",
-						method: "post"
-					}).done(function (data) {
-						serviceRow.find('.service-status-js').text("已审核");
-					}).fail(function (data) {
-						console.log(data);
-					});
-				});
-				serviceRow.find('button.btn-primary').click(function () {
-					reviewServiceId = serviceId;
-				})
-			});
-
 			$('#submit-review').click(function () {
 				$.ajax({
 					url: "/seller/addreviews",
 					data: {
-						id: reviewServiceId,
+						id: $('#service-id').val(),
 						content: $('#review-content').val(),
 						rank: $('#review-rank').val(),
 						nickname: $('#customer-nickname').val()
