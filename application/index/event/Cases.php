@@ -16,7 +16,7 @@ class Cases
 
 	public function findAllBySellerid($sellerid,$status=0)
 	{
-		$services = Db::name('cases')->where('sellerid',$sellerid)->where('status',$status)->select();
+		$services = Db::name('cases')->where('sellerid',$sellerid)->select();
 		foreach ($services as $key=>$service)
 		{
 			$services[$key]['status'] = $this->getStatusAttr($service['status']);
@@ -39,6 +39,8 @@ class Cases
 		$services = Db::name('cases')->where('uid',"=",$uid)->select();
 		foreach ($services as $key=>$service)
 		{
+			//$name = Db::name('services')->where('_id',$service['serviceid'])->field('name')->limit(1)->find();
+			//$services[$key]['name'] = $name['name'];
 			$services[$key]['status'] = $this->getStatusAttr($service['status']);
 			if (!empty($service['createTime']))
 			{

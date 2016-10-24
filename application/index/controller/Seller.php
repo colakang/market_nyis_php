@@ -178,6 +178,19 @@ class Seller extends Controller
 	
 
 	}
+
+	public function mycases()
+	{
+		$sid = Session::get('sid');
+	 	$cases = controller('Cases','event');
+		$case = $cases->findAllBySellerid($sid);
+		$view = new View();
+		$view->assign('cases',$case);
+		$view->nickname = Session::get('sName');
+		return $view->fetch();
+	
+
+	}
 /*			
 	public function updateservice()
 	{

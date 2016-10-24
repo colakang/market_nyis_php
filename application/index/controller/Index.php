@@ -284,10 +284,13 @@ class Index extends Controller
 					if ($result)
 					{
 						$data['sellerName'] = $result['sellerName'];
+						$data['serviceName'] = $result['name'];
 						$data['sellerid'] = $result['sellerid'];
+						$data['clientname'] = Session::get('nickname');
 						$data['submitPrice'] = $result['price'];
 						$data['finalPrice'] = 0;
 						$data['isComment'] = false;
+						$data['createTime'] = time();
 						$data['uid'] = $uid;
 						$data['status'] = 0;	//0=待审核; 1=成交;2=退回;3=拒绝
 						$data['checklist']['include'] = $result['checklist'];
@@ -357,6 +360,7 @@ class Index extends Controller
 						$data['serviceid'] = $result['serviceid'];
 						$data['uid'] = $uid;
 						$data['status'] = 1;	//0=待审核; 1=成交;2=退回;3=拒绝
+						$data['createTime'] = time();
 	 					$reviews = controller('Review','event');
 						$review = $reviews->addReview($data);
 						if ($review)
