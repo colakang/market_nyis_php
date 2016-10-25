@@ -4,10 +4,10 @@
 /*定义三级分类数据*/
 //一级分类
 var province =  {
-  "00": "Immigration",
-  "01": "Visa",
   "02": "Traffic tickets",
   "03": "Personal injury",
+  "00": "Immigration",
+  "01": "Visa",
   "06": "Real estate",
   "07": "Wills and estates",
   "04": "Business",
@@ -20,38 +20,25 @@ var province =  {
 
 //二级分类
 var city = {
+  "02": {
+    "02": "Non-moving Violations",
+    "00": "General",
+    "01": "Moving Violation"
+  },
+  "03": {
+    "02": "Defective and Dangerous Products",
+    "03": "Negligence",
+    "00": "Accidents",
+    "01": "Animal attacks"
+  },
   "00": {
     "00": "Family Based Immigration",
     "01": "Employment Based Immigration"
   },
   "01": {
+    "02": "Common Services",
     "00": "Nonimmigrant Workers Classifications",
-    "01": "Visit Classifications",
-    "02": "Common Services"
-  },
-  "02": {
-    "00": "General",
-    "01": "Moving Violation",
-    "02": "Non-moving Violations"
-  },
-  "03": {
-    "00": "Accidents",
-    "01": "Animal attacks",
-    "02": "Defective and Dangerous Products",
-    "03": "Negligence"
-  },
-  "04": {
-    "00": "Incorporation",
-    "01": "Contract and Aggrement",
-    "02": "Business insurance",
-    "03": "Business bankruptcy",
-    "04": "Other Services"
-  },
-  "05": {
-    "02": "Sex crimes",
-    "03": "Drug related crimes",
-    "00": "General Services",
-    "01": "Criminal charges"
+    "01": "Visit Classifications"
   },
   "06": {
     "02": "other",
@@ -64,6 +51,19 @@ var city = {
     "00": "Elder law",
     "01": "Wills and probate",
     "04": "Estate tax"
+  },
+  "04": {
+    "02": "Business insurance",
+    "03": "Business bankruptcy",
+    "00": "Incorporation",
+    "01": "Contract and Aggrement",
+    "04": "Other Services"
+  },
+  "05": {
+    "02": "Sex crimes",
+    "03": "Drug related crimes",
+    "00": "General Services",
+    "01": "Criminal charges"
   },
   "08": {
     "02": "wages and benifits",
@@ -101,15 +101,15 @@ var city = {
     "0d": "Chapter 12 bankruptcy",
     "0e": "Chapter 13 bankruptcy"
   },
-  "0a": {
-    "02": "divorce",
-    "00": "Child",
-    "01": "Marriage"
-  },
   "0b": {
     "02": "divorce categories",
     "00": "property",
     "01": "procedures"
+  },
+  "0a": {
+    "02": "divorce",
+    "00": "Child",
+    "01": "Marriage"
   }
 };
 //三级分类
@@ -635,25 +635,25 @@ var end = {
     },
     "01": {
       "02": {
-        "02": "Professionals",
-        "00": "Multinational manager or executive",
-        "01": "National Interest Waiver"
-      },
-      "03": {
-        "02": "special immigrants",
-        "00": "Exceptional Ability",
+        "00": "Professionals",
         "01": "Skilled Workers"
       },
+      "03": {
+        "00": "special immigrants"
+      },
       "00": {
-        "00": "Extraordinary Ability"
+        "02": "Multinational manager or executive",
+        "00": "Extraordinary Ability",
+        "01": "Outstanding professors and researchers"
       },
       "01": {
-        "00": "Outstanding professors and researchers",
-        "01": "Advanced Degree"
+        "02": "Exceptional Ability",
+        "03": "Immigrant Petition for Alien Worker",
+        "00": "Advanced Degree",
+        "01": "National Interest Waiver"
       },
       "04": {
-        "00": "Immigrant Petition for Alien Worker",
-        "01": "Immigrant Investor"
+        "00": "Immigrant Investor"
       }
     }
   },
