@@ -308,6 +308,28 @@
 				$(this).closest('tr').next().toggleClass('open');
 			});
 
+			$('tr[service-id]').each(function () {
+				var serviceRow = $(this);
+				var serviceId = serviceRow.attr('service-id');
+				serviceRow.find('button.btn-danger').click(function () {
+					$.ajax({
+						url: "/seller/update",
+						data: {
+							oper: "approve",
+							id: serviceId
+						},
+						dataType: "json",
+						method: "post"
+					}).done(function (data) {
+						var detailRow = serviceRow.next();
+						serviceRow.detach();
+						detailRow.detach();
+					}).fail(function (data) {
+						console.log(data);
+					});
+				});
+			});
+
 			$('#submit-review').click(function () {
 				$.ajax({
 					url: "/seller/addreviews",
@@ -331,294 +353,895 @@
 			/*定义三级分类数据*/
 //一级分类
 			var province = {
-				"00":"Immigration",
-				"01":"Immigration",
-				"02":"Immigration",
-				//"03":"Immigration",
-				//"04":"Immigration",
-				//"05":"Immigration",
-				//"06":"Immigration",
-				//"07":"Immigration",
+				"02": "Traffic tickets",
+				"03": "Personal injury",
+				"00": "Immigration",
+				"01": "Visa",
+				"06": "Real estate",
+				"07": "Wills and estates",
+				"04": "Business",
+				"05": "Criminal defense",
+				"08": "Employment",
+				"09": "Bankruptcy",
+				"0b": "divorce",
+				"0a": "Family Law"
 			};
 
 //二级分类
 			var city = {
-				"00":{	"00":"Family Based Immigration",
-					"01":"Employment Based Immigration",
-					"02":"Nonimmigrant Workers Classifications",
-					"03":"Visit Classifications",
-					"04":"Common Services",
+				"02": {
+					"02": "Non-moving Violations",
+					"00": "General",
+					"01": "Moving Violation"
 				},
-				"01":{	"00":"Family Based Immigration",
-					"01":"Employment Based Immigration",
-					"02":"Nonimmigrant Workers Classifications",
-					"03":"Visit Classifications",
-					"04":"Common Services",
+				"03": {
+					"02": "Defective and Dangerous Products",
+					"03": "Negligence",
+					"00": "Accidents",
+					"01": "Animal attacks"
 				},
-				"02":{	"00":"Family Based Immigration",
-					"01":"Employment Based Immigration",
-					"02":"Nonimmigrant Workers Classifications",
-					"03":"Visit Classifications",
-					"04":"Common Services",
+				"00": {
+					"00": "Family Based Immigration",
+					"01": "Employment Based Immigration"
 				},
-//	"03":{	"00":"Family Based Immigration",
-//		"01":"Employment Based Immigration",
-//		"02":"Nonimmigrant Workers Classifications",
-//		"03":"Visit Classifications",
-//		"04":"Common Services",
-//	},
+				"01": {
+					"02": "Common Services",
+					"00": "Nonimmigrant Workers Classifications",
+					"01": "Visit Classifications"
+				},
+				"06": {
+					"02": "other",
+					"00": "ownership",
+					"01": "tenancy"
+				},
+				"07": {
+					"02": "Estates",
+					"03": "Trusts",
+					"00": "Elder law",
+					"01": "Wills and probate",
+					"04": "Estate tax"
+				},
+				"04": {
+					"02": "Business insurance",
+					"03": "Business bankruptcy",
+					"00": "Incorporation",
+					"01": "Contract and Aggrement",
+					"04": "Other Services"
+				},
+				"05": {
+					"02": "Sex crimes",
+					"03": "Drug related crimes",
+					"00": "General Services",
+					"01": "Criminal charges"
+				},
+				"08": {
+					"02": "wages and benifits",
+					"00": "employer tools",
+					"01": "Employee rights"
+				},
+				"09": {
+					"02": "Bankruptcy court",
+					"03": "Bankruptcy documents",
+					"00": "Bankruptcy adversary proceeding",
+					"01": "Bankruptcy confirmation hearing",
+					"06": "Bankruptcy liquidation",
+					"07": "Bankruptcy petition",
+					"04": "Bankruptcy exemptions",
+					"05": "Bankruptcy homestead exemption",
+					"08": "Bankruptcy proof of claim",
+					"09": "Bankruptcy reorganization plan",
+					"1a": "Joint accounts during bankruptcy",
+					"1c": "Lien",
+					"1b": "Credit and Debt",
+					"11": "Assumption of contracts and leases",
+					"10": "Military bankruptcy",
+					"13": "Preferential transfer",
+					"12": "Automatic stays",
+					"15": "Statement of financial affairs",
+					"14": "Property repossession",
+					"17": "Cosigners and bankruptcy",
+					"16": "Wage garnishment",
+					"19": "Hardship discharges",
+					"18": "Deficiency balance",
+					"0b": "Chapter 7 bankruptcy",
+					"0c": "Chapter 11 bankruptcy",
+					"0a": "Bankruptcy trustee",
+					"0f": "Involuntary bankruptcy",
+					"0d": "Chapter 12 bankruptcy",
+					"0e": "Chapter 13 bankruptcy"
+				},
+				"0b": {
+					"02": "divorce categories",
+					"00": "property",
+					"01": "procedures"
+				},
+				"0a": {
+					"02": "divorce",
+					"00": "Child",
+					"01": "Marriage"
+				}
 			};
 //三级分类
 			var district = {
-				/*Immigration*/
-				"00":{
-					"00":{	"00":"Family of U.S. Citizens",
-						"01":"Family of Green Card Holders (Permanent Residents)",
+				"02": {
+					"02": {
+						"00": "Parking tickets"
 					},
-					"01":{	"00":"Employment-Based Immigration: First Preference EB-1",
-						"01":"Employment-Based Immigration: Second Preference EB-2",
-						"02":"Employment-Based Immigration: Third Preference EB-3",
-						"03":"Employment-Based Immigration: Fourth Preference EB-4",
-						"04":"Employment-Based Immigration: Fifth Preference EB-5",
+					"00": {
+						"02": "Window tint ticket",
+						"03": "Failure to appear in traffic court",
+						"00": "License suspension",
+						"01": "Impounded vehicle"
 					},
-					"02":{	"00":"H-1B Specialty Occupations and Fashion Models",
-						"01":"H-4 Dependent Spouses of H-1B Holder",
-						"02":"H-1C Registered Nurse",
-						"03":"H-2A Agricultural Workers",
-						"04":"H-2B Non-Agricultural Workers",
-						"05":"H-3 Nonimmigrant Trainee",
-						"06":"L-1 Intracompany Transferee",
-						"07":"L-2 Dependent Spouses and Children of L-1 Holder",
-						"08":"O-1 Individuals with Extraordinary Ability or Achievement",
-						"09":"O-2 Associate of O-1 Holder",
-						"0A":"O-3 Dependent Spouses and Children of O-1 Holder",
-						"0B":"TN NAFTA Professionals - Initial",
-						"0C":"R Religious Worker Visa",
-						"0D":"P Athletes, Artists and Entertainment Groups Visa",
-						"0E":"E Treaty Trader & Investor Visa",
-						"0F":"CW-1: CNMI-Only Transitional Worker",
-						"10":"I Representatives of Foreign Media",
-					},
-					"03":{	"00":"B Visitor Visa",
-						"01":"F Student Visa",
-						"02":"M Student Visa",
-						"03":"J Exchange Visitor Visa",
-					},
-					"04":{	"00":"Application to Register Permanent Residence or Adjust Status",
-						"01":"Advance Parole Document",
-						"02":"Reentry Permit",
-						"03":"Refugee Travel Document",
-						"04":"Employment Authorization Document",
-						"05":"Renew or Replace Green Card",
-						"06":"Naturalization",
-						"07":"Immigrant Visa",
-						"08":"Petition for Amerasian, Widow(er), or Special Immigrant",
-						"09":"Refugee/Asylee Relative Petition",
-						"0A":"Application to Extend/Change Nonimmigrant Status",
-						"0B":"F-1 Reinstatement",
-						"0C":"J1 Wavier",
-					},
+					"01": {
+						"02": "careless driving",
+						"03": "reckless driving",
+						"00": "Speeding tickets",
+						"01": "DUI / DWI",
+						"06": "seat belt",
+						"07": "failure to stop",
+						"04": "unsafe lane changes",
+						"05": "cell phones and driving",
+						"08": "failure to yield",
+						"09": "illegal turns",
+						"0b": "driving without a valid license",
+						"0c": "driving without insurance",
+						"0a": "driving with expired tags",
+						"0d": "Camera tickets"
+					}
 				},
-				/*   */
-				"01":{
-					"00":{	"00":"Family of U.S. Citizens",
-						"01":"Family of Green Card Holders (Permanent Residents)",
+				"03": {
+					"02": {
+						"02": "Toxic torts",
+						"00": "Vehicle recalls and defects",
+						"01": "Failed medical devices"
 					},
-					"01":{	"00":"Employment-Based Immigration: First Preference EB-1",
-						"01":"Employment-Based Immigration: Second Preference EB-2",
-						"02":"Employment-Based Immigration: Third Preference EB-3",
-						"03":"Employment-Based Immigration: Fourth Preference EB-4",
-						"04":"Employment-Based Immigration: Fifth Preference EB-5",
+					"03": {
+						"02": "Duty of care and negligence",
+						"03": "Work-related",
+						"00": "Slip and fall injuries",
+						"01": "Public property injuries"
 					},
-					"02":{	"00":"H-1B Specialty Occupations and Fashion Models",
-						"01":"H-4 Dependent Spouses of H-1B Holder",
-						"02":"H-1C Registered Nurse",
-						"03":"H-2A Agricultural Workers",
-						"04":"H-2B Non-Agricultural Workers",
-						"05":"H-3 Nonimmigrant Trainee",
-						"06":"L-1 Intracompany Transferee",
-						"07":"L-2 Dependent Spouses and Children of L-1 Holder",
-						"08":"O-1 Individuals with Extraordinary Ability or Achievement",
-						"09":"O-2 Associate of O-1 Holder",
-						"0A":"O-3 Dependent Spouses and Children of O-1 Holder",
-						"0B":"TN NAFTA Professionals - Initial",
-						"0C":"R Religious Worker Visa",
-						"0D":"P Athletes, Artists and Entertainment Groups Visa",
-						"0E":"E Treaty Trader & Investor Visa",
-						"0F":"CW-1: CNMI-Only Transitional Worker",
-						"10":"I Representatives of Foreign Media",
+					"00": {
+						"02": "Motorcyle accidents",
+						"03": "Car accidents",
+						"00": "Pedestrian accidents",
+						"01": "Bike accidents",
+						"04": "Drunk driving",
+						"05": "Hit-and-run accidents"
 					},
-					"03":{	"00":"B Visitor Visa",
-						"01":"F Student Visa",
-						"02":"M Student Visa",
-						"03":"J Exchange Visitor Visa",
-					},
-					"04":{	"00":"Application to Register Permanent Residence or Adjust Status",
-						"01":"Advance Parole Document",
-						"02":"Reentry Permit",
-						"03":"Refugee Travel Document",
-						"04":"Employment Authorization Document",
-						"05":"Renew or Replace Green Card",
-						"06":"Naturalization",
-						"07":"Immigrant Visa",
-						"08":"Petition for Amerasian, Widow(er), or Special Immigrant",
-						"09":"Refugee/Asylee Relative Petition",
-						"0A":"Application to Extend/Change Nonimmigrant Status",
-						"0B":"F-1 Reinstatement",
-						"0C":"J1 Wavier",
-					},
+					"01": {
+						"00": "Dog bites and injuries"
+					}
 				},
-
+				"00": {
+					"00": {
+						"00": "Family of U.S. Citizens",
+						"01": "Family of Green Card Holders (Permanent Residents)"
+					},
+					"01": {
+						"02": "Employment-Based Immigration: Third Preference EB-3",
+						"03": "Employment-Based Immigration: Fourth Preference EB-4",
+						"00": "Employment-Based Immigration: First Preference EB-1",
+						"01": "Employment-Based Immigration: Second Preference EB-2",
+						"04": "Employment-Based Immigration: Fifth Preference EB-5"
+					}
+				},
+				"01": {
+					"02": {
+						"02": "Employment Authorization Document",
+						"03": "Renew or Replace Green Card",
+						"00": "Reentry Permit",
+						"01": "Refugee Travel Document",
+						"06": "\"Petition for Amerasian",
+						"07": "Refugee/Asylee Relative Petition",
+						"04": "Naturalization",
+						"05": "Immigrant Visa",
+						"08": "Application to Extend/Change Nonimmigrant Status",
+						"09": "F-1 Reinstatement",
+						"0a": "J1 Wavier"
+					},
+					"00": {
+						"02": "H-2A Agricultural Workers",
+						"03": "H-2B Non-Agricultural Workers",
+						"00": "H-1B Specialty Occupations and Fashion Models",
+						"01": "H-1C Registered Nurse",
+						"06": "L-2 Dependant Spouses and Children of L-1 Holder",
+						"07": "O-1 Individuals with Extraordinary Ability or Achievement",
+						"04": "H-3 Nonimmigrant Trainee",
+						"05": "L-1 Intracompany Transferee",
+						"08": "O-2 Associate of O-1 Holder",
+						"09": "O-3 Dependant Spouses and Children of O-1 Holder",
+						"0b": "R Religious Worker Visa",
+						"0c": "\"P Athletes",
+						"0a": "TN NAFTA Professionals",
+						"0f": "I Representatives of Foreign Media",
+						"0d": "E Treaty Trader & Investor Visa",
+						"0e": "CW-1: CNMI-Only Transitional Worker",
+						"11": "F Student Visa",
+						"10": "B Visitor Visa"
+					},
+					"01": {
+						"02": "Application to Register Permanent Residence or Adjust Status",
+						"03": "Advance Parole Document",
+						"00": "M Student Visa",
+						"01": "J Exchange Visitor Visa"
+					}
+				},
+				"06": {
+					"02": {
+						"02": "Inheriting property",
+						"00": "Property trespassing",
+						"01": "Foreclosure"
+					},
+					"00": {
+						"02": "Purchasing a house",
+						"03": "Residential property",
+						"00": "Adverse possession of property",
+						"01": "Buying and selling property",
+						"04": "Writ of possession for property"
+					},
+					"01": {
+						"02": "Property rental agreement",
+						"03": "Tenant and landlord",
+						"00": "Defective housing",
+						"01": "Joint tenancy"
+					}
+				},
+				"07": {
+					"02": {
+						"02": "Estate beneficiaries",
+						"03": "Estate planning for pets",
+						"00": "Estate administration",
+						"01": "Estate assets",
+						"06": "Distribution of estate assets",
+						"07": "Guardianship planning",
+						"04": "Estate property",
+						"05": "Estate tax",
+						"08": "Inheritance rights",
+						"09": "Inheritance rights of children",
+						"0b": "Inheritance rights of spouses",
+						"0a": "Inheritance rights of grandchildren"
+					},
+					"03": {
+						"02": "Special needs trust",
+						"03": "Revocable living trust",
+						"00": "Trust assets",
+						"01": "Totten trust",
+						"06": "Living trust",
+						"07": "Irrevocable trust",
+						"04": "Revocable trust",
+						"05": "Life insurance trust",
+						"08": "Charitable trust",
+						"09": "Changing trustee",
+						"0b": "Trustee duties",
+						"0c": "Trust beneficiaries",
+						"0a": "Trustee",
+						"0f": "Grantor trust",
+						"0d": "Successor trustee",
+						"0e": "Asset protection trust",
+						"10": "Family trust"
+					},
+					"00": {
+						"02": "Healthcare and elder law",
+						"03": "Incapacitation and elder law",
+						"00": "Elder abuse",
+						"01": "Elder abuse and exploitation",
+						"06": "Nursing homes",
+						"07": "Veterans benefits and elder law",
+						"04": "Nursing home contracts",
+						"05": "Nursing home resident rights"
+					},
+					"01": {
+						"02": "Contesting a will",
+						"03": "Video will",
+						"00": "Codicil to will",
+						"01": "Community property and wills",
+						"06": "Revising a will",
+						"07": "Revoking a will",
+						"04": "Holographic will",
+						"05": "Nuncupative will",
+						"08": "Living will",
+						"09": "Final arrangements and wills",
+						"11": "Probate court",
+						"10": "Probate assets",
+						"13": "Formal probate",
+						"12": "Informal probate",
+						"15": "Intestacy and probate",
+						"14": "Ancillary probate",
+						"17": "Letter of testamentary",
+						"16": "Non-probate assets",
+						"0b": "Witnesses to a will",
+						"0c": "Executor of will",
+						"0a": "Valid wills",
+						"0f": "Probate administration",
+						"0d": "Forged will",
+						"0e": "will fraud"
+					},
+					"04": {
+						"02": "Inheritance tax",
+						"03": "Marital deduction and estate tax",
+						"00": "Gift tax",
+						"01": "Exemptions to estate tax",
+						"04": "Personal exemption to estate tax",
+						"05": "Taxes and estate planning"
+					}
+				},
+				"04": {
+					"02": {
+						"02": "Business health insurance",
+						"03": "Commercial auto insurance",
+						"00": "Business cyber insurance",
+						"01": "Business disability insurance",
+						"06": "Product liability insurance",
+						"07": "Business life insurance",
+						"04": "Commercial general liability insurance",
+						"05": "Commercial property insurance"
+					},
+					"03": {
+						"02": "Chapter 13 bankruptcy for businesses",
+						"00": "Chapter 7 bankruptcy for businesses",
+						"01": "Chapter 11 bankruptcy for businesses"
+					},
+					"00": {
+						"02": "LLC (limited liability company)",
+						"03": "Washington LLC",
+						"00": "C-corporation",
+						"01": "Co-operative",
+						"06": "Sole proprietorship",
+						"04": "California LLC",
+						"05": "S-corporation"
+					},
+					"01": {
+						"02": "Employee contract for businesses",
+						"03": "Supplier agreement",
+						"00": "Breach of contract",
+						"01": "Business contracts",
+						"04": "Non-disclosure agreement (NDA)",
+						"05": "Stock purchase agreement"
+					},
+					"04": {
+						"02": "Trade secrets",
+						"03": "Workplace health and safety regulations",
+						"00": "Copyrights",
+						"01": "Trademarks",
+						"04": "Employee theft"
+					}
+				},
+				"05": {
+					"02": {
+						"02": "sexual abuse",
+						"03": "sexual assault",
+						"00": "rape",
+						"01": "sexual harrasment"
+					},
+					"03": {
+						"02": "Possession of a controlled substance",
+						"00": "Distribution of a controlled substance",
+						"01": "Manufacturing a controlled substance"
+					},
+					"00": {
+						"02": "Parole",
+						"03": "Bail",
+						"00": "Search warrant",
+						"01": "Appealing a criminal conviction",
+						"06": "Self defense",
+						"07": "underage drinking",
+						"04": "community service",
+						"05": "probation violation"
+					},
+					"01": {
+						"02": "assault and battery",
+						"03": "tax evasion",
+						"00": "animal cruelty",
+						"01": "arson",
+						"06": "theft",
+						"07": "Fraud",
+						"04": "cybercrimes",
+						"05": "Criminal trespass",
+						"08": "identity theft",
+						"09": "prostitution",
+						"0b": "robbery",
+						"0c": "kidnapping",
+						"0a": "Domestic violence",
+						"0f": "manslaughter",
+						"0d": "extortion",
+						"0e": "harassment",
+						"10": "murder"
+					}
+				},
+				"08": {
+					"02": {
+						"02": "Employee retirement benefits",
+						"03": "Retirement benefits and pensions",
+						"00": "Employee 401k plans",
+						"01": "Employee health benefits",
+						"06": "wag garnishment",
+						"07": "minimum wage",
+						"04": "Retirement benefits and ERISA",
+						"05": "FICA taxes",
+						"08": "overtime pay",
+						"09": "payroll taxes",
+						"0b": "severance pay",
+						"0c": "tips",
+						"0a": "prevailing wage",
+						"0f": "Unemployment compensation",
+						"0d": "wage theft",
+						"0e": "work hours",
+						"11": "Employment and final paycheck laws",
+						"10": "Denied unemployment compensation"
+					},
+					"00": {
+						"02": "W-4 form for new employees",
+						"03": "Pre-employment testing",
+						"00": "Employment contracts",
+						"01": "Employment law and finances",
+						"06": "I-9 form for employment eligibility",
+						"07": "Employer drug test",
+						"04": "Internships and employment law",
+						"05": "Foreign and immigrant workers",
+						"08": "Employee arbitration agreement"
+					},
+					"01": {
+						"02": "Employee privacy rights",
+						"03": "ADA (Americans with Disabilities Act) and employees",
+						"00": "Employee protection laws",
+						"01": "Employee personnel files",
+						"06": "FMLA (Family and Medical Leave Act) and employees",
+						"07": "Sick leave and work hours",
+						"04": "Employment background check",
+						"05": "FLSA (Fair Labor Standards Act) and employees",
+						"08": "Voting leave and work hours",
+						"09": "Wrongful termination of employment",
+						"0b": "workplace safety",
+						"0a": "Discrimination in the workplace"
+					}
+				},
+				"09": {
+					"0b": {
+						"00": "Eligibility for filing chapter 7 bankruptcy",
+						"01": "No-asset chapter 7 bankruptcy"
+					},
+					"1c": {
+						"02": "Mechanic's lien",
+						"03": "Mortgage lien",
+						"00": "Involuntary lien",
+						"01": "Judgment lien",
+						"04": "Tax lien",
+						"05": "Child support lien"
+					},
+					"1b": {
+						"02": "Credit score",
+						"03": "Creditor harassment",
+						"00": "Credit counseling",
+						"01": "Credit repair",
+						"06": "Debt negotiation",
+						"07": "Debt relief",
+						"04": "Debt collection and debt settlement",
+						"05": "Debt discharge",
+						"08": "Unsecured debt",
+						"09": "Sued for debt",
+						"13": "341 meeting of creditors",
+						"0b": "Refinancing a debt",
+						"0c": "Secured debt",
+						"0a": "Reaffirmation of debt and bankruptcy",
+						"0f": "Mortgage debt",
+						"0d": "Spousal debt",
+						"0e": "Priority debt",
+						"11": "Claims to debt",
+						"12": "Consumer debt",
+						"10": "Nondischargeable debts"
+					},
+					"0e": {
+						"02": "Disposable income in chapter 13 bankruptcy",
+						"00": "Chapter 13 bankruptcy eligibility",
+						"01": "Chapter 13 bankruptcy repayment plan"
+					}
+				},
+				"0b": {
+					"02": {
+						"02": "Military divorce",
+						"03": "Annulment of marriage",
+						"00": "Uncontested divorce",
+						"01": "International divorce",
+						"06": "Same-sex divorce",
+						"07": "Fault divorce",
+						"04": "Contested divorce",
+						"05": "Do-it-yourself divorce",
+						"08": "Collaborative divorce",
+						"09": "No-fault divorce"
+					},
+					"00": {
+						"02": "Brokerage accounts",
+						"03": "Alimony",
+						"00": "Credit card debt",
+						"01": "Community property",
+						"06": "Dividing accounts",
+						"07": "Dividing assets",
+						"04": "Alimony modification",
+						"05": "Divorce and abandoned property",
+						"08": "Dividing debts",
+						"09": "Dividing property",
+						"1a": "Separate property in a divorce",
+						"11": "pets",
+						"10": "Bank accounts",
+						"13": "recovering personal property",
+						"12": "quitclaim deeds",
+						"15": "social security benefits",
+						"14": "retirement accounts",
+						"17": "Divorce court fees",
+						"16": "student loans",
+						"19": "Who gets the house in divorce",
+						"18": "Inheritance",
+						"0b": "business",
+						"0c": "foreclosure",
+						"0a": "bankruptcy",
+						"0f": "medical debt",
+						"0d": "health insurance",
+						"0e": "joint accounts"
+					},
+					"01": {
+						"22": "Spousal eviction in divorce",
+						"02": "Dissolution of marriage",
+						"03": "Divorce appeals",
+						"00": "Breaking a lease during divorce",
+						"01": "Court-ordered marriage counseling before divorce",
+						"06": "Divorce decree",
+						"07": "Divorce during pregnancy",
+						"04": "Divorce court",
+						"05": "Divorce court fees",
+						"08": "Divorce jurisdiction",
+						"09": "Divorce mediation",
+						"1a": "Modifying a divorce decree",
+						"1c": "Name change after divorce",
+						"1b": "Motion to dismiss and divorce",
+						"1e": "Parenting plans and divorce",
+						"1d": "No-fault divorce",
+						"1f": "Refusal to sign divorce papers",
+						"20": "Relocation and divorce",
+						"21": "Separation agreement",
+						"11": "Divorcing a missing spouse",
+						"10": "Divorce time limits and waiting periods",
+						"13": "Domestic violence and divorce",
+						"12": "Divorcing someone in prison",
+						"15": "Equitable distribution in divorce",
+						"14": "Enforcing a divorce decree",
+						"17": "Failure to comply with divorce decree",
+						"16": "Failure to appear in divorce court",
+						"19": "Legal separation and divorce",
+						"18": "Filing for divorce",
+						"0b": "Divorce papers",
+						"0c": "Divorce petitions and complaints",
+						"0a": "Divorce options",
+						"0f": "Divorce status",
+						"0d": "Divorce records",
+						"0e": "Divorce settlement agreements"
+					}
+				},
+				"0a": {
+					"02": {
+						"02": "divorce categories",
+						"00": "property",
+						"01": "procedures"
+					},
+					"00": {
+						"02": "Child abuse",
+						"03": "Foster parents",
+						"00": "Birth certificate",
+						"01": "Child abandonment",
+						"06": "Children's rights",
+						"07": "Biological parents",
+						"04": "Guardian ad litem",
+						"05": "Guardianship and conservatorship",
+						"08": "Temporary guardianship",
+						"09": "Step parent adoption",
+						"0a": "Step parent rights"
+					},
+					"01": {
+						"02": "Domestic relationships",
+						"03": "Family law documents",
+						"00": "Civil union",
+						"01": "Domestic partnership",
+						"06": "Marriage rights",
+						"07": "Prenuptial agreement",
+						"04": "Marital property",
+						"05": "Marriage license",
+						"08": "Reproductive rights",
+						"09": "Same-sex marriage"
+					}
+				}
 			};
 			var end = {
-				/* Immigration*/
-				"00":{
-					"00":{	"00":{	"00":"Spouse And Children (unmarried and under 21)",
-						"01":"Sons and daughters (married)",
-						"02":"Sons and daughters (21 or over)",
-						"03":"Parents, if you are 21 or over",
-						"04":"Siblings, if you are 21 or over",
-						"05":"A fiancé(e) residing outside the United States and children of fiancé(e) under 21",
-						"06":"Remove Conditions ",
-					},
-						"01":{	"00":"Spouse (husband or wife)",
-							"01":"Unmarried children under 21",
-							"02":"Unmarried children under 21",
+				"02": {
+					"01": {
+						"00": {
+							"02": "Speeding tickets in a school zone",
+							"00": "General Speeding tickets",
+							"01": "Speeding tickets in a construction zone"
 						},
-					},
-					"01":{	"00":{	"00":"Extraordinary Ability",
-						"01":"Outstanding professors and researchers",
-						"02":"Multinational manager or executive",
-					},
-						"01":{	"00":"Advanced Degree",
-							"01":"National Interest Waiver",
-							"02":"Exceptional Ability",
-							"03":"Immigrant Petition for Alien Worker",
-						},
-						"02":{	"00":"Professionals",
-							"01":"Skilled Workers",
-							"02":"PERM",
-							"03":"Immigrant Petition for Alien Worker",
-						},
-						"03":{	"00":"special immigrants",
-						},
-						"04":{	"00":"Immigrant Investor",
-							"01":"Immigrant Investor (Remove Condition)",
-						},
-
-					},
-					"02":{	"00":{	"00":"H-1B Specialty Occupations and Fashion Models - Initial",
-						"01":"H-1B Specialty Occupations and Fashion Models - Extension",
-						"02":"H-1B Specialty Occupations and Fashion Models - Transfer",
-						"03":"H-1B Specialty Occupations and Fashion Models - RFE",
-					},
-						"01":{	"00":"Dependent Spouses of H-1B Holder - Initial",
-							"01":"Dependent Spouses of H-1B Holder - Extension",
-						},
-						"02":{	"00":"H-1C Registered Nurse",
-						},
-						"03":{	"00":"H-2A Agricultural Workers",
-						},
-						"04":{	"00":"H-2B Non-Agricultural Workers",
-						},
-						"05":{	"00":"H-3 Nonimmigrant Trainee",
-						},
-						"06":{	"00":"L1 - Initial",
-							"01":"L1 - Extension",
-						},
-						"07":{	"00":"L-2 application",
-							"01":"L-2 EAD",
-						},
-						"08":{	"00":"O-1 Individuals with Extraordinary Ability or Achievement - Initial",
-							"01":"O-1 Individuals with Extraordinary Ability or Achievement - Extension",
-						},
-						"09":{	"00":"O-2 Associate of O-1 Holder - Initial",
-							"01":"O2 - Extension",
-						},
-						"0A":{	"00":"O-3 Dependent Spouses and Children of O-1 Holder - Initial",
-							"01":"O-3 Dependent Spouses and Children of O-1 Holder - Extension",
-						},
-						"0B":{	"00":"TN NAFTA Professionals - Initial",
-							"01":"TN - Extension",
-						},
-						"0C":{	"00":"R-1 Temporary Religious Workers",
-							"01":"R-2 Dependent Spouses and Children of R-1 Holder",
-						},
-						"0D":{	"00":"P-1A Internationally Recognized Athlete",
-							"01":"P-1B A Member of an Internationally Recognized Entertainment Group",
-							"02":"P-2 Performer or Group Performing under Reciprocal Exchange Program",
-							"03":"P-3 Artist or Entertainer Part of a Culturally Unique Program",
-						},
-						"0E":{	"00":"E-1 Treaty Traders",
-							"01":"E-2 CNMI Investor/E-2 Treaty Investors",
-							"02":"E-3 Certain Specialty Occupation Professionals from Australia",
-						},
-						"0F":{	"00":"CW-1: CNMI-Only Transitional Worker",
-						},
-						"10":{	"00":"I Representatives of Foreign Media",
-						},
-
-					},
-					"03":{	"00":{	"00":"B-1 Temporary Business Visitor / B-2 Tourist Visa",
-					},
-						"01":{	"00":"F-1 Full-time Student / F-2 - Dependent Spouses and Children of F-1 Holder",
-						},
-						"02":{	"00":"M-1 Nonacademic or Vocational Student / M-2 - Dependent Spouses and Children of M-1 Holder",
-						},
-						"03":{	"00":"J-1 Exchange Visitor Visa / J-2 Dependent Spouses and Children of J-1 Holder",
-						},
-					},
-					"04":{	"00":{	"00":"I-485",
-					},
-						"01":{	"00":"I-131",
-						},
-						"02":{	"00":"I-131",
-						},
-						"03":{	"00":"I-131",
-						},
-						"04":{	"00":"I-765",
-						},
-						"05":{	"00":"I-90",
-						},
-						"06":{	"00":"N-400",
-						},
-						"07":{	"00":"DS-260",
-						},
-						"08":{	"00":"I-360",
-						},
-						"09":{	"00":"I-730",
-						},
-						"0A":{	"00":"I-539",
-						},
-						"0B":{	"00":"I-539",
-						},
-						"0C":{	"00":"J1 Wavier",
-						},
-
-					},
-
+						"0d": {
+							"00": "Speeding Camera",
+							"01": "Red light cameras"
+						}
+					}
 				},
-
+				"00": {
+					"00": {
+						"00": {
+							"02": "Sons and daughters (21 or over)",
+							"03": "Parents (21 or over)",
+							"00": "Spouse And Children (unmarried and under 21)",
+							"01": "Sons and daughters (married)",
+							"06": "Remove Conditions",
+							"04": "Siblings (21 or over)",
+							"05": "A fiance residing outside the United States and children of fiance under 21"
+						},
+						"01": {
+							"02": "Unmarried son or daughter of any age",
+							"00": "Spouse (husband or wife)",
+							"01": "Unmarried children under 21"
+						}
+					},
+					"01": {
+						"02": {
+							"02": "Professionals",
+							"00": "Multinational manager or executive",
+							"01": "National Interest Waiver"
+						},
+						"03": {
+							"02": "special immigrants",
+							"00": "Exceptional Ability",
+							"01": "Skilled Workers"
+						},
+						"00": {
+							"00": "Extraordinary Ability"
+						},
+						"01": {
+							"00": "Outstanding professors and researchers",
+							"01": "Advanced Degree"
+						},
+						"04": {
+							"00": "Immigrant Petition for Alien Worker",
+							"01": "Immigrant Investor"
+						}
+					}
+				},
+				"01": {
+					"02": {
+						"06": {
+							"00": "Widow(er)"
+						}
+					},
+					"00": {
+						"11": {
+							"00": "F1/F2"
+						},
+						"10": {
+							"00": "B-1 Temporary Business Visitor / B2 Tourist Visa"
+						},
+						"00": {
+							"02": "H-1B Transfer",
+							"03": "H-1B RFE",
+							"00": "H-1B Initial",
+							"01": "H-1B Extension",
+							"04": "Dependant Spouses and Children of H-1B Holder - Initial",
+							"05": "Dependant Spouses and Children of H-1B Holder - Extension"
+						},
+						"06": {
+							"00": "L-2 application",
+							"01": "L-2 EAD"
+						},
+						"07": {
+							"00": "O-1 Initial",
+							"01": "O-1 extension"
+						},
+						"05": {
+							"00": "L1A - Initial",
+							"01": "L1A - Extension"
+						},
+						"08": {
+							"00": "O-2 Initial",
+							"01": "O-1 Extension"
+						},
+						"09": {
+							"00": "Dependant Spouses and Children of O-1 Holder - Initial",
+							"01": "Dependant Spouses and Children of O-1 Holder - Extension"
+						},
+						"0b": {
+							"00": "R-1 Temporary Religious Workers",
+							"01": "Dependant Spouses and Children of R-1 Holder"
+						},
+						"0c": {
+							"00": "Artists and Entertainment Groups Visa\""
+						},
+						"0a": {
+							"00": "TN NAFTA Professionals - Initial",
+							"01": "TN NAFTA Professionals - Extension"
+						},
+						"0d": {
+							"02": "E-3 Certain Specialty Occupation Professionals from Australia",
+							"00": "E-1 Treaty Traders",
+							"01": "E-2 CNMI Investor/E-2 Treaty Investors"
+						},
+						"0e": {
+							"00": "CW-1: CNMI-Only Transitional Worker"
+						}
+					},
+					"01": {
+						"00": {
+							"00": "M1/M2"
+						},
+						"01": {
+							"00": "J1/J2"
+						}
+					}
+				},
+				"08": {
+					"01": {
+						"0b": {
+							"00": "Sexual harassment",
+							"01": "Workplace harassment"
+						},
+						"0a": {
+							"02": "Gender discrimination",
+							"03": "National origin discrimination",
+							"00": "Age discrimination",
+							"01": "Disability discrimination",
+							"06": "Sexual orientation discrimination",
+							"04": "Racial discrimination",
+							"05": "Religious discrimination"
+						}
+					}
+				},
+				"09": {
+					"1b": {
+						"10": {
+							"02": "student loans",
+							"00": "alimony",
+							"01": "child support"
+						}
+					}
+				},
+				"0a": {
+					"02": {
+						"02": {
+							"02": "Military divorce",
+							"03": "Annulment of marriage",
+							"00": "Uncontested divorce",
+							"01": "International divorce",
+							"06": "Same-sex divorce",
+							"07": "Fault divorce",
+							"04": "Contested divorce",
+							"05": "Do-it-yourself divorce",
+							"08": "Collaborative divorce",
+							"09": "No-fault divorce"
+						},
+						"00": {
+							"02": "Brokerage accounts",
+							"03": "Alimony",
+							"00": "Credit card debt",
+							"01": "Community property",
+							"06": "Dividing accounts",
+							"07": "Dividing assets",
+							"04": "Alimony modification",
+							"05": "Divorce and abandoned property",
+							"08": "Dividing debts",
+							"09": "Dividing property",
+							"1a": "Separate property in a divorce",
+							"11": "pets",
+							"10": "Bank accounts",
+							"13": "recovering personal property",
+							"12": "quitclaim deeds",
+							"15": "social security benefits",
+							"14": "retirement accounts",
+							"17": "Divorce court fees",
+							"16": "student loans",
+							"19": "Who gets the house in divorce",
+							"18": "Inheritance",
+							"0b": "business",
+							"0c": "foreclosure",
+							"0a": "bankruptcy",
+							"0f": "medical debt",
+							"0d": "health insurance",
+							"0e": "joint accounts"
+						},
+						"01": {
+							"22": "Spousal eviction in divorce",
+							"02": "Dissolution of marriage",
+							"03": "Divorce appeals",
+							"00": "Breaking a lease during divorce",
+							"01": "Court-ordered marriage counseling before divorce",
+							"06": "Divorce decree",
+							"07": "Divorce during pregnancy",
+							"04": "Divorce court",
+							"05": "Divorce court fees",
+							"08": "Divorce jurisdiction",
+							"09": "Divorce mediation",
+							"1a": "Modifying a divorce decree",
+							"1c": "Name change after divorce",
+							"1b": "Motion to dismiss and divorce",
+							"1e": "Parenting plans and divorce",
+							"1d": "No-fault divorce",
+							"1f": "Refusal to sign divorce papers",
+							"20": "Relocation and divorce",
+							"21": "Separation agreement",
+							"11": "Divorcing a missing spouse",
+							"10": "Divorce time limits and waiting periods",
+							"13": "Domestic violence and divorce",
+							"12": "Divorcing someone in prison",
+							"15": "Equitable distribution in divorce",
+							"14": "Enforcing a divorce decree",
+							"17": "Failure to comply with divorce decree",
+							"16": "Failure to appear in divorce court",
+							"19": "Legal separation and divorce",
+							"18": "Filing for divorce",
+							"0b": "Divorce papers",
+							"0c": "Divorce petitions and complaints",
+							"0a": "Divorce options",
+							"0f": "Divorce status",
+							"0d": "Divorce records",
+							"0e": "Divorce settlement agreements"
+						}
+					},
+					"00": {
+						"02": {
+							"00": "Emancipation of minors"
+						},
+						"03": {
+							"00": "Paternity"
+						},
+						"00": {
+							"00": "Adoption"
+						},
+						"01": {
+							"00": "Foster care"
+						}
+					},
+					"01": {
+						"02": {
+							"00": "Pregnancy"
+						},
+						"03": {
+							"00": "Abortion"
+						},
+						"00": {
+							"00": "Domestic violence"
+						},
+						"01": {
+							"00": "Birth control"
+						},
+						"04": {
+							"00": "Parental responsibility"
+						}
+					}
+				}
 			};
 
 			$('.category-js').each(function () {
 				var num = $(this).text();
-				var category = "";
+				console.log(num);
 				if(num) {
 					var ol = num.substring(0, 2);
-					$(this).html(province[ol] + "<br>");
-					num = num.substring(2, 8);
-					if(num) {
-						var sl = num.substring(0, 2);
-						$(this).html($(this).html() + city[ol][sl] + "<br>");
-						num = num.substring(2, 6);
-						if(num) {
-							var tl = num.substring(0, 2);
-							$(this).html($(this).html() + district[ol][sl][tl] + "<br>");
-							num = num.substring(2, 4);
-							if(num) {
-								category += end[ol][sl][tl][num];
-								$(this).html($(this).html() + end[ol][sl][tl][num]);
+					if(province.hasOwnProperty(ol)) {
+						$(this).html(province[ol] + "<br>");
+						num = num.substring(2, 8);
+						if (num) {
+							var sl = num.substring(0, 2);
+							if(city.hasOwnProperty(ol) && city[ol].hasOwnProperty(sl)) {
+								$(this).html($(this).html() + city[ol][sl] + "<br>");
+								num = num.substring(2, 6);
+								if (num) {
+									var tl = num.substring(0, 2);
+									if(district.hasOwnProperty(ol) && district[ol].hasOwnProperty(sl)
+											&& district[ol][sl].hasOwnProperty(tl)) {
+										$(this).html($(this).html() + district[ol][sl][tl] + "<br>");
+										num = num.substring(2, 4);
+										if (num && end.hasOwnProperty(ol) && end[ol].hasOwnProperty(sl)
+												&& end[ol][sl].hasOwnProperty(tl) && end[ol][sl][tl].hasOwnProperty(num)) {
+											$(this).html($(this).html() + end[ol][sl][tl][num]);
+										}
+									}
+								}
 							}
 						}
 					}
