@@ -340,7 +340,7 @@ class Seller extends Controller
 				if (!empty($_POST['fees']))
 					$data['fees'] = $_POST['fees'];
 				if (!empty($_POST['state']))
-					$data['state'] = implode($_POST['state'],",");
+					$data['area'] = implode($_POST['state'],",");
 				switch(true)
 				{
 					case (empty($serviceId)):
