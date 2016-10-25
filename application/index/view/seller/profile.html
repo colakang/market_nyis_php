@@ -121,7 +121,8 @@
 						<div class="form-group">
 							<label class="col-sm-3 control-label no-padding-right" for="descript">{$Think.lang.view_descript}</label>
 							<div class="col-sm-9">
-								<input type="text" id="descript" name="descript" placeholder="{$Think.lang.view_descript}" class="col-xs-10 col-sm-5" value="{$profile.descript ?? ''}">
+								<textarea id="descript" rows="10" name="descript" placeholder="{$Think.lang.view_descript}"
+													class="col-xs-10 col-sm-5">{$profile.descript ?? ''}</textarea>
 							</div>
 						</div>
 						<div class="form-group">
