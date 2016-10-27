@@ -1,4 +1,4 @@
-  <div id="navbar" class="navbar clearfix navbar-dark">
+  <div id="navbar" class="navbar clearfix navbar-fixed-top navbar-dark">
     <div class="comp pull-left nav-logo">
       <a href="/"><i class="icon-market-logo"></i></a>
     </div>
@@ -9,13 +9,29 @@
       <a href="/?lang=en-us" class="btn btn-lang btn-hdr">EN</a>
     </div>
     <div class="comp pull-right">
-      <a class="btn btn-link" href="http://lawyer.nyis.com">律师大全</a>
+      <a class="btn btn-link btn-link-hdr" href="http://lawyer.nyis.com">律师大全</a>
     </div>
     <div class="comp pull-right">
-      <a class="btn btn-link" href="http://ask.nyis.com">小纽问答</a>
+      <a class="btn btn-link btn-link-hdr" href="http://ask.nyis.com">小纽问答</a>
     </div>
     <div class="comp pull-right">
-      <a class="btn btn-link" href="http://market.nyis.com">服务商城</a>
+      <a class="btn btn-link btn-link-hdr" href="http://market.nyis.com">服务商城</a>
     </div>
+    {notempty name="nickname"}
+    <div class="comp pull-right" id="account-comp">
+      <i class="fa fa-user-circle-o" aria-hidden="true"></i>
+      <a href="#" class="dropdown-toggle"
+         data-toggle="dropdown" role="button" aria-haspopup="true"
+         aria-expanded="false">
+
+        您的账户 <span class="caret"></span>
+      </a>
+      <ul class="dropdown-menu">
+        <li><a href="/profile">个人资料</a></li>
+        <li><a href="/mycases">订单详情</a></li>
+        <li><a href="/logout">登出</a></li>
+      </ul>
+    </div>
+    {/notempty}
   </div>
 

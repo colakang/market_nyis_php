@@ -8,11 +8,7 @@
   <script src="/static/javascripts/signup-form-validation.module.js"></script>
 </head>
 <body ng-app="signUpFormValidator">
-        {include file="index/navbar" nickname=$nickname /}
-        {notempty name="nickname"}
-                {include file="index/navbar_login" nickname=$nickname /}
-        {/notempty}
-
+{include file="index/navbar" nickname=$nickname /}
 <div class="jumbo-show-container_sm">
   <div class="jumbo-show-background" style="background-image: url('/static/images/5-1 6-1 7-1.jpg')">
   </div>
@@ -220,7 +216,7 @@
       var tokenizedUrl = window.location.href.split('/');
       var serviceId = tokenizedUrl[tokenizedUrl.length - 1];
       console.log(serviceId);
-      if($('#login-navbar').length > 0) {
+      if($('#account-comp').length > 0) {
         if (!caseId) {
           $.ajax({
             url: "/update",

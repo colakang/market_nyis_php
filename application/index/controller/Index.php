@@ -389,4 +389,11 @@ class Index extends Controller
 	   	} 
 	}
 
+	public function testmail()
+	{
+		$mail = new \PHPMailer(true);
+		dump($mail);
+		exit();
+	}
+
 }

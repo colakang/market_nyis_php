@@ -8,11 +8,7 @@
   <script type="text/javascript" src="/static/javascripts/profile-edit.js"></script>
 </head>
 <body ng-app="profileEdit">
-	{include file="index/navbar" nickname=$nickname /}
-	{notempty name="nickname"}
-		{include file="index/navbar_login" nickname=$nickname /}
-	{/notempty}
-
+{include file="index/navbar" nickname=$nickname /}
 <!--<div class="profile-header">
   <div class="container">
     <div class="profile-photo">
