@@ -495,6 +495,52 @@ class Seller extends Controller
 
 	}
 
+	public function getcaseinfo()
+	{
+		$sid = Session::get('sid');
+		if (empty($_POST))
+		{
+			$put=file_get_contents('php://input');
+			$put=json_decode($put,1);
+			if (is_array($put))
+			{
+				foreach ($put as $key=>$value)
+				{
+					$_POST[$key] = $value;
+				}
+			}
+		}
+
+
+		$data = array();
+		switch(true)
+		{
+			case (empty(input('caseid'))):
+			{
+				$data['update'] = 'Fail';
+				$data['reasons'] = 'Caseid Error';
+				break;
+			}
+			default: 
+			{
+				$caseid = input('caseid');
+				$cases = controller('Cases','event');
+				$result = $cases->findByCaseId($caseid,$sid,'sellerid');
+				if ($result)
+				{
+					$data['status'] = 'Success';
+					$data['caseinfo'] = $result['checklist'];
+				}
+				else
+				{
+					$data['status'] = 'Fail';
+					$data['reasons'] = 'Case info not found!';
+				}						
+			}
+		}
+		return json($data,200);
+	}
+
 	public function addreviews()
 	{
 		//var_dump(Session::get('sid'));

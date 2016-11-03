@@ -144,12 +144,17 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
-        {include file="questionnaire/personal" /}
-        {include file="questionnaire/address" /}
-        {include file="questionnaire/documents" /}
-        {include file="questionnaire/relatives" /}
-        {include file="questionnaire/employment" /}
-        {include file="questionnaire/education" /}
+	
+	{volist name="result.checklist" id="vo"}
+		{switch name="vo"}
+    			{case value="personal"}{include file="questionnaire/personal" /}{/case}
+    			{case value="address"}{include file="questionnaire/address" /}{/case}
+    			{case value="documents"}{include file="questionnaire/documents" /}{/case}
+    			{case value="relatives"}{include file="questionnaire/relatives" /}{/case}
+    			{case value="employment"}{include file="questionnaire/employment" /}{/case}
+    			{case value="education"}{include file="questionnaire/education" /}{/case}
+		{/switch}
+	{/volist}
         <div style="width: 718px; display: none;" id="responseModal">
           <div class="modal-header">
             <div class="caption">
@@ -311,11 +316,16 @@
     });
   });
 </script>
-{include file="questionnaire/personal-js" /}
-{include file="questionnaire/address-js" /}
-{include file="questionnaire/documents-js" /}
-{include file="questionnaire/relatives-js" /}
-{include file="questionnaire/employment-js" /}
-{include file="questionnaire/education-js" /}
+	{volist name="result.checklist" id="vo"}
+		{switch name="vo"}
+    			{case value="personal"}{include file="questionnaire/personal-js" /}{/case}
+    			{case value="address"}{include file="questionnaire/address-js" /}{/case}
+    			{case value="documents"}{include file="questionnaire/documents-js" /}{/case}
+    			{case value="relatives"}{include file="questionnaire/relatives-js" /}{/case}
+    			{case value="employment"}{include file="questionnaire/employment-js" /}{/case}
+    			{case value="education"}{include file="questionnaire/education-js" /}{/case}
+		{/switch}
+	{/volist}
+
 </body>
 </html>

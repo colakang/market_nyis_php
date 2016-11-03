@@ -286,13 +286,13 @@ class Index extends Controller
 						$data['sellerName'] = $result['sellerName'];
 						$data['serviceName'] = $result['name'];
 						$data['sellerid'] = $result['sellerid'];
-						$data['clientname'] = Session::get('nickname');
+						$data['clientName'] = Session::get('nickname');
 						$data['submitPrice'] = $result['price'];
 						$data['finalPrice'] = 0;
 						$data['isComment'] = false;
 						$data['createTime'] = time();
 						$data['uid'] = $uid;
-						$data['status'] = 0;	//0=待审核; 1=成交;2=退回;3=拒绝
+						$data['status'] = 10;	//0=待审核; 1=成交;2=退回;3=拒绝;10=草稿
 						$data['checklist']['include'] = $result['checklist'];
 	 					$cases = controller('Cases','event');
 						$case = $cases->addCases($data);
@@ -302,7 +302,7 @@ class Index extends Controller
 							$data['addcase'] = 'success';
 			 				$sellers = controller('Seller','event');
 							$seller = $sellers->findUserById($data['sellerid']);
-							$text = "New Case In!! Client: ".$data['clientname']." Date:";
+							$text = "New Case In!! Client: ".$data['clientName']." Date:";
 							$sendmail = $cases->sendmail($seller['email'],$data['sellerName'],$text);
 							if ($sendmail)
 								$data['sendmail'] = 'success';
@@ -321,28 +321,69 @@ class Index extends Controller
 				return json($data,200);
 			case ('addInfo'):
 				$data = array();
-				if (input('caseid'))
-					$caseid = input('caseid');
-				if (!empty($_POST['checklist']))
-					$data['checklist'] = $_POST['checklist'];
-				if (empty($data))
+				switch(true)
 				{
-					$data['update'] = 'Fail';
-					$data['reasons'] = 'Empty Data!!';
-				} else {
-	 				$cases = controller('Cases','event');
-					$result = $cases->updateCases($data,$uid,$caseid);
-					if ($result)
-						$data['update'] = 'Success';
-					else
+					case (empty(input('caseid'))):
 					{
 						$data['update'] = 'Fail';
-						$data['reasons'] = 'Data Save Error!!';
-
-					}						
+						$data['reasons'] = 'Caseid Error';
+						$data['post'] = $_POST;
+						break;
+					}
+					case (empty($_POST['checklist'])):
+					{
+						$data['update'] = 'Fail';
+						$data['reasons'] = 'Empty Data!!';
+						break;
+					} 
+					default: 
+					{
+						$caseid = input('caseid');
+						$data['checklist'] = $_POST['checklist'];
+		 				$cases = controller('Cases','event');
+						$result = $cases->updateCases($data,$uid,$caseid);
+						if ($result)
+							$data['update'] = 'Success';
+						else
+						{
+							$data['update'] = 'Fail';
+							$data['reasons'] = 'Data Save Error!!';
+	
+						}						
+					}
 				}
 				return json($data,200);
 				break;
+			case ('submitCase'):
+				$data = array();
+				switch(true)
+				{
+					case (empty(input('caseid'))):
+					{
+						$data['update'] = 'Fail';
+						$data['reasons'] = 'Caseid Error';
+						break;
+					}
+					default: 
+					{
+						$data['status'] = 0;
+						$caseid = input('caseid');
+		 				$cases = controller('Cases','event');
+						$result = $cases->updateCases($data,$uid,$caseid);
+						if ($result)
+						{
+							$data['submit'] = 'success';
+						} else
+						{
+							$data['submit'] = 'Fail';
+							$data['reasons'] = 'Case Save Error!!';
+	
+						}						
+					}
+				}
+				return json($data,200);
+				break;
+
 			case ('addReview'):
 				$data = array();
 				if (input('caseid'))

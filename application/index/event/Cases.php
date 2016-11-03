@@ -14,9 +14,14 @@ class Cases
 		return Db::name('cases')->where('_id','=',$id)->where('uid',$uid)->limit(1)->find();
 	}
 
-	public function findAllBySellerid($sellerid,$status=0)
+	public function findByCaseId($caseid,$id,$filter='sellerid')
 	{
-		$services = Db::name('cases')->where('sellerid',$sellerid)->select();
+		return Db::name('cases')->where('_id','=',$caseid)->where($filter,$id)->limit(1)->find();
+	}
+
+	public function findAllBySellerid($sellerid,$status=9)
+	{
+		$services = Db::name('cases')->where('sellerid',$sellerid)->where('status','<',$status)->select();
 		foreach ($services as $key=>$service)
 		{
 			$services[$key]['status'] = $this->getStatusAttr($service['status']);
@@ -53,7 +58,7 @@ class Cases
 
     	public function getStatusAttr($value)
     	{
-        	$status = [9=>'删除',0=>'待审核',1=>'确认',2=>'退回',3=>'拒绝',4=>'已支付',5=>"处理中",6=>"补资料",7=>"完成"];
+        	$status = [9=>'删除',0=>'待审核',1=>'确认',2=>'退回',3=>'拒绝',4=>'已支付',5=>"处理中",6=>"补资料",7=>"完成",10=>"草稿"];
         	return $status[$value];
     	}
 
