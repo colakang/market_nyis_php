@@ -19,9 +19,9 @@ class Cases
 		return Db::name('cases')->where('_id','=',$caseid)->where($filter,$id)->limit(1)->find();
 	}
 
-	public function findAllBySellerid($sellerid,$status=9)
+	public function findAllBySellerid($sellerid,$status=9,$type="<")
 	{
-		$services = Db::name('cases')->where('sellerid',$sellerid)->where('status','<',$status)->select();
+		$services = Db::name('cases')->where('sellerid',$sellerid)->where('status',$type,$status)->select();
 		foreach ($services as $key=>$service)
 		{
 			$services[$key]['status'] = $this->getStatusAttr($service['status']);
@@ -39,9 +39,9 @@ class Cases
 		return Db::name('cases')->insertGetId($data);
 	}
 
-	public function findAllByUid($uid)
+	public function findAllByUid($uid,$status=9,$type="<")
 	{
-		$services = Db::name('cases')->where('uid',"=",$uid)->select();
+		$services = Db::name('cases')->where('uid',"=",$uid)->where('status',$type,$status)->select();
 		foreach ($services as $key=>$service)
 		{
 			//$name = Db::name('services')->where('_id',$service['serviceid'])->field('name')->limit(1)->find();
@@ -67,9 +67,9 @@ class Cases
         	return date($p,$value);
     	}
 
-	public function updateCases($data,$uid,$caseid)
+	public function updateCases($data,$id,$caseid,$name='uid')
 	{
-		$update = Db::name('cases')->where('uid',$uid)->where('_id', $caseid)->update($data);
+		$update = Db::name('cases')->where($name,$id)->where('_id', $caseid)->update($data);
 		if ($update==0)
 			return false;
 		else

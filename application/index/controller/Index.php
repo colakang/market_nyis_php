@@ -38,7 +38,7 @@ class Index extends Controller
 		Session::delete('isLogin');
 		Session::delete('uid');
 		Session::delete('nickname');
-		return $this->success('退出成功', '/');
+		return $this->redirect('/');
 	}
 
 	public function profile()
@@ -60,7 +60,8 @@ class Index extends Controller
 	 	$users = controller('User','event');
 		switch(true) {
 			case (Session::has('isLogin')):
-				return $this->success('登陆成功', '/');
+				$redirect = input('redirect') ? input('redircet') : "/";
+				return $this->success('登陆成功', $redirect);
 				break;
 			case (empty($_POST)):
 				$this->redirect('/');
@@ -79,7 +80,9 @@ class Index extends Controller
 					Session::set('isLogin',true);
 					Session::set('uid',$isUserId);
 					Session::set('nickname',$isUserName);
-					$this->redirect('/');
+					$link = input('redirect') ? input('redirect') : "/";
+					$this->redirect($link);
+					//$this->redirect('/');
 					//return $this->success('登陆成功', '/');
 		    		}
 	   	}	 
@@ -300,12 +303,6 @@ class Index extends Controller
 						{
 							$data['caseid'] = $case;
 							$data['addcase'] = 'success';
-			 				$sellers = controller('Seller','event');
-							$seller = $sellers->findUserById($data['sellerid']);
-							$text = "New Case In!! Client: ".$data['clientName']." Date:";
-							$sendmail = $cases->sendmail($seller['email'],$data['sellerName'],$text);
-							if ($sendmail)
-								$data['sendmail'] = 'success';
 						} else {
 							$data['addcase'] = 'Fail';
 							$data['reasons'] = 'Data Save Error!!';
@@ -364,6 +361,12 @@ class Index extends Controller
 						$data['reasons'] = 'Caseid Error';
 						break;
 					}
+					case (empty(input('sellerid'))):
+					{
+						$data['update'] = 'Fail';
+						$data['reasons'] = 'Sellerid Error';
+						break;
+					}
 					default: 
 					{
 						$data['status'] = 0;
@@ -373,6 +376,14 @@ class Index extends Controller
 						if ($result)
 						{
 							$data['submit'] = 'success';
+			 				$sellers = controller('Seller','event');
+							$seller = $sellers->findUserById(input('sellerid'));
+							$clientName = Session::get('nickname');
+							$text = "New Case In!! Client: ".$clientName." Date:";
+							$sendmail = $cases->sendmail($seller['email'],$seller['name'],$text);
+							if ($sendmail)
+								$data['sendmail'] = 'success';
+
 						} else
 						{
 							$data['submit'] = 'Fail';

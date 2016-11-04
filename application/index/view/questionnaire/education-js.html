@@ -15,6 +15,8 @@
       }
       return true;
     }, "please provide a valid date");
+    var educationList = $('#education-list');
+    var educationNum = 0;
     $('#education-info-query-form').validate({
       focusInvalid: false,
       ignore: "",
@@ -25,14 +27,13 @@
         $(e).removeClass('warning');
       },
       submitHandler: function(form){
+        $('#educationNum').val(educationNum);
         checklistFormSubmit(form, 'education', 0);
       },
       invalidHandler: function(form){
         $('.tip-info.warning').removeClass('hidden');
       }
     });
-    var educationList = $('#education-list');
-    var educationNum = 0;
     function appendRelativeNode(index){
       var node = "<div id='education-entry" + index + "' class='education-entry-js'>" +
           "<div class='row'>" +
@@ -88,13 +89,17 @@
           "</div>" : "") +
           "<br></div>";
       educationList.append(node);
-      $('.input-mask-date').mask('99/99/9999');
-      $('a.delete-link-js').click(function (e) {
-        $('#education-entry' + index).remove();
-        e.preventDefault();
-      });
       var propsProto = ["schoolName", "educationCity", "educationState", "educationZip",
         "educationCountry", "degree", "major", "receivedDate"];
+      $('.input-mask-date').mask('99/99/9999');
+      $('a.delete-link-js').click(function (e) {
+        $.each(propsProto, function (i,v) {
+          $("[name=" + v + index + "]").rules("remove");
+        });
+        $('#education-entry' + index).remove();
+        educationNum--;
+        e.preventDefault();
+      });
       $.each(propsProto, function (i, v) {
         $("[name=" + v + index + "]").rules("add",{
           required: true,

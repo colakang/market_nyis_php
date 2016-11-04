@@ -38,15 +38,6 @@
         <h6>{$Think.lang.view_my_info}</h6>
       </div>
     </a>
-
-    <a href="/seller/myservice">
-      <div class="pull-right icon-container">
-        <div class="icon-lg">
-          <i class="icon-case-folder"></i>
-        </div>
-        <h6>{$Think.lang.view_my_service}</h6>
-      </div>
-    </a>
 		<a href="/seller/mycases">
 			<div class="pull-right icon-container active">
 				<div class="icon-lg">
@@ -55,6 +46,14 @@
 				<h6>my cases</h6>
 			</div>
 		</a>
+    <a href="/seller/myservice">
+      <div class="pull-right icon-container">
+        <div class="icon-lg">
+          <i class="icon-case-folder"></i>
+        </div>
+        <h6>{$Think.lang.view_my_service}</h6>
+      </div>
+    </a>
     <a href="/seller/addservice">
       <div class="pull-right icon-container">
         <div class="icon-lg">
@@ -77,7 +76,7 @@
   </div>
 </div>
 
-	<div class="main-content">
+	<div class="main-content case-list-js">
 		<div class="main-content-inner">
 			<div class="breadcrumbs ace-save-state" id="breadcrumbs">
 				<div class="page-content">
@@ -90,8 +89,7 @@
 									<td>{$vo.clientName ?? ""}</td>
 									<td>{$vo.serviceName ?? ""}</td>
 									<td>{$vo.sellerName ?? ""}</td>
-									<td>{$vo._id ?? ""}</td>
-									<td style="text-align: right"><a class="btn btn-primary">check it</a> </td>
+									<td style="text-align: right"><a class="btn btn-primary case-check-btn" reactid="{$vo._id}">check it</a> </td>
 								</tr>
 								{/volist}
 								</tbody>
@@ -102,11 +100,283 @@
 			</div>
 		</div>
 	</div>
-
+	<div class="container case-detail-js hide">
+		<div class="profile-block">
+			<h4>Questionnaire Answer</h4>
+			<div class="profile-group">
+			</div>
+			<button class="btn btn-sm btn-primary">Accept</button>
+			<button class="btn btn-sm btn-primary">Refuse</button>
+			<button class="btn btn-sm btn-primary" id="toggle-list-btn">Check Case List</button>
+		</div>
+	</div>
 
 	{include file="seller/footer_clean"  /}
 	<script type="text/javascript">
 		jQuery(function($) {
+			var fieldAndViewName = {
+				personal: {
+					firstName: "First Name",
+					lastName: "Surname",
+					gender: "Gender",
+					maritalStatus: "Marital Status",
+					personalEmail: "Contact Email",
+					bornCountry: "Country of Birth",
+					nationality: "Nationality",
+					personalCellphone: "Cellphone Number",
+					passportIssueDate: "Issuance Date of Passport",
+					passportExpireDate: "Expiration Date of Passport",
+					passportIssueCountry: "Issuance Country of Passport"
+				},
+				address: {
+					mailingStreet: "Mailing Address Street",
+					mailingApt: "Mailing Address Apt.",
+					mailingCity: "Mailing Address City",
+					mailingState: "Mailing Address State",
+					mailingZip: "Mailing Address Zip",
+					consulateState: "Consulate Address State",
+					consulateApt: "Consulate Address Apt",
+					consulateStreet: "Consulate Address Street",
+					consulateCity: "Consulate Address City"
+				},
+				documents: {
+					status: "Visa Status",
+					statusExpireDate: "Status Expire Date"
+				},
+				relatives: {
+					relativeFirstName: "First Name of Relative",
+					relativeLastName: "Last Name of Relative",
+					relationship: "Relationship"
+				},
+				education: {
+					schoolName: "Name of School",
+					educationCity: "City of School",
+					educationState: "State of School",
+					educationZip: "Zip of School",
+					educationCountry: "Country of School",
+					degree: "Degree",
+					major: "Major",
+					receivedDate: "received date"
+				},
+				employment: {
+					employerName: "Employer Name",
+					employmentCity: "Employer City",
+					employmentState: "Employer State",
+					employmentCountry: "Employer Country",
+					jobTitle: "Job Title",
+					jobDescription: "Job Description",
+					employmentStart: "Start Date of Employment",
+					employmentEnd: "End Date of Employment"
+				}
+				/*address: [
+				 "mailingStreet", "mailingApt", "mailingCity", "mailingState", "mailingZip",
+				 "consulateStreet", "consulateApt", "consulateCity", "consulateState", "consulateZip", "consulateCountry"
+				 ],
+				 documents: [
+				 "status", "statusExpireDate"
+				 ],
+				 relatives: [
+				 "relationship", "gender",
+				 "relativeFirstName", "relativeLastName"
+				 ],
+				 education: [
+				 "schoolName", "educationCity", "educationState", "educationZip",
+				 "educationCountry", "degree", "major", "receivedDate"
+				 ],
+				 employment: [
+				 "employerName", "jobTitle", "jobDescription",
+				 "employmentCity", "employmentState", "employmentCountry", "employmentZip",
+				 "employmentStart", "employmentEnd"
+				 ]*/
+			};
+
+			var fieldName = {
+				personal: [
+						"firstName", "lastName", "gender", "maritalStatus",
+						"personalEmail", "bornCountry", "nationality", "personalCellphone",
+						"passportIssueDate", "passportExpireDate", "passportIssueCountry"
+				],
+				address: [
+				 "mailingStreet", "mailingApt", "mailingCity", "mailingState", "mailingZip",
+				 "consulateStreet", "consulateApt", "consulateCity", "consulateState", "consulateZip", "consulateCountry"
+				 ],
+				documents: [
+				 "status", "statusExpireDate"
+				 ],
+				relatives: [
+				 "relationship", "gender",
+				 "relativeFirstName", "relativeLastName"
+				 ],
+				education: [
+				 "schoolName", "educationCity", "educationState", "educationZip",
+				 "educationCountry", "degree", "major", "receivedDate"
+				 ],
+				employment: [
+				 "employerName", "jobTitle", "jobDescription",
+				 "employmentCity", "employmentState", "employmentCountry", "employmentZip",
+				 "employmentStart", "employmentEnd"
+				 ]
+			};
+
+			function QuestionAnswer(field, viewName, answer) {
+				this.field =field;
+				this.viewName = viewName;
+				this.answer = answer;
+			}
+			QuestionAnswer.prototype = {
+				constructor: QuestionAnswer,
+				getField: function () {
+					return this.field
+				},
+				getViewName: function () {
+					return this.viewName
+				},
+				getAnswer: function () {
+					return this.answer;
+				}
+			};
+
+			function CategoryAnswer(name, answer, fieldAndView) {
+				this.name = name;
+				this.questionAnswers = [];
+				console.log(fieldAndView);
+
+				if(answer.hasOwnProperty('num')) {
+					for(var i = 1; i <= parseInt(answer.num); i++){
+						for(var prop in fieldAndView) {
+							var answerProp = prop + i.toString();
+							if(fieldAndView.hasOwnProperty(prop) && answer.hasOwnProperty(answerProp)) {
+								this.questionAnswers.push(new QuestionAnswer(answerProp, fieldAndView[prop] + " " + i.toString(), answer[answerProp]))
+							}
+						}
+					}
+				}
+				else{
+					for(var prop in answer)
+						if(answer.hasOwnProperty(prop) && fieldAndView.hasOwnProperty(prop))
+							this.questionAnswers.push(new QuestionAnswer(prop, fieldAndView[prop], answer[prop]));
+				}
+			}
+			CategoryAnswer.prototype = {
+				constructor: CategoryAnswer,
+
+				getName: function () {
+					return this.name;
+				},
+
+				generateViewForEachQ: function () {
+					var templateHTML = "";
+					for(var prop in this.questionAnswers){
+						if(this.questionAnswers.hasOwnProperty(prop)){
+							templateHTML += '<div class="profile-table-row">';
+							templateHTML += '<div class="profile-td col-md-4">';
+							templateHTML += this.questionAnswers[prop].getViewName(); templateHTML += '</div>';
+							templateHTML += '<div class="profile-td col-md-8">';
+							templateHTML += this.questionAnswers[prop].getAnswer();
+							templateHTML += '</div></div>';
+						}
+					}
+					return templateHTML;
+				},
+
+				generateView: function () {
+					var templateHTML = '<div class="profile-panel-heading" role="tab" id="headingOne"><h5 class="panel-title">'+ this.getName() +'</h5> </div>';
+					templateHTML += '<div id="collapseOne" class="profile-collapse collapse in" role="tabpanel" aria-labelledby="headingOne"><div class="profile-table">';
+					templateHTML += this.generateViewForEachQ();
+					templateHTML += '</div></div>';
+					return templateHTML;
+				}
+			};
+
+			function AnswerOfPerson(checklist, peopleIndex) {
+				var answers = checklist[peopleIndex.toString()];
+				for(var index = 0; index < checklist["include"].length; index++) {
+					var queryName = checklist["include"][index];
+					this[queryName] = this.getQueryBlock(answers, queryName);
+				}
+			}
+			AnswerOfPerson.prototype = {
+				constructor: AnswerOfPerson,
+
+				getQueryBlock: function (answers, queryName) {
+					for(var index = 0; index < answers.length; index++){
+						if(answers[index].hasOwnProperty(queryName))
+							return new CategoryAnswer(queryName, answers[index][queryName], fieldAndViewName[queryName] || {});
+					}
+					return {};
+				},
+
+				getAnswers: function (category) {
+					return this[category].getAnswer();
+				},
+
+				generateView: function () {
+					var templateHTML = "";
+					for(var prop in this){
+						if(this.hasOwnProperty(prop)){
+							templateHTML += '<div class="profile-row panel">' + this[prop].generateView() + '</div>'
+						}
+					}
+					return templateHTML;
+				}
+			};
+
+			function LawyerCase(checklist) {
+				this.checklist = checklist;
+				this.queries = [];
+				this.parentSelector = ".case-detail-js .profile-group";
+				var index = 0, len = this.getPeopleNum();
+				for(; index < len; index++) {
+					this.queries.push(new AnswerOfPerson(checklist, index));
+				}
+			}
+			LawyerCase.prototype = {
+				constructor: LawyerCase,
+
+				getPeopleNum: function () {
+					var index = 0;
+					while(this.checklist.hasOwnProperty(index.toString())) {
+						index ++;
+					}
+					return index;
+				},
+
+				generateView: function () {
+					var templateHTML = "";
+					templateHTML += this.queries[0].generateView();
+					return templateHTML;
+				},
+
+				appendToParent: function () {
+					$(this.parentSelector).append(this.generateView());
+				}
+			};
+
+			$('.case-check-btn').click(function (e) {
+				e.preventDefault();
+				var $this = $(this);
+				var caseid = $this.attr('reactid');
+				console.log(caseid);
+				$.ajax({
+					url: "/seller/getcaseinfo",
+					method: "GET",
+					data: {
+						caseid: caseid
+					}
+				}).done(function (data) {
+					var lawyerCase = new LawyerCase(data.caseinfo);
+					lawyerCase.appendToParent();
+					$(".case-detail-js").toggleClass('hide');
+					$(".case-list-js").toggleClass('hide');
+				});
+			});
+
+			$('#toggle-list-btn').click(function (e) {
+				e.preventDefault();
+				$(".case-detail-js .profile-group").empty();
+				$(".case-detail-js").toggleClass('hide');
+				$(".case-list-js").toggleClass('hide');
+			});
 		});
 	</script>
 </body>

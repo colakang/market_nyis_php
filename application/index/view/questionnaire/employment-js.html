@@ -1,5 +1,7 @@
 <script type="text/javascript">
   jQuery(function ($) {
+    var employmentList = $('#employment-list');
+    var employmentNum = 0;
     $('#employment-info-query-form').validate({
       focusInvalid: false,
       ignore: "",
@@ -10,14 +12,14 @@
         $(e).removeClass('warning');
       },
       submitHandler: function(form){
+        console.log('employment form is submitted');
+        $('#employmentNum').val(employmentNum);
         checklistFormSubmit(form, 'employment', 0);
       },
       invalidHandler: function(form){
         $('.tip-info.warning').removeClass('hidden');
       }
     });
-    var employmentList = $('#employment-list');
-    var employmentNum = 0;
     function appendRelativeNode(index){
       var node = "<div id='employment-entry" + index + "' class='employment-entry-js'>" +
           "<div class='row'>" +
@@ -62,13 +64,18 @@
           "</div>" : "") +
           "<br></div>";
       employmentList.append(node);
-      $('.input-mask-date').mask('99/99/9999');
-      $('a.delete-link-js').click(function (e) {
-        $('#employment-entry' + index).remove();
-        e.preventDefault();
-      });
       var propsProto = ["employmentName", "jobTitle", "employmentCity", "employmentState", "employmentZip",
         "employmentCountry", "employmentStart", "employmentEnd"];
+      $('.input-mask-date').mask('99/99/9999');
+      $('a.delete-link-js').click(function (e) {
+        $.each(propsProto, function (i, v) {
+          $("[name=" + v + index + "]").rules("remove");
+        });
+        $('#employment-entry' + index).remove();
+        e.preventDefault();
+        employmentNum--;
+      });
+
       $.each(propsProto, function (i, v) {
         $("[name=" + v + index + "]").rules("add",{
           required: true,
