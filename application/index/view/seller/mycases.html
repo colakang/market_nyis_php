@@ -87,8 +87,9 @@
 								{volist name="cases" id="vo"}
 								<tr>
 									<td>{$vo.clientName ?? ""}</td>
-									<td>{$vo.serviceName ?? ""}</td>
-									<td>{$vo.sellerName ?? ""}</td>
+									<td class="service-name-td">{$vo.serviceName ?? ""}</td>
+									<td class="submit-price-td">{$vo.submitPrice.start ?? ""}</td>
+									<td class="case-status-td">{$vo.status ?? ""}</td>
 									<td style="text-align: right"><a class="btn btn-primary case-check-btn" reactid="{$vo._id}">check it</a> </td>
 								</tr>
 								{/volist}
@@ -104,9 +105,21 @@
 		<div class="profile-block">
 			<h4>Questionnaire Answer</h4>
 			<div class="profile-group">
+
 			</div>
-			<button class="btn btn-sm btn-primary">Accept</button>
-			<button class="btn btn-sm btn-primary">Refuse</button>
+			<div id="modify-block">
+				<div class="row" style="padding: 10px 15px 5px 15px">
+					<div class="form-group">
+					<label for="final-price" class="control-label" style="width: 130px; float: left">Final Price</label>
+					<input type="text" id="final-price" class="col-md-3" placeholder="Final Price">
+					</div>
+				</div>
+				<div class="row" style="padding: 10px 15px 5px 145px">
+					<textarea id="mod-reason" class="col-md-5" style="padding: 10px">Describe the reason of modification</textarea>
+				</div>
+			</div>
+			<button class="btn btn-sm btn-primary" id="case-accept">Accept</button>
+			<button class="btn btn-sm btn-primary" id="case-refuse">Refuse</button>
 			<button class="btn btn-sm btn-primary" id="toggle-list-btn">Check Case List</button>
 		</div>
 	</div>
@@ -352,6 +365,25 @@
 				}
 			};
 
+			function BasicInfo(caseid, name, price) {
+				this.caseid = caseid
+				this.name = name;
+				this.price = price;
+			}
+			BasicInfo.prototype = {
+				constructor: BasicInfo,
+				generateView: function () {
+					var templateHTML = "<div class='profile-row panel'>";
+					templateHTML += '<div class="profile-panel-heading" role="tab" id="headingOne"><h5 class="panel-title">Basic Info</h5> </div>';
+					templateHTML += '<div class="profile-collapse"><div class="profile-table">';
+					templateHTML += '<div class="profile-table-row"><div class="profile-td col-md-4">Service Name</div>  <div class="profile-td col-md-8">'+ this.name + '</div></div>';
+					templateHTML += '<div class="profile-table-row"><div class="profile-td col-md-4">Price</div>  <div class="profile-td col-md-8">'+ this.price.start + " "
+							+ this.price.max + '</div></div>';
+					templateHTML += '</div></div></div>';
+					return templateHTML;
+				}
+			};
+			var basicInfo = {};
 			$('.case-check-btn').click(function (e) {
 				e.preventDefault();
 				var $this = $(this);
@@ -364,10 +396,46 @@
 						caseid: caseid
 					}
 				}).done(function (data) {
+					console.log(data);
+					var tdSe = $this.parent();
+					basicInfo = new BasicInfo(caseid, tdSe.siblings('.service-name-td').text(), {
+						start: tdSe.siblings('.submit-price-td').text(),
+						max: ""
+					});
+					$("#final-price").val(basicInfo.price.start);
+					$(".case-detail-js .profile-group").append(basicInfo.generateView());
 					var lawyerCase = new LawyerCase(data.caseinfo);
 					lawyerCase.appendToParent();
 					$(".case-detail-js").toggleClass('hide');
 					$(".case-list-js").toggleClass('hide');
+				});
+			});
+
+			$('#case-accept').click(function () {
+				$.ajax({
+					url: "/seller/update",
+					method: "POST",
+					data: {
+						oper: 'approveCase',
+						caseid: basicInfo.caseid,
+						finalPrice: $("#final-price").val()
+					}
+				}).done(function (data) {
+					console.log(data);
+					window.location.reload();
+				});
+			});
+
+			$('#case-refuse').click(function () {
+				$.ajax({
+					url: "/seller/update",
+					method: "POST",
+					data: {
+						oper: 'rejectsCase',
+						caseid: basicInfo.caseid,
+					}
+				}).done(function (data) {
+					console.log(data);
 				});
 			});
 

@@ -181,6 +181,7 @@
   var addInfoData = {
     oper: "addInfo"
   };
+  var sellerid = "";
   function checklistFormSubmit(form, tabName, personNum) {
     var inputFields = $(form).find('[name]');
     var data = {};
@@ -228,6 +229,8 @@
               serviceid: serviceId
             }
           }).done(function (data) {
+            caseId = data.caseid;
+            sellerid = data.sellerid;
             addInfoData.caseid = data.caseid;
             addInfoData['checklist'] = data['checklist'];
             addInfoData['checklist'][0] = [];
@@ -320,7 +323,8 @@
         method: 'POST',
         data: {
           oper: "submitCase",
-          caseid: addInfoData.caseid
+          caseid: addInfoData.caseid,
+          sellerid: sellerid
         }
       }).done(function(){
         window.location = "/mycases";
