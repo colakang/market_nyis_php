@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Service Specification</title>
+	{include file="index/header_service" /}
+  <link rel="stylesheet" href="/static/stylesheets/sass/service-stylesheet.css">
+  <script src="/static/javascripts/signup-form-validation.module.js"></script>
+</head>
+<body ng-app="signUpFormValidator">
+{include file="index/navbar" nickname=$nickname /}
+<div class="jumbo-show-container_sm">
+  <div class="jumbo-show-background" style="background-image: url('/static/images/5-1 6-1 7-1.jpg')">
+  </div>
+</div>
+<div class="container">
+  <div class="service-specification">
+    <div class="provider-info-card">
+      <div class="photo-container">
+        <img src="/static/images/profile-07.png">
+      </div>
+      <div class="info-container">
+        <h3><b>{$result.sellerName ?? ''}</b></h3>
+        <p>{$result.area ?? ''}</p>
+        <div class="score">
+          <span><i class="fa fa-star golden-star"></i></span>
+          <span><i class="fa fa-star golden-star"></i></span>
+          <span><i class="fa fa-star golden-star"></i></span>
+          <span><i class="fa fa-star golden-star"></i></span>
+          <span><i class="fa fa-star golden-star"></i></span>
+          <span>189</span>
+        </div>
+      </div>
+    </div>
+    <div class="paragraph">
+      <h4><b>{$result.name ?? ''}</b></h4>
+      <p style="white-space: pre">{$result.description ?? "没有简介"}</p>
+    </div>
+    <div class="paragraph">
+      <h4><b>律所介绍</b></h4>
+      <p>{$seller.descript ?? 'NYISLaw Firm致力于为移民提供广泛的美国法律服务,包括各项美国公司注、绿卡申请服务(杰出人才绿卡、职业移民绿卡、投资移民绿卡、亲属移民绿卡等)
+      、各项签证相关服务等多元化移民服务。另外律所也接受跨境商业诉讼案件的委托代理,在证劵法及投资诈骗案件中也为客户提供相关法律服务。'}</p>
+    </div>
+
+    {notempty name="review"}
+     <div class="comment-list">
+      <h4 class="caption"><b>用户评价</b>
+        <ul>
+          <li><i class="fa fa-star golden-star"></i></li>
+          <li><i class="fa fa-star golden-star"></i></li>
+          <li><i class="fa fa-star golden-star"></i></li>
+          <li><i class="fa fa-star golden-star"></i></li>
+          <li><i class="fa fa-star golden-star"></i></li>
+          <!-- <span>189</span> -->
+        </ul>
+      </h4>
+       <ul>
+	{volist name="review" id="vo" }
+        <li>
+          <div class="user-info">
+            <img src="/static/images/profile-07.png">
+            <p><{$vo.nickname ?? ''}/p>
+          </div>
+          <div class="review-info">
+            <div>
+              <span><i class="fa fa-star golden-star"></i></span>
+              <span><i class="fa fa-star golden-star"></i></span>
+              <span><i class="fa fa-star golden-star"></i></span>
+              <span><i class="fa fa-star golden-star"></i></span>
+              <span><i class="fa fa-star golden-star"></i></span>
+            </div>
+            <p>{$vo.content ?? ''}</p>
+            <div class="history-info">
+              <span>{$vo.createTime ?? ''}</span>&nbsp;&nbsp;
+              使用服务:<span>{$result.name ?? ''}</span>
+            </div>
+          </div>
+        </li>
+	{/volist}	
+      </ul>
+    </div>
+    {/notempty}
+<!--		不显示翻页，只显示静态评论
+
+	{volist name="result.checklist" id="vo" }
+		{$vo}
+	{/volist}	
+    <div class="pagination text-center">
+      <ul>
+        <li><a href="/1" class="active">1</a></li>
+        <li><a href="/2">2</a></li>
+        <li><a href="/3">3</a></li>
+        <li><a href="/4" class="next"><i class="fa fa-angle-right"></i> </a></li>
+      </ul>
+    </div>
+-->
+  </div>
+  <div class="price-tag-container">
+    <div class="price-tag primary-price-tag">
+      <h4>{$result.name ?? ''}</h4>
+      <h3>${$result.price.start ?? ''}</h3>
+      <a class="btn btn-lg service-application">申请办理</a>
+    </div>
+  </div>
+</div>
+<div class="service-rc-block">
+  <div class="container">
+    <h4 class="bottom-space-2"><b>相关服务</b></h4>
+	{volist name="promotion" id="vo" offset="10" length='4'}
+    <div class="col-md-3 service-card">
+      <div class="service-card-bg-sm" style="background-image: url('/static/images/1-7.jpg')">
+        <div class="mask-caption v1-dark-mask">
+          <h3 class="left-top">NYIS</h3>
+          <div class="mask-content">
+            <a class="btn btn-link btn-link-hdr" href="/view/{$vo._id ?? ''}">{$vo.name ?? ''}</a>
+            <br>
+            <div>
+              <i class="fa fa-star golden-star" aria-hidden="true"></i>
+              <i class="fa fa-star golden-star" aria-hidden="true"></i>
+              <i class="fa fa-star golden-star" aria-hidden="true"></i>
+              <i class="fa fa-star golden-star" aria-hidden="true"></i>
+              <i class="fa fa-star golden-star" aria-hidden="true"></i>
+              <span>{php}echo rand(70,99);{/php}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="service-card-bottom-padding">
+        <h6>${$vo.price.start ?? ''}</h6>
+        <p>由<a>{$vo.sellerName ?? ''}</a>提供</p>
+      </div>
+    </div>
+	{/volist}	
+  </div>
+</div>
+
+{include file="index/footer" /}
+<!-- login modal -->
+{include file="index/login_modal" /}
+<div class="modal fade" id="quote-modal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+	
+	{volist name="result.checklist" id="vo"}
+		{switch name="vo"}
+    			{case value="personal"}{include file="questionnaire/personal" /}{/case}
+    			{case value="address"}{include file="questionnaire/address" /}{/case}
+    			{case value="documents"}{include file="questionnaire/documents" /}{/case}
+    			{case value="relatives"}{include file="questionnaire/relatives" /}{/case}
+    			{case value="employment"}{include file="questionnaire/employment" /}{/case}
+    			{case value="education"}{include file="questionnaire/education" /}{/case}
+		{/switch}
+	{/volist}
+        <div style="width: 718px; display: none;" id="responseModal">
+          <div class="modal-header">
+            <div class="caption">
+              <img src="/static/images/check%20mark.png">
+              确认提交
+            </div>
+          </div>
+          <div class="modal-body">
+            <div class="order-info-block">
+              <p>服务提供商: {$result.sellerName ?? ''}</p>
+            </div>
+            <p>如需要帮助,请联系客服人员: <span style="color: #fc7777">(800) 685-6947</span></p>
+            <a class="btn btn-lg btn-primary" id="submit-questionnaire" href="#">提交</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript" src="/static/javascripts/autocomplete.js"></script>
+<script type="text/javascript" src="/static/javascripts/login-signup-toggle.js"></script>
+<script>
+  var caseId = "";
+  var addInfoData = {
+    oper: "addInfo"
+  };
+  var sellerid = "";
+  function checklistFormSubmit(form, tabName, personNum) {
+    var inputFields = $(form).find('[name]');
+    var data = {};
+    inputFields.each(function () {
+      console.log($(this));
+      data[$(this).attr('name')] = $(this).val();
+    });
+    var exist = false;
+    for(var i = 0; i < addInfoData['checklist'][personNum].length; i++) {
+      if(addInfoData['checklist'][personNum][i].hasOwnProperty(tabName)) {
+        exist = true;
+        addInfoData['checklist'][personNum][i][tabName] = data;
+      }
+    }
+    if(!exist) {
+      var temp = {}; temp[tabName] = data;
+      addInfoData['checklist'][personNum].push(temp);
+    }
+    console.log(addInfoData);
+    $.ajax({
+      url: '/update',
+      method: 'POST',
+      data: addInfoData
+    }).done(function (data) {
+      $(form).parent().css('display', 'none').next().css('display', 'block');
+      console.log(data);
+    });
+  }
+  jQuery(function ($) {
+    $('.input-mask-phone').mask('(999)999-9999');
+    $('.input-mask-ssn').mask('999-99-9999');
+    $('.input-mask-date').mask('99/99/9999');
+    $('.service-application').click(function (e) {
+      console.log('申请服务事件');
+      var tokenizedUrl = window.location.href.split('/');
+      var serviceId = tokenizedUrl[tokenizedUrl.length - 1];
+      console.log(serviceId);
+      if($('#account-comp').length > 0) {
+        if (!caseId) {
+          $.ajax({
+            url: "/update",
+            method: "POST",
+            data: {
+              oper: 'addcase',
+              serviceid: serviceId
+            }
+          }).done(function (data) {
+            caseId = data.caseid;
+            sellerid = data.sellerid;
+            addInfoData.caseid = data.caseid;
+            addInfoData['checklist'] = data['checklist'];
+            addInfoData['checklist'][0] = [];
+            $('.query-block').eq(0).css('display', 'block');
+            $('#quote-modal').modal('toggle');
+          });
+        }
+        else{
+          $('#quote-modal').modal('toggle');
+        }
+      }else{
+        $('.login-warning').css('display', 'block');
+        $('#loginModal').modal('toggle');
+      }
+    });
+    function ajaxIndicatorStart(text)
+    {
+      if($('body').find('#resultLoading').attr('id') != 'resultLoading')
+      {
+        $('body').append(
+            '<div id="resultLoading" style="display:none">' +
+            '<div><img src="/static/images/ajax-loader.gif">' +
+            '<div>'+text+'</div>' +
+            '</div>' +
+            '<div class="bg"></div></div>');
+      }
+
+      $('#resultLoading').css({
+        'width':'100%',
+        'height':'100%',
+        'position':'fixed',
+        'z-index':'10000000',
+        'top':'0',
+        'left':'0',
+        'right':'0',
+        'bottom':'0',
+        'margin':'auto'
+      });
+
+      $('#resultLoading .bg').css({
+        'background':'#000000',
+        'opacity':'0.7',
+        'width':'100%',
+        'height':'100%',
+        'position':'absolute',
+        'top':'0'
+      });
+
+      $('#resultLoading>div:first').css({
+        'width': '250px',
+        'height':'75px',
+        'text-align': 'center',
+        'position': 'fixed',
+        'top':'0',
+        'left':'0',
+        'right':'0',
+        'bottom':'0',
+        'margin':'auto',
+        'font-size':'16px',
+        'z-index':'10',
+        'color':'#ffffff'
+
+      });
+
+      $('#resultLoading .bg').height('100%');
+      $('#resultLoading').fadeIn(300);
+      $('body').css('cursor', 'wait');
+    }
+
+    function ajaxIndicatorStop()
+    {
+      $('#resultLoading .bg').height('100%');
+      $('#resultLoading').fadeOut(300);
+      $('body').css('cursor', 'default');
+    }
+
+    $(document).ajaxStart(function () {
+      //show ajax indicator
+      ajaxIndicatorStart('loading data.. please wait..');
+    }).ajaxStop(function () {
+      //hide ajax indicator
+      ajaxIndicatorStop();
+    });
+
+    $('#submit-questionnaire').click(function (e) {
+      e.preventDefault();
+      console.log("submit case id: " + addInfoData.caseid);
+      $.ajax({
+        url: '/update',
+        method: 'POST',
+        data: {
+          oper: "submitCase",
+          caseid: addInfoData.caseid,
+          sellerid: sellerid
+        }
+      }).done(function(){
+        window.location = "/mycases";
+      });
+    });
+  });
+</script>
+	{volist name="result.checklist" id="vo"}
+		{switch name="vo"}
+    			{case value="personal"}{include file="questionnaire/personal-js" /}{/case}
+    			{case value="address"}{include file="questionnaire/address-js" /}{/case}
+    			{case value="documents"}{include file="questionnaire/documents-js" /}{/case}
+    			{case value="relatives"}{include file="questionnaire/relatives-js" /}{/case}
+    			{case value="employment"}{include file="questionnaire/employment-js" /}{/case}
+    			{case value="education"}{include file="questionnaire/education-js" /}{/case}
+		{/switch}
+	{/volist}
+
+</body>
+</html>
