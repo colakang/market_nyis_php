@@ -207,6 +207,11 @@ class Index extends Controller
 		$uid = Session::get('uid');
 	 	$cases = controller('Cases','event');
 		$case = $cases->findAllByUid($uid);
+		if (input('api')=="v1")
+		{
+			$case["nickname"] = Session::get('nickname');
+			return json($case,200);	
+		}
 		$view = new View();
 		$view->assign('cases',$case);
 		$view->nickname = Session::get('nickname');
@@ -295,7 +300,8 @@ class Index extends Controller
 						$data['isComment'] = false;
 						$data['createTime'] = time();
 						$data['uid'] = $uid;
-						$data['status'] = 10;	//0=待审核; 1=成交;2=退回;3=拒绝;10=草稿
+						$data['refNo'] = substr(md5($data['createTime'].$uid),0,8);
+						$data['status'] = 10;	//0=待审核; 1=成交;2=律师锁定;3=律师拒绝;4=用户拒绝;10=草稿
 						$data['checklist']['include'] = $result['checklist'];
 	 					$cases = controller('Cases','event');
 						$case = $cases->addCases($data);
@@ -316,6 +322,7 @@ class Index extends Controller
 					}						
 				}
 				return json($data,200);
+
 			case ('addInfo'):
 				$data = array();
 				switch(true)
@@ -389,6 +396,34 @@ class Index extends Controller
 							$data['submit'] = 'Fail';
 							$data['reasons'] = 'Case Save Error!!';
 	
+						}						
+					}
+				}
+				return json($data,200);
+				break;
+			case ('rejectsCase'):
+				$data = array();
+				switch(true)
+				{
+					case (empty(input('caseid'))):
+					{
+						$data['update'] = 'Fail';
+						$data['reasons'] = 'Caseid Error';
+						break;
+					}
+					default: 
+					{
+						$data['status'] = 4;
+						$caseid = input('caseid');
+		 				$cases = controller('Cases','event');
+						$result = $cases->updateCases($data,$uid,$caseid);
+						if ($result)
+						{
+							$data['rejects'] = 'success';
+						} else
+						{
+							$data['rejects'] = 'Fail';
+							$data['reasons'] = 'Case Save Error!!';
 						}						
 					}
 				}

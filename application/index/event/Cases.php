@@ -24,6 +24,7 @@ class Cases
 		$services = Db::name('cases')->where('sellerid',$sellerid)->where('status',$type,$status)->select();
 		foreach ($services as $key=>$service)
 		{
+			$services[$key]['caseID'] = (string) $service['_id'];
 			$services[$key]['status'] = $this->getStatusAttr($service['status']);
 			if (!empty($service['createTime']))
 			{
@@ -46,6 +47,7 @@ class Cases
 		{
 			//$name = Db::name('services')->where('_id',$service['serviceid'])->field('name')->limit(1)->find();
 			//$services[$key]['name'] = $name['name'];
+			$services[$key]['caseID'] = (string) $service['_id'];
 			$services[$key]['status'] = $this->getStatusAttr($service['status']);
 			if (!empty($service['createTime']))
 			{
@@ -58,7 +60,7 @@ class Cases
 
     	public function getStatusAttr($value)
     	{
-        	$status = [9=>'删除',0=>'待审核',1=>'确认',2=>'退回',3=>'拒绝',4=>'已支付',5=>"处理中",6=>"补资料",7=>"完成",10=>"草稿"];
+        	$status = [9=>'删除',0=>'待审核',1=>'确认',2=>'退回',3=>'律师拒绝',4=>'用户拒绝',5=>"处理中",6=>"补资料",7=>"完成",10=>"草稿"];
         	return $status[$value];
     	}
 
