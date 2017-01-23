@@ -460,7 +460,7 @@ class Index extends Controller
 						{
 							$data['reviewid'] = $review;
 							$caseData['isComment'] = true;
-							$result =  $cases->updateCases($caseData,$uid,$caseid);
+							$result =  $cases->updateCases($caseData,$uid,$data['caseid']);
 							$data['addReview'] = 'success';
 						} else {
 							$data['addReview'] = 'Fail';
