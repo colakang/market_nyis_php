@@ -689,4 +689,92 @@ class Seller extends Controller
 
     	}
 
+        public function upload()
+        {
+		$sid = Session::get('sid');
+		if (empty($_POST))
+		{
+			$put=file_get_contents('php://input');
+			$put=json_decode($put,1);
+			if (is_array($put))
+			{
+				foreach ($put as $key=>$value)
+				{
+					$_POST[$key] = $value;
+				}
+			}
+		}
+
+		#$file = $_FILES['file']['tmp_name'];
+		$data = array();
+		$file = request()->file('file');
+		if (empty($file))
+			return json("No Data!!",200);
+		$info = $file->move(ROOT_PATH . 'uploads');
+	    	if($info){
+        		$data["filename"] = $info->getFilename(); 
+        		$data["path"] = $info->getPath(); 
+    		}else{
+        		echo $file->getError();
+    		}
+		switch(true)
+		{
+			case (empty(input('caseid'))):
+			{
+				$data['upload'] = 'Fail';
+				$data['reasons'] = 'Caseid Error';
+				break;
+			}
+			case (empty(input('description'))):
+			{
+				$data['upload'] = 'Fail';
+				$data['reasons'] = 'description Error';
+				break;
+			}
+			case (empty($file)):
+			{
+				$data['upload'] = 'Fail';
+				$data['reasons'] = 'File Empty';
+				break;
+			}
+
+			default: 
+			{
+				$caseid = input('caseid');
+				$cases = controller('Cases','event');
+				$result = $cases->findByCaseId($caseid,$sid,'sellerid');
+				if ($result)
+				{
+					$data['uid'] = $result['uid'];
+					$data['sellerid'] = $result['sellerid'];
+					$data['owner'] = $result['sellerid'];
+					$data['serviceid'] = $result['serviceid'];
+					#$data['serviceName'] = $result['serviceName'];
+					#$data['clientName'] = $result['clientName'];
+					$data['caseid'] = $caseid;
+					$data['description'] = input('description');
+				}
+				else
+				{
+					$data['status'] = 'Fail';
+					$data['reasons'] = 'Case info not found!';
+				}
+
+ 				$upfile = controller('Files','event');
+				$result = $upfile->addFiles($data);
+				if ($result)
+				{
+					$data['upload'] = 'success';
+					$data['fileid'] = $result;
+				} else
+				{
+					$data['upload'] = 'Fail';
+					$data['reasons'] = 'File Create Error!!';
+				}						
+			}
+		}
+		return json($data,200);
+		break;
+   	}
+
 }

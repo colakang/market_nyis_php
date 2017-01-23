@@ -20,6 +20,7 @@ return [
     'profile' => 'index/index/profile',
     'update' => 'index/index/update',
     'mycases' => 'index/index/mycases',
+    'upload' => 'index/index/upload',
     'seller' => '/seller/',
     's' => 'index/index/search',
     'view/:id' => 'index/index/view',
