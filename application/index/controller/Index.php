@@ -209,7 +209,7 @@ class Index extends Controller
 		$case = $cases->findAllByUid($uid);
 		if (input('api')=="v1")
 		{
-			$case["nickname"] = Session::get('nickname');
+			//$case["nickname"] = Session::get('nickname');
 			return json($case,200);	
 		}
 		$view = new View();
