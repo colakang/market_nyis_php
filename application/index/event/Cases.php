@@ -40,7 +40,7 @@ class Cases
 		return Db::name('cases')->insertGetId($data);
 	}
 
-	public function findAllByUid($uid,$status=9,$type="<")
+	public function findAllByUid($uid,$status=11,$type="<")
 	{
 		$services = Db::name('cases')->where('uid',"=",$uid)->where('status',$type,$status)->select();
 		foreach ($services as $key=>$service)
