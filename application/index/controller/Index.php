@@ -49,6 +49,11 @@ class Index extends Controller
 	 	$users = controller('User','event');
 		$profile = $users->findUserById($uid);
 		unset($profile['_id']);
+		if (input('api')=="v1")
+		{
+			//$case["nickname"] = Session::get('nickname');
+			return json($profile,200);	
+		}
 		$view = new View();
 		$view->assign('profile',$profile);
 		$view->nickname = $profile['nickname'];
