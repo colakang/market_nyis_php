@@ -3,3 +3,4 @@ application/config.php
 public/*.php
 public/*.txt
 public/*.gz
+**/.DS_Store
