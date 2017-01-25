@@ -628,5 +628,64 @@ class Index extends Controller
 		break;
    	}
 
-
+	public function download()
+	{
+		$uid = Session::get('uid');
+		if (empty($_POST))
+		{
+			$put=file_get_contents('php://input');
+			$put=json_decode($put,1);
+			if (is_array($put))
+			{
+				foreach ($put as $key=>$value)
+				{
+					$_POST[$key] = $value;
+				}
+			}
+		}
+ 		switch(true)
+		{
+			case (empty(input('fileid'))):
+			{
+				$data['download'] = 'Fail';
+				$data['reasons'] = 'fileid Error';
+				break;
+			}
+			default: 
+			{
+				$files = controller('Files','event');
+				$file = $files->findById(input('fileid'),$uid,"uid"); 
+				if($file)
+				{
+					header('Content-Description: File Transfer');
+			    		header('Content-Type: application/octet-stream');
+			    		$ua = $_SERVER["HTTP_USER_AGENT"];
+			      		if (preg_match('/MSIE/', $ua)) {
+			            		header('Content-Disposition: attachment; filename="' . rawurlencode($filename) . '"');
+			        	} elseif (preg_match("/Firefox/", $ua)) {
+			            		header('Content-Disposition: attachment; filename*="utf8\'\'' . $filename . '"');
+			        	} else {
+			            		header('Content-Disposition: attachment; filename="' . $filename . '"');
+			        	}
+			        	header('Content-Transfer-Encoding: binary');
+			        	header('Expires: 0');
+			        	header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+			        	header('Pragma: public');
+			        	header('Content-Length: ' . filesize($filePath));
+			        	if (strpos($_SERVER["SERVER_SOFTWARE"], 'Apache') !== false) {
+			            		header('X-Sendfile: ' . $filePath);
+			        	} elseif (strpos($_SERVER["SERVER_SOFTWARE"], 'nginx') !== false) {
+			            		// 使用 nginx 服务器时，则把 文件下载交给 nginx 处理，这样效率高些
+			            	header('X-Accel-Redirect: '. '/protected/' . $filename);
+			        	} else {
+			          		set_time_limit(300);  // 避免下载超时
+			            		ob_end_clean();  // 避免大文件导致超过 memory_limit 限制
+			          		readfile($filePath);
+			    		}
+				} else {
+					$data['download'] = 'Fail';
+				}
+			}
+		}
+	}
 }

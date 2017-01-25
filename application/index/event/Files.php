@@ -7,6 +7,10 @@ use \think\Db;
 class Files
 {
 
+	public function findById($fileid,$id,$filter='sellerid')
+	{
+		return Db::name('files')->where('_id','=',$caseid)->where($filter,$id)->limit(1)->find();
+	}
 
 
 	public function findByCaseId($caseid,$id,$filter='sellerid')
