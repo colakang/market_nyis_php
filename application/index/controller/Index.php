@@ -693,4 +693,41 @@ class Index extends Controller
 		}
 		return json($data,200);
 	}
+
+	public function getFileList()
+	{
+		$uid = Session::get('uid');
+		$data = array();
+		if (empty($_POST))
+		{
+			$put=file_get_contents('php://input');
+			$put=json_decode($put,1);
+			if (is_array($put))
+			{
+				foreach ($put as $key=>$value)
+				{
+					$_POST[$key] = $value;
+				}
+			}
+		}
+ 		switch(true)
+		{
+			case (empty(input('fileid'))):
+			{
+				$data['download'] = 'Fail';
+				$data['reasons'] = 'fileid Error';
+				break;
+			}
+			default: 
+			{
+	 			$files = controller('Files','event');
+				$file = $files->findByCaseId($caseid,$uid,'uid');
+				$data = $file;
+			}
+		}
+		return json($data,200);
+
+	}
+
+
 }
