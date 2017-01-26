@@ -712,16 +712,16 @@ class Index extends Controller
 		}
  		switch(true)
 		{
-			case (empty(input('fileid'))):
+			case (empty(input('caseid'))):
 			{
-				$data['download'] = 'Fail';
+				$data['getFileList'] = 'Fail';
 				$data['reasons'] = 'fileid Error';
 				break;
 			}
 			default: 
 			{
 	 			$files = controller('Files','event');
-				$file = $files->findByCaseId($caseid,$uid,'uid');
+				$file = $files->findAllByCaseId($caseid,$uid,'uid');
 				$data = $file;
 			}
 		}

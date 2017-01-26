@@ -22,6 +22,7 @@ return [
     'mycases' => 'index/index/mycases',
     'upload' => 'index/index/upload',
     'download' => 'index/index/download',
+    'getFileList' => 'index/index/getFileList',
     'seller' => '/seller/',
     's' => 'index/index/search',
     'view/:id' => 'index/index/view',
