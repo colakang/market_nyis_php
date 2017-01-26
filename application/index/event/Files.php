@@ -9,7 +9,7 @@ class Files
 
 	public function findById($fileid,$id,$filter='sellerid')
 	{
-		return Db::name('files')->where('_id','=',$caseid)->where($filter,$id)->limit(1)->find();
+		return Db::name('files')->where('_id','=',$fileid)->where($filter,$id)->limit(1)->find();
 	}
 
 

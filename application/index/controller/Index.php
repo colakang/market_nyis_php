@@ -564,7 +564,7 @@ class Index extends Controller
 		$info = $file->move(ROOT_PATH . 'uploads');
 	    	if($info){
         		$data["filename"] = $info->getFilename(); 
-        		$data["path"] = $info->getPath(); 
+        		$data["path"] = DS.$info->getSaveName(); 
     		}else{
         		echo $file->getError();
     		}
@@ -598,7 +598,7 @@ class Index extends Controller
 				{
 					$data['uid'] = $result['uid'];
 					$data['sellerid'] = $result['sellerid'];
-					$data['owner'] = $result['sellerid'];
+					$data['owner'] = $result['uid'];
 					$data['serviceid'] = $result['serviceid'];
 					#$data['serviceName'] = $result['serviceName'];
 					#$data['clientName'] = $result['clientName'];
@@ -657,6 +657,9 @@ class Index extends Controller
 				$file = $files->findById(input('fileid'),$uid,"uid"); 
 				if($file)
 				{
+					$filename = $file['filename'];
+					$filepath = $file['path'];
+					$path = ROOT_PATH . 'uploads/';			//文件实际路径
 					header('Content-Description: File Transfer');
 			    		header('Content-Type: application/octet-stream');
 			    		$ua = $_SERVER["HTTP_USER_AGENT"];
@@ -671,21 +674,23 @@ class Index extends Controller
 			        	header('Expires: 0');
 			        	header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
 			        	header('Pragma: public');
-			        	header('Content-Length: ' . filesize($filePath));
+			        	header('Content-Length: ' . filesize($path.$filepath));
 			        	if (strpos($_SERVER["SERVER_SOFTWARE"], 'Apache') !== false) {
-			            		header('X-Sendfile: ' . $filePath);
+			            		header('X-Sendfile: ' . $filepath);
 			        	} elseif (strpos($_SERVER["SERVER_SOFTWARE"], 'nginx') !== false) {
 			            		// 使用 nginx 服务器时，则把 文件下载交给 nginx 处理，这样效率高些
-			            	header('X-Accel-Redirect: '. '/protected/' . $filename);
+			            	header('X-Accel-Redirect: '. '/dl/' . $filepath);
 			        	} else {
 			          		set_time_limit(300);  // 避免下载超时
 			            		ob_end_clean();  // 避免大文件导致超过 memory_limit 限制
-			          		readfile($filePath);
+			          		readfile($path.$filePath);
 			    		}
 				} else {
 					$data['download'] = 'Fail';
 				}
+				break;
 			}
 		}
+		return json($data,200);
 	}
 }

@@ -21,6 +21,7 @@ return [
     'update' => 'index/index/update',
     'mycases' => 'index/index/mycases',
     'upload' => 'index/index/upload',
+    'download' => 'index/index/download',
     'seller' => '/seller/',
     's' => 'index/index/search',
     'view/:id' => 'index/index/view',

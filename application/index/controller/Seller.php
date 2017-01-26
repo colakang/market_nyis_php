@@ -713,7 +713,7 @@ class Seller extends Controller
 		$info = $file->move(ROOT_PATH . 'uploads');
 	    	if($info){
         		$data["filename"] = $info->getFilename(); 
-        		$data["path"] = $info->getPath(); 
+        		$data["path"] = $info->getSaveName(); 
     		}else{
         		echo $file->getError();
     		}
