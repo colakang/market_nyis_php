@@ -20,7 +20,13 @@ class Files
 
 	public function findAllByCaseId($caseid,$id,$filter='sellerid')
 	{
-		return Db::name('files')->where('caseid','=',$caseid)->where($filter,'=',$id)->select();
+		$services = Db::name('files')->where('caseid','=',$caseid)->where($filter,'=',$id)->select();
+		foreach ($services as $key=>$service)
+		{
+			$services[$key]['fileid'] = (string) $service['_id'];
+		}
+		return $services;
+
 	}
 
 	public function addFiles($data)
