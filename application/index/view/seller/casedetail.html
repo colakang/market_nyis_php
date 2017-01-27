@@ -232,6 +232,9 @@
         caseid: $('#case-id-input').val(),
         finalPrice: $('#price-tag').html()
       }
+    }).done(function (data) {
+      $('accept-from').submit();
+      location.reload();
     });
   });
 </script>
