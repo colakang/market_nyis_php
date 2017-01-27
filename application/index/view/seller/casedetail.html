@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Case View</title>
+  <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/assets/css/ace.min.css" class="ace-main-stylesheet" id="main-ace-style">
+  {include file="seller/header" /}
+  <style>
+    .seller-action-bc {
+      margin-top: 30px;
+      border-top: #F2F2F2 solid 1px;
+      padding: 20px 0;
+    }
+
+    .breadcrumbs {
+      padding: 0;
+    }
+
+    .page-content {
+      min-height: 700px;
+      padding-top: 60px;
+    }
+  </style>
+</head>
+<body>
+	{include file="seller/navbar_index" nickname=$nickname /}
+	{notempty name="nickname"}
+		{include file="seller/navbar_login" nickname=$nickname /}
+	{/notempty}
+<div class="profile-header">
+  <div class="container">
+    <div class="profile-photo">
+      <img src="/static/images/profile-07.png">
+    </div>
+    <div class="caption">
+      {$Think.lang.view_my_account}
+    </div>
+    <a href="/seller/profile">
+      <div class="pull-right icon-container">
+        <div class="icon-lg">
+          <i class="icon-profile-icon"></i>
+        </div>
+        <h6>{$Think.lang.view_my_info}</h6>
+      </div>
+    </a>
+    <a href="/seller/mycases">
+      <div class="pull-right icon-container active">
+        <div class="icon-lg">
+          <i class="icon-case-folder"></i>
+        </div>
+        <h6>my cases</h6>
+      </div>
+    </a>
+    <a href="/seller/myservice">
+      <div class="pull-right icon-container">
+        <div class="icon-lg">
+          <i class="icon-case-folder"></i>
+        </div>
+        <h6>{$Think.lang.view_my_service}</h6>
+      </div>
+    </a>
+    <a href="/seller/addservice">
+      <div class="pull-right icon-container">
+        <div class="icon-lg">
+          <i class="icon-add-new-document"></i>
+        </div>
+        <h6>{$Think.lang.view_add_service}</h6>
+      </div>
+    </a>
+    {eq name='Think.session.level' value='9'}
+    <a href="/seller/approve">
+      <div class="pull-right icon-container">
+        <div class="icon-lg">
+          <i class="icon-case-folder"></i>
+        </div>
+        <h6>{$Think.lang.view_approve_service}</h6>
+      </div>
+    </a>
+    {/eq}
+
+  </div>
+</div>
+<div class="container">
+  <div class="page-header"><h3>{$cases.serviceName}</h3></div>
+  <div class="row">
+    <div class="col-sm-6">
+      <li class="list-group-item">
+        <div class="row">
+          <div class="col-xs-4">Client Name</div>
+          <div class="col-xs-8">{$cases['checklist']['BasicInfo']['fullName']}</div>
+        </div>
+      </li>
+      <li class="list-group-item">
+        <div class="row">
+          <div class="col-xs-4">Gender</div>
+          <div class="col-xs-8">{$cases['checklist']['BasicInfo']['gender']}</div>
+        </div>
+      </li>
+      <li class="list-group-item">
+        <div class="row">
+          <div class="col-xs-4">Nationality</div>
+          <div class="col-xs-8">{$cases['checklist']['BasicInfo']['nationality']}</div>
+        </div>
+      </li>
+      <li class="list-group-item">
+        <div class="row">
+          <div class="col-xs-4">Date of Birth</div>
+          <div class="col-xs-8">{$cases['checklist']['BasicInfo']['dob']}</div>
+        </div>
+      </li>
+      <li class="list-group-item">
+        <div class="row">
+          <div class="col-xs-4">Current Status</div>
+          <div class="col-xs-8">{$cases['checklist']['BasicInfo']['currentStatus']}</div>
+        </div>
+      </li>
+      <li class="list-group-item">
+        <div class="row">
+          <div class="col-xs-4">Description</div>
+          <div class="col-xs-8">
+            {$cases['checklist']['Specification']['description']}
+          </div>
+        </div>
+      </li>
+    </div>
+    <div class="col-sm-6">
+      <li class="list-group-item">
+        <div class="row">
+          <div class="col-xs-4">Phone Country Region</div>
+          <div class="col-xs-8">{$cases['checklist']['ContactInfo']['phoneRegion']}</div>
+        </div>
+      </li>
+      <li class="list-group-item">
+        <div class="row">
+          <div class="col-xs-4">Phone Number</div>
+          <div class="col-xs-8">{$cases['checklist']['ContactInfo']['phoneNumber']}</div>
+        </div>
+      </li>
+      <li class="list-group-item">
+        <div class="row">
+          <div class="col-xs-4">Email</div>
+          <div class="col-xs-8">{$cases['checklist']['ContactInfo']['email']}</div>
+        </div>
+      </li>
+      <li class="list-group-item">
+        <div class="row">
+          <div class="col-xs-4">Wechat</div>
+          <div class="col-xs-8">{$cases['checklist']['ContactInfo']['wechat']}</div>
+        </div>
+      </li>
+    </div>
+  </div>
+	{switch name="cases.status"}
+    		{case value="0"}
+  <!-- status=0 -->
+  <div class="seller-action-bc">
+    <p>You can upload the contract and accept it.</p>
+    <div class="row">
+      <div class="col-sm-6">
+        <form action="/seller/upload" enctype="multipart/form-data" method="post">
+          <div class="form-group">
+            <label for="comment">Comment</label>
+            <textarea class="form-control" rows="4" type="file" id="comment"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="contract"></label>
+            <input type="file" id="contract" name='file'>
+          </div>
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary">Accept</button>
+            <a class="btn btn-danger">Refuse</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+		{/case} 
+    		{case value="1"}
+ <!-- status=1 -->
+  <div class="seller-action-bc">
+    <p>Wait for client signature</p>
+    <div class="row">
+      <div class="col-sm-6">
+        <form action="/seller/upload" enctype="multipart/form-data" method="post">
+          <div class="form-group">
+            <div class="form-group">
+              <a style="color: #3f8cbc">Uploaded Contract</a>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="contract"></label>
+            <input type="file" id="contract">
+          </div>
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary">Upload New Contract</button>
+            <a class="btn btn-danger">Refuse</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+		{/case} 
+    		{case value="7"}
+  <!-- status=7 -->
+  <div class="seller-action-bc">
+    <p>The case is completed</p>
+  </div>
+		{/case} 
+	{/switch}
+</div>
+{include file="seller/footer_clean" /}
+</body>
+</html>

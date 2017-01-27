@@ -777,4 +777,19 @@ class Seller extends Controller
 		break;
    	}
 
+        public function casedetail()
+        {
+		$sid = Session::get('sid');
+		if (empty(input('id')))
+			return json('Error',200);
+		$caseid = input('id');
+	 	$cases = controller('Cases','event');
+		$result = $cases->findByCaseId($caseid,$sid,'sellerid');
+		$view = new View();
+		$view->assign('cases',$result);
+		$view->nickname = Session::get('sName');
+		return $view->fetch();
+
+    	}
+
 }
