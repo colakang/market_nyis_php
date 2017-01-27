@@ -11,12 +11,16 @@ class Cases
 
 	public function findById($id,$uid)
 	{
-		return Db::name('cases')->where('_id','=',$id)->where('uid',$uid)->limit(1)->find();
+		$result = Db::name('cases')->where('_id','=',$id)->where('uid',$uid)->limit(1)->find();
+		$result['caseID'] = (string) $result['_id'];
+		return $result;
 	}
 
 	public function findByCaseId($caseid,$id,$filter='sellerid')
 	{
-		return Db::name('cases')->where('_id','=',$caseid)->where($filter,$id)->limit(1)->find();
+		$result = Db::name('cases')->where('_id','=',$caseid)->where($filter,$id)->limit(1)->find();
+		$result['caseID'] = (string) $result['_id'];
+		return $result;
 	}
 
 	public function findAllBySellerid($sellerid,$status=9,$type="<")
