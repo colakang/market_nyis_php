@@ -125,6 +125,7 @@
       </li>
     </div>
     <div class="col-sm-6">
+      <div>
       <li class="list-group-item">
         <div class="row">
           <div class="col-xs-4">Phone Country Region</div>
@@ -149,6 +150,22 @@
           <div class="col-xs-8">{$cases['checklist']['ContactInfo']['wechat']}</div>
         </div>
       </li>
+      </div>
+      <br><br>
+      <div>
+        <li class="list-group-item">
+          <div class="row">
+            <div class="col-xs-4">Case Status</div>
+            <div class="col-xs-8">{$cases['status']}</div>
+          </div>
+        </li>
+        <li class="list-group-item">
+          <div class="row">
+            <div class="col-xs-4">Case Price</div>
+            <div class="col-xs-8" id="price-tag">{$cases['finalPrice']}</div>
+          </div>
+        </li>
+      </div>
     </div>
   </div>
 	{switch name="cases.status"}
@@ -158,7 +175,7 @@
     <p>You can upload the contract and accept it.</p>
     <div class="row">
       <div class="col-sm-6">
-        <form action="/seller/upload" enctype="multipart/form-data" method="post">
+        <form action="/seller/upload" enctype="multipart/form-data" method="post" id="accept-form">
           <div class="form-group">
             <label for="description">Description</label>
             <textarea class="form-control" name="description" rows="4" id="description"></textarea>
@@ -167,9 +184,9 @@
             <label for="contract"></label>
             <input type="file" id="contract" name='file'>
           </div>
-          <input name="caseid" value="{$cases.caseID}" style="display: none"/>
+          <input name="caseid" value="{$cases.caseID}" style="display: none" id="case-id-input"/>
           <div class="form-group">
-            <button type="submit" class="btn btn-primary">Accept</button>
+            <button type="submit" class="btn btn-primary" id="accept-btn">Accept</button>
             <a class="btn btn-danger">Refuse</a>
           </div>
         </form>
@@ -211,5 +228,19 @@
 	{/switch}
 </div>
 {include file="seller/footer_clean" /}
+<script>
+  $('#accept-btn').click(function (e) {
+    $.ajax({
+      url: "/seller/update",
+      method: "POST",
+      data: {
+        oper: "approveCase",
+        caseid: $('#case-id-input').val(),
+        finalPrice: $('#price-tag').html();
+      }
+    }).done(data => {
+    });
+  });
+</script>
 </body>
 </html>
