@@ -631,6 +631,7 @@ class Index extends Controller
 	public function download()
 	{
 		$uid = Session::get('uid');
+		$sid = Session::get('sid');
 		if (empty($_POST))
 		{
 			$put=file_get_contents('php://input');
@@ -653,8 +654,23 @@ class Index extends Controller
 			}
 			default: 
 			{
+				switch(input('from'))
+				{
+					case "client":
+						$id = $uid;
+						$from = "uid";
+						break;
+					case "seller":
+						$id = $sid;
+						$from = "sellerid";
+						break;
+					default:
+						$id = $uid;
+						$from = "uid";
+						break;
+				}
 				$files = controller('Files','event');
-				$file = $files->findById(input('fileid'),$uid,"uid"); 
+				$file = $files->findById(input('fileid'),$id,$from); 
 				if($file)
 				{
 					$filename = $file['filename'];
@@ -697,6 +713,7 @@ class Index extends Controller
 	public function getFileList()
 	{
 		$uid = Session::get('uid');
+		$sid = Session::get('sid');
 		$data = array();
 		if (empty($_POST))
 		{
@@ -721,7 +738,22 @@ class Index extends Controller
 			default: 
 			{
 	 			$files = controller('Files','event');
-				$file = $files->findAllByCaseId(input('caseid'),$uid,'uid');
+				switch(input('from'))
+				{
+					case "client":
+						$id = $uid;
+						$from = "uid";
+						break;
+					case "seller":
+						$id = $sid;
+						$from = "sellerid";
+						break;
+					default:
+						$id = $uid;
+						$from = "uid";
+						break;
+				}
+				$file = $files->findAllByCaseId(input('caseid'),$id,$from);
 				$data = $file;
 			}
 		}
