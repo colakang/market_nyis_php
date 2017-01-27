@@ -160,13 +160,14 @@
       <div class="col-sm-6">
         <form action="/seller/upload" enctype="multipart/form-data" method="post">
           <div class="form-group">
-            <label for="comment">Comment</label>
-            <textarea class="form-control" rows="4" type="file" id="comment"></textarea>
+            <label for="description">Description</label>
+            <textarea class="form-control" name="description" rows="4" type="file" id="description"></textarea>
           </div>
           <div class="form-group">
             <label for="contract"></label>
             <input type="file" id="contract" name='file'>
           </div>
+          <input name="caseid" value="{$cases.caseID}"/>
           <div class="form-group">
             <button type="submit" class="btn btn-primary">Accept</button>
             <a class="btn btn-danger">Refuse</a>
