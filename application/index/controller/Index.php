@@ -721,7 +721,7 @@ class Index extends Controller
 			default: 
 			{
 	 			$files = controller('Files','event');
-				$file = $files->findAllByCaseId($caseid,$uid,'uid');
+				$file = $files->findAllByCaseId(input('caseid'),$uid,'uid');
 				$data = $file;
 			}
 		}
