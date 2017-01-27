@@ -369,13 +369,13 @@ class Index extends Controller
 				{
 					case (empty(input('caseid'))):
 					{
-						$data['update'] = 'Fail';
+						$data['submit'] = 'Fail';
 						$data['reasons'] = 'Caseid Error';
 						break;
 					}
 					case (empty(input('sellerid'))):
 					{
-						$data['update'] = 'Fail';
+						$data['submit'] = 'Fail';
 						$data['reasons'] = 'Sellerid Error';
 						break;
 					}
@@ -412,7 +412,7 @@ class Index extends Controller
 				{
 					case (empty(input('caseid'))):
 					{
-						$data['update'] = 'Fail';
+						$data['rejects'] = 'Fail';
 						$data['reasons'] = 'Caseid Error';
 						break;
 					}
@@ -428,6 +428,34 @@ class Index extends Controller
 						} else
 						{
 							$data['rejects'] = 'Fail';
+							$data['reasons'] = 'Case Save Error!!';
+						}						
+					}
+				}
+				return json($data,200);
+				break;
+			case ('assentCase'):
+				$data = array();
+				switch(true)
+				{
+					case (empty(input('caseid'))):
+					{
+						$data['assent'] = 'Fail';
+						$data['reasons'] = 'Caseid Error';
+						break;
+					}
+					default: 
+					{
+						$data['status'] = 7;
+						$caseid = input('caseid');
+		 				$cases = controller('Cases','event');
+						$result = $cases->updateCases($data,$uid,$caseid);
+						if ($result)
+						{
+							$data['assent'] = 'success';
+						} else
+						{
+							$data['assent'] = 'Fail';
 							$data['reasons'] = 'Case Save Error!!';
 						}						
 					}
