@@ -24,10 +24,10 @@
   </style>
 </head>
 <body>
-	{include file="seller/navbar_index" nickname=$nickname /}
-	{notempty name="nickname"}
-		{include file="seller/navbar_login" nickname=$nickname /}
-	{/notempty}
+{include file="seller/navbar_index" nickname=$nickname /}
+{notempty name="nickname"}
+{include file="seller/navbar_login" nickname=$nickname /}
+{/notempty}
 <div class="profile-header">
   <div class="container">
     <div class="profile-photo">
@@ -126,30 +126,30 @@
     </div>
     <div class="col-sm-6">
       <div>
-      <li class="list-group-item">
-        <div class="row">
-          <div class="col-xs-4">Phone Country Region</div>
-          <div class="col-xs-8">{$cases['checklist']['ContactInfo']['phoneRegion']}</div>
-        </div>
-      </li>
-      <li class="list-group-item">
-        <div class="row">
-          <div class="col-xs-4">Phone Number</div>
-          <div class="col-xs-8">{$cases['checklist']['ContactInfo']['phoneNumber']}</div>
-        </div>
-      </li>
-      <li class="list-group-item">
-        <div class="row">
-          <div class="col-xs-4">Email</div>
-          <div class="col-xs-8">{$cases['checklist']['ContactInfo']['email']}</div>
-        </div>
-      </li>
-      <li class="list-group-item">
-        <div class="row">
-          <div class="col-xs-4">Wechat</div>
-          <div class="col-xs-8">{$cases['checklist']['ContactInfo']['wechat']}</div>
-        </div>
-      </li>
+        <li class="list-group-item">
+          <div class="row">
+            <div class="col-xs-4">Phone Country Region</div>
+            <div class="col-xs-8">{$cases['checklist']['ContactInfo']['phoneRegion']}</div>
+          </div>
+        </li>
+        <li class="list-group-item">
+          <div class="row">
+            <div class="col-xs-4">Phone Number</div>
+            <div class="col-xs-8">{$cases['checklist']['ContactInfo']['phoneNumber']}</div>
+          </div>
+        </li>
+        <li class="list-group-item">
+          <div class="row">
+            <div class="col-xs-4">Email</div>
+            <div class="col-xs-8">{$cases['checklist']['ContactInfo']['email']}</div>
+          </div>
+        </li>
+        <li class="list-group-item">
+          <div class="row">
+            <div class="col-xs-4">Wechat</div>
+            <div class="col-xs-8">{$cases['checklist']['ContactInfo']['wechat']}</div>
+          </div>
+        </li>
       </div>
       <br><br>
       <div>
@@ -162,8 +162,8 @@
       </div>
     </div>
   </div>
-	{switch name="cases.status"}
-    		{case value="0"}
+  {switch name="cases.status"}
+  {case value="0"}
   <!-- status=0 -->
   <div class="seller-action-bc">
     <p>You can upload the contract and accept it.</p>
@@ -187,9 +187,9 @@
       </div>
     </div>
   </div>
-		{/case} 
-    		{case value="1"}
- <!-- status=1 -->
+  {/case}
+  {case value="1"}
+  <!-- status=1 -->
   <div class="seller-action-bc">
     <p>Wait for client signature</p>
     <div class="row">
@@ -212,17 +212,17 @@
       </div>
     </div>
   </div>
-		{/case} 
-    		{case value="7"}
+  {/case}
+  {case value="7"}
   <!-- status=7 -->
   <div class="seller-action-bc">
     <p>The case is completed</p>
   </div>
-		{/case} 
-	{/switch}
+  {/case}
+  {/switch}
 </div>
 {include file="seller/footer_clean" /}
-<script>
+<script type="text/javascript">
   $('#accept-btn').click(function (e) {
     $.ajax({
       url: "/seller/update",
@@ -230,9 +230,8 @@
       data: {
         oper: "approveCase",
         caseid: $('#case-id-input').val(),
-        finalPrice: $('#price-tag').html();
+        finalPrice: $('#price-tag').html()
       }
-    }).done(data => {
     });
   });
 </script>
