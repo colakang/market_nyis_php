@@ -301,7 +301,7 @@ class Index extends Controller
 						$data['sellerid'] = $result['sellerid'];
 						$data['clientName'] = Session::get('nickname');
 						$data['submitPrice'] = $result['price'];
-						$data['finalPrice'] = 0;
+						$data['finalPrice'] = $result['price'];
 						$data['isComment'] = false;
 						$data['createTime'] = time();
 						$data['uid'] = $uid;
@@ -381,26 +381,30 @@ class Index extends Controller
 					}
 					default: 
 					{
-						$data['status'] = 0;
 						$caseid = input('caseid');
 		 				$cases = controller('Cases','event');
-						$result = $cases->updateCases($data,$uid,$caseid);
-						if ($result)
+						$case = $cases->findByCaseId($caseid,$uid,'uid');
+						if ((int)$case['status'] == 10)
 						{
-							$data['submit'] = 'success';
-			 				$sellers = controller('Seller','event');
-							$seller = $sellers->findUserById(input('sellerid'));
-							$clientName = Session::get('nickname');
-							$text = "New Case In!! Client: ".$clientName." Date:";
-							$sendmail = $cases->sendmail($seller['email'],$seller['name'],$text);
-							if ($sendmail)
-								$data['sendmail'] = 'success';
-
-						} else
-						{
-							$data['submit'] = 'Fail';
-							$data['reasons'] = 'Case Save Error!!';
+							$data['status'] = 0;
+							$result = $cases->updateCases($data,$uid,$caseid);
+							if ($result)
+							{
+								$data['submit'] = 'success';
+				 				$sellers = controller('Seller','event');
+								$seller = $sellers->findUserById(input('sellerid'));
+								$clientName = Session::get('nickname');
+								$text = "New Case In!! Client: ".$clientName." Date:";
+								$sendmail = $cases->sendmail($seller['email'],$seller['name'],$text);
+								if ($sendmail)
+									$data['sendmail'] = 'success';
 	
+							} else
+							{
+								$data['submit'] = 'Fail';
+								$data['reasons'] = 'Case Save Error!!';
+		
+							}
 						}						
 					}
 				}
@@ -418,17 +422,21 @@ class Index extends Controller
 					}
 					default: 
 					{
-						$data['status'] = 4;
 						$caseid = input('caseid');
 		 				$cases = controller('Cases','event');
-						$result = $cases->updateCases($data,$uid,$caseid);
-						if ($result)
+						$case = $cases->findByCaseId($caseid,$uid,'uid');
+						if ((int)$case['status'] < 4)
 						{
-							$data['rejects'] = 'success';
-						} else
-						{
-							$data['rejects'] = 'Fail';
-							$data['reasons'] = 'Case Save Error!!';
+							$data['status'] = 4;
+							$result = $cases->updateCases($data,$uid,$caseid);
+							if ($result)
+							{
+								$data['rejects'] = 'success';
+							} else
+							{
+								$data['rejects'] = 'Fail';
+								$data['reasons'] = 'Case Save Error!!';
+							}
 						}						
 					}
 				}
@@ -446,17 +454,21 @@ class Index extends Controller
 					}
 					default: 
 					{
-						$data['status'] = 7;
 						$caseid = input('caseid');
 		 				$cases = controller('Cases','event');
-						$result = $cases->updateCases($data,$uid,$caseid);
-						if ($result)
+						$case = $cases->findByCaseId($caseid,$uid,'uid');
+						if ((int)$case['status'] < 7)
 						{
-							$data['assent'] = 'success';
-						} else
-						{
-							$data['assent'] = 'Fail';
-							$data['reasons'] = 'Case Save Error!!';
+							$data['status'] = 7;
+							$result = $cases->updateCases($data,$uid,$caseid);
+							if ($result)
+							{
+								$data['assent'] = 'success';
+							} else
+							{
+								$data['assent'] = 'Fail';
+								$data['reasons'] = 'Case Save Error!!';
+							}
 						}						
 					}
 				}
@@ -516,7 +528,7 @@ class Index extends Controller
 					$data['content'] = input('content');
 				if (empty($data))
 				{
-					$data['addReview'] = 'Fail';
+					$data['addMessage'] = 'Fail';
 					$data['reasons'] = 'Empty Data!!';
 				} else {
 	 				$cases = controller('Cases','event');

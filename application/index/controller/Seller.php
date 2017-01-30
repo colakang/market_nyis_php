@@ -444,27 +444,32 @@ class Seller extends Controller
 						$data['reasons'] = 'Caseid Error';
 						break;
 					}
+/*
 					case (empty(input('finalPrice'))):
 					{
 						$data['update'] = 'Fail';
 						$data['reasons'] = 'finalPrice Empty';
 						break;
 					}
-
+*/
 					default: 
 					{
-						$data['status'] = 1;
 						$caseid = input('caseid');
-						$data['finalPrice'] = input('finalPrice');
 		 				$cases = controller('Cases','event');
-						$result = $cases->updateCases($data,$sid,$caseid,'sellerid');
-						if ($result)
+						$case = $cases->findByCaseId($caseid,$sid);
+						if ((int)$case['status'] < 1)
 						{
-							$data['approve'] = 'success';
-						} else
-						{
-							$data['approve'] = 'Fail';
-							$data['reasons'] = 'Case Save Error!!';
+							$data['status'] = 1;
+							//$data['finalPrice'] = input('finalPrice');
+							$result = $cases->updateCases($data,$sid,$caseid,'sellerid');
+							if ($result)
+							{
+								$data['approve'] = 'success';
+							} else
+							{
+								$data['approve'] = 'Fail';
+								$data['reasons'] = 'Case Save Error!!';
+							}
 						}						
 					}
 				}
@@ -482,22 +487,67 @@ class Seller extends Controller
 					}
 					default: 
 					{
-						$data['status'] = 3;
 						$caseid = input('caseid');
 		 				$cases = controller('Cases','event');
-						$result = $cases->updateCases($data,$sid,$caseid,'sellerid');
-						if ($result)
+						$case = $cases->findByCaseId($caseid,$sid);
+						if ((int)$case['status'] < 3)
 						{
-							$data['rejects'] = 'success';
-						} else
-						{
-							$data['rejects'] = 'Fail';
-							$data['reasons'] = 'Case Save Error!!';
+							$data['status'] = 3;
+							$result = $cases->updateCases($data,$sid,$caseid,'sellerid');
+							if ($result)
+							{
+								$data['rejects'] = 'success';
+							} else
+							{
+								$data['rejects'] = 'Fail';
+								$data['reasons'] = 'Case Save Error!!';
+							}
 						}						
 					}
 				}
 				return json($data,200);
 				break;
+			case ('updateCasePrice'):
+				$data = array();
+				switch(true)
+				{
+					case (empty(input('caseid'))):
+					{
+						$data['update'] = 'Fail';
+						$data['reasons'] = 'Caseid Error';
+						break;
+					}
+					case (empty(input('finalPrice'))):
+					{
+						$data['update'] = 'Fail';
+						$data['reasons'] = 'finalPrice Error';
+						break;
+					}
+					default: 
+					{
+
+						$data['finalPrice'] = input('finalPrice');
+						$caseid = input('caseid');
+		 				$cases = controller('Cases','event');
+						$case = $cases->findByCaseId($caseid,$sid);
+						if ((int)$case['status'] == 0)
+						{
+							$result = $cases->updateCases($data,$sid,$caseid,'sellerid');
+							if ($result)
+							{
+								$data['update'] = 'success';
+							} else
+							{
+								$data['update'] = 'Fail';
+								$data['reasons'] = 'Case Save Error!!';
+							}						
+						
+						}
+					}
+				}
+				return json($data,200);
+				break;
+
 			case ('addMessage'):
 				$data = array();
 				if (input('caseid'))
@@ -506,7 +556,7 @@ class Seller extends Controller
 					$data['content'] = input('content');
 				if (empty($data))
 				{
-					$data['addReview'] = 'Fail';
+					$data['addMessage'] = 'Fail';
 					$data['reasons'] = 'Empty Data!!';
 				} else {
 	 				$cases = controller('Cases','event');
