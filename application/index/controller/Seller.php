@@ -498,6 +498,50 @@ class Seller extends Controller
 				}
 				return json($data,200);
 				break;
+			case ('addMessage'):
+				$data = array();
+				if (input('caseid'))
+					$data['caseid'] = input('caseid');
+				if (input('content'))
+					$data['content'] = input('content');
+				if (empty($data))
+				{
+					$data['addReview'] = 'Fail';
+					$data['reasons'] = 'Empty Data!!';
+				} else {
+	 				$cases = controller('Cases','event');
+					$result = $cases->findByCaseId($data['caseid'],$sid);
+					if ($result)
+					{
+						$data['sellerid'] = $result['sellerid'];
+						$data['serviceid'] = $result['serviceid'];
+						$data['owner'] = $sid;
+						$data['uid'] = $result['uid'];
+						$data['sellerName'] = $result['sellerName'];
+						$data['clientName'] = $result['clientName'];
+						$data['status'] = 1;	//1=正常;2=删除;
+						$data['createTime'] = time();
+	 					$messages = controller('Messges','event');
+						$message = $messages->addMessage($data);
+						if ($message)
+						{
+							$data['messageid'] = $message;
+							$data['addMessage'] = 'success';
+						} else {
+							$data['addMessage'] = 'Fail';
+							$data['reasons'] = 'Data Save Error!!';
+
+						}
+					} else
+					{
+						$data['addMessage'] = 'Fail';
+						$data['reasons'] = 'Caseid not found!!';
+
+					}						
+				}
+				return json($data,200);
+
+
 			default:	
 				$data['update'] = 'Fail';
 				$data['reasons'] = 'Oper Not Found';

@@ -508,6 +508,48 @@ class Index extends Controller
 					}						
 				}
 				return json($data,200);
+			case ('addMessage'):
+				$data = array();
+				if (input('caseid'))
+					$data['caseid'] = input('caseid');
+				if (input('content'))
+					$data['content'] = input('content');
+				if (empty($data))
+				{
+					$data['addReview'] = 'Fail';
+					$data['reasons'] = 'Empty Data!!';
+				} else {
+	 				$cases = controller('Cases','event');
+					$result = $cases->findById($data['caseid'],$uid);
+					if ($result)
+					{
+						$data['sellerid'] = $result['sellerid'];
+						$data['serviceid'] = $result['serviceid'];
+						$data['owner'] = $uid;
+						$data['uid'] = $uid;
+						$data['sellerName'] = $result['sellerName'];
+						$data['clientName'] = $result['clientName'];
+						$data['status'] = 1;	//1=正常;2=删除;
+						$data['createTime'] = time();
+	 					$messages = controller('Messges','event');
+						$message = $messages->addMessage($data);
+						if ($message)
+						{
+							$data['messageid'] = $message;
+							$data['addMessage'] = 'success';
+						} else {
+							$data['addMessage'] = 'Fail';
+							$data['reasons'] = 'Data Save Error!!';
+
+						}
+					} else
+					{
+						$data['addMessage'] = 'Fail';
+						$data['reasons'] = 'Caseid not found!!';
+
+					}						
+				}
+				return json($data,200);
 
 			default:	
 				$data['update'] = 'Fail';
@@ -789,5 +831,55 @@ class Index extends Controller
 
 	}
 
+	public function getMessageList()
+	{
+		$uid = Session::get('uid');
+		$sid = Session::get('sid');
+		$data = array();
+		if (empty($_POST))
+		{
+			$put=file_get_contents('php://input');
+			$put=json_decode($put,1);
+			if (is_array($put))
+			{
+				foreach ($put as $key=>$value)
+				{
+					$_POST[$key] = $value;
+				}
+			}
+		}
+ 		switch(true)
+		{
+			case (empty(input('caseid'))):
+			{
+				$data['getMessageList'] = 'Fail';
+				$data['reasons'] = 'fileid Error';
+				break;
+			}
+			default: 
+			{
+	 			$messages = controller('Messages','event');
+				switch(input('from'))
+				{
+					case "client":
+						$id = $uid;
+						$from = "uid";
+						break;
+					case "seller":
+						$id = $sid;
+						$from = "sellerid";
+						break;
+					default:
+						$id = $uid;
+						$from = "uid";
+						break;
+				}
+				$message = $messages->findAllByCaseId(input('caseid'),$id,$from);
+				$data = $message;
+			}
+		}
+		return json($data,200);
+
+	}
 
 }
