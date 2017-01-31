@@ -571,7 +571,7 @@ class Seller extends Controller
 						$data['clientName'] = $result['clientName'];
 						$data['status'] = 1;	//1=正常;2=删除;
 						$data['createTime'] = time();
-	 					$messages = controller('Messges','event');
+	 					$messages = controller('Messages','event');
 						$message = $messages->addMessage($data);
 						if ($message)
 						{
