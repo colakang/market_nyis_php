@@ -186,12 +186,25 @@
       <div class="col-sm-6">
         <div class="message-list-block">
           <!-- Message List -->
+	{volist name="messages" id="data"}
+		{eq name="data.owner" value="data.sellerid"}
           <ol class="dd-list">
             <li class="dd-item">
-              <div class="dd-handle dd2-handle"><!-- message owner: customer or me--></div>
-              <div class="dd2-content"><!-- message content--></div>
+              <div class="dd-handle dd2-handle">{$data.sellerName}</div>
+              <div class="dd2-content">{$data.content}</div>
+              <div class="dd2-content">{$data.createTime|date="Y-m-d h:m:s",###}</div>
             </li>
           </ol>
+		{else/}
+          <ol class="dd-list">
+            <li class="dd-item">
+              <div class="dd-handle dd2-handle">{$data.clientName}</div>
+              <div class="dd2-content">{$data.content}</div>
+              <div class="dd2-content">{$data.createTime|date="Y-m-d h:m:s",###}</div>
+            </li>
+          </ol>
+		{/eq}
+	{/volist}
         </div>
       </div>
       <div class="col-sm-6">
