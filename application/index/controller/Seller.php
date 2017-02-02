@@ -879,8 +879,11 @@ class Seller extends Controller
 		$caseid = input('id');
 	 	$cases = controller('Cases','event');
 		$result = $cases->findByCaseId($caseid,$sid,'sellerid');
+		$messages = controller('Messages','event');
+		$message = $messages->findAllByCaseId($result['caseID'],$sid,'sellerid');
 		$view = new View();
 		$view->assign('cases',$result);
+		$view->assign('messages',$message);
 		$view->nickname = Session::get('sName');
 		return $view->fetch();
 
