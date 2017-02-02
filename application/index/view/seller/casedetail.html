@@ -39,6 +39,26 @@
       padding-left: 120px;
       margin: 0;
     }
+
+    .widget-header.message-box-header{
+      background-color: #F2F2F2;
+    }
+
+    .itemdiv > .user{
+      height: 42px;
+      top: 10px;
+      background-color: #5b5c5d;
+      text-align: center;
+      font-size: 20px;
+      padding-top: 8px;
+      -webkit-border-radius:50%;
+      -moz-border-radius:50%;
+      border-radius:50%;
+      color: white;
+    }
+    .itemdiv > .user.message-owner{
+      background-color: #3f8cbc;
+    }
   </style>
 </head>
 <body>
@@ -184,27 +204,48 @@
   <div class="seller-action-bc">
     <div class="row">
       <div class="col-sm-6">
-        <div class="message-list-block">
-          <!-- Message List -->
-	{volist name="messages" id="data"}
-		{eq name="data.owner" value="data.sellerid"}
-          <ol class="dd-list">
-            <li class="dd-item">
-              <div class="dd-handle dd2-handle">{$data.sellerName}</div>
-              <div class="dd2-content">{$data.content}</div>
-              <div class="dd2-content">{$data.createTime|date="Y-m-d h:m:s",###}</div>
-            </li>
-          </ol>
-		{else/}
-          <ol class="dd-list">
-            <li class="dd-item">
-              <div class="dd-handle dd2-handle">{$data.clientName}</div>
-              <div class="dd2-content">{$data.content}</div>
-              <div class="dd2-content">{$data.createTime|date="Y-m-d h:m:s",###}</div>
-            </li>
-          </ol>
-		{/eq}
-	{/volist}
+        <!-- Message List -->
+        <div class="widget-body">
+          <div class="widget-main no-padding">
+            <div class="dialogs ace-scroll">
+              <div class="scroll-track scroll-active" style="display: block; height: 300px;">
+                <div class="scroll-bar" style="height: 262px; top: 38px;"></div>
+              </div>
+              <div class="scroll-content" style="max-height: 300px;">
+                {volist name="messages" id="data"}
+                  {eq name="data.owner" value="data.sellerid"}
+                    <div class="itemdiv dialogdiv">
+                      <div class="user message-owner">M</div>
+                      <div class="body">
+                        <div class="time">
+                          <i class="ace-icon fa fa-clock-o"></i>
+                          <span class="green">{$data.createTime|date="Y-m-d h:m:s",###}</span>
+                        </div>
+                        <div class="name">
+                          <p>Me</p>
+                        </div>
+                        <div class="text">{$data.content}</div>
+                      </div>
+                    </div>
+                  {else/}
+                    <div class="itemdiv dialogdiv">
+                      <div class="user">C</div>
+                      <div class="body">
+                        <div class="time">
+                          <i class="ace-icon fa fa-clock-o"></i>
+                          <span class="green">{$data.createTime|date="Y-m-d h:m:s",###}</span>
+                        </div>
+                        <div class="name">
+                          <p>Client</p>
+                        </div>
+                        <div class="text">{$data.content}</div>
+                      </div>
+                    </div>
+                  {/eq}
+                {/volist}
+              </div>
+            </div>
+          </div><!-- /.widget-main -->
         </div>
       </div>
       <div class="col-sm-6">
