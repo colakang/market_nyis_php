@@ -204,48 +204,56 @@
   <div class="seller-action-bc">
     <div class="row">
       <div class="col-sm-6">
-        <!-- Message List -->
-        <div class="widget-body">
-          <div class="widget-main no-padding">
-            <div class="dialogs ace-scroll">
-              <div class="scroll-track scroll-active" style="display: block; height: 300px;">
-                <div class="scroll-bar" style="height: 262px; top: 38px;"></div>
-              </div>
-              <div class="scroll-content" style="max-height: 300px;">
-                {volist name="messages" id="data"}
-                  {eq name="data.owner" value="data.sellerid"}
-                    <div class="itemdiv dialogdiv">
-                      <div class="user message-owner">M</div>
-                      <div class="body">
-                        <div class="time">
-                          <i class="ace-icon fa fa-clock-o"></i>
-                          <span class="green">{$data.createTime|date="Y-m-d h:m:s",###}</span>
+        <div class="widget-box">
+          <div class="widget-header message-box-header">
+            <h4 class="widget-title lighter smaller">
+              <i class="ace-icon fa fa-comment blue"></i>
+              Message Board
+            </h4>
+          </div>
+          <!-- Message List -->
+          <div class="widget-body">
+            <div class="widget-main no-padding">
+              <div class="dialogs ace-scroll">
+                <div class="scroll-track scroll-active" style="display: block; height: 300px;">
+                  <div class="scroll-bar" style="height: 262px; top: 38px;"></div>
+                </div>
+                <div class="scroll-content" style="max-height: 300px;">
+                  {volist name="messages" id="data"}
+                    {eq name="data.owner" value="data.sellerid"}
+                      <div class="itemdiv dialogdiv">
+                        <div class="user message-owner">M</div>
+                        <div class="body">
+                          <div class="time">
+                            <i class="ace-icon fa fa-clock-o"></i>
+                            <span class="green">{$data.createTime|date="Y-m-d h:m:s",###}</span>
+                          </div>
+                          <div class="name">
+                            <p>Me</p>
+                          </div>
+                          <div class="text">{$data.content}</div>
                         </div>
-                        <div class="name">
-                          <p>Me</p>
-                        </div>
-                        <div class="text">{$data.content}</div>
                       </div>
-                    </div>
-                  {else/}
-                    <div class="itemdiv dialogdiv">
-                      <div class="user">C</div>
-                      <div class="body">
-                        <div class="time">
-                          <i class="ace-icon fa fa-clock-o"></i>
-                          <span class="green">{$data.createTime|date="Y-m-d h:m:s",###}</span>
+                    {else/}
+                      <div class="itemdiv dialogdiv">
+                        <div class="user">C</div>
+                        <div class="body">
+                          <div class="time">
+                            <i class="ace-icon fa fa-clock-o"></i>
+                            <span class="green">{$data.createTime|date="Y-m-d h:m:s",###}</span>
+                          </div>
+                          <div class="name">
+                            <p>Client</p>
+                          </div>
+                          <div class="text">{$data.content}</div>
                         </div>
-                        <div class="name">
-                          <p>Client</p>
-                        </div>
-                        <div class="text">{$data.content}</div>
                       </div>
-                    </div>
-                  {/eq}
-                {/volist}
+                    {/eq}
+                  {/volist}
+                </div>
               </div>
-            </div>
-          </div><!-- /.widget-main -->
+            </div><!-- /.widget-main -->
+          </div>
         </div>
       </div>
       <div class="col-sm-6">
