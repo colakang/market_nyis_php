@@ -223,7 +223,7 @@
                 </div>
                 <div class="scroll-content" style="max-height: 300px;">
                   {volist name="messages" id="data"}
-                    {eq name="data.owner" value="data.sellerid"}
+                    {eq name="data.owner" value="$data.sellerid"}
                       <div class="itemdiv dialogdiv">
                         <div class="user message-owner">M</div>
                         <div class="body">
