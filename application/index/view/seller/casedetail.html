@@ -244,12 +244,13 @@
                         <div class="body">
                           <div class="time">
                             <i class="ace-icon fa fa-clock-o"></i>
-                            <span class="green">{$data.createTime|date="Y-m-d h:m:s",###}</span>
+                            <span class="msg-create-time" style="display: none">{$data.createTime}</span>
+                            <span class="green msg-create-time-format"></span>
                           </div>
                           <div class="name">
                             <p>Client</p>
                           </div>
-                          <div class="text">{$data.content}</div>
+                          <div class="text">{$data.content ?? ""}</div>
                         </div>
                       </div>
                     {/eq}
