@@ -376,11 +376,12 @@
     });
   });
   function formatTime(time) {
+    var time = (+time) * 1000;
     var createTime = new Date(time);
     var currentTime = new Date();
     if(createTime.getDate() == currentTime.getDate())
       return createTime.getHours() + ":" + createTime.getMinutes();
-    return (createTime.getMonth() + 1) + ":" + createTime.getDate();
+    return (createTime.getMonth() + 1) + "/" + createTime.getDate();
   }
   var createTimeSpan = $('.msg-create-time');
   $.each(createTimeSpan, function (index, span) {
