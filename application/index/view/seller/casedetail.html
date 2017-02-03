@@ -229,7 +229,8 @@
                         <div class="body">
                           <div class="time">
                             <i class="ace-icon fa fa-clock-o"></i>
-                            <span class="green">{$data.createTime|date="Y-m-d h:m:s",###}</span>
+                            <span class="msg-create-time" style="display: none">{$data.createTime}</span>
+                            <span class="green msg-create-time-format">{$data.createTime|date="Y-m-d h:m:s",###}</span>
                           </div>
                           <div class="name">
                             <p>Me</p>
@@ -372,6 +373,19 @@
     }).done(function (data) {
       location.reload();
     });
+  });
+  function formatTime(time) {
+    var createTime = new Date(time);
+    var currentTime = new Date();
+    if(createTime.getDate() == currentTime.getDate())
+      return createTime.getHours() + ":" + createTime.getMinutes();
+    return (createTime.getMonth() + 1) + ":" + createTime.getDate();
+  }
+  var createTimeSpan = $('.msg-create-time');
+  $.each(createTimeSpan, function (index, span) {
+    var $span = $(span);
+    var formatSpan = $span.next();
+    formatSpan.html(formatTime($span.html()));
   })
 </script>
 </body>
