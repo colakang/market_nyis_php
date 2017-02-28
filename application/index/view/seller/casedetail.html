@@ -284,13 +284,14 @@
         <form action="/seller/upload" enctype="multipart/form-data" method="post" id="accept-form">
           <div class="form-group">
             <label for="description">Description</label>
-            <textarea class="form-control" name="description" rows="4" id="description"></textarea>
+            <textarea class="form-control" name="description" rows="4" id="description" placeholder="The description of the uploaded file"></textarea>
           </div>
           <div class="form-group">
             <label for="contract"></label>
             <input type="file" id="contract" name='file'>
           </div>
           <input name="caseid" value="{$cases.caseID}" style="display: none" id="case-id-input"/>
+          <p style="color: #fc7777; display: none" id="contract-form-warning">*Please choose the contract file</p>
           <div class="form-group">
             <button type="submit" class="btn btn-primary" id="accept-btn">Accept</button>
             <a class="btn btn-danger" id="refuse-case-btn">Refuse</a>
@@ -337,6 +338,12 @@
 <script type="text/javascript">
   var caseid = location.href.split('/').slice(-1)[0];
   $('#accept-btn').click(function (e) {
+    console.log("accept");
+    e.preventDefault();
+    if(document.getElementById("contract").files.length == 0){
+      $('#contract-form-warning').css("display", "block");
+      return;
+    }
     $.ajax({
       url: "/seller/update",
       method: "POST",
