@@ -6,6 +6,7 @@
   <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
   <link rel="stylesheet" href="/assets/css/ace.min.css" class="ace-main-stylesheet" id="main-ace-style">
   {include file="seller/header" /}
+  <script type="text/javascript" src="/assets/js/jquery.validate.min.js"></script>
   <style>
     .seller-action-bc {
       margin-top: 30px;
@@ -64,6 +65,9 @@
     }
     .ace-scroll .scroll-content{
       overflow: scroll;
+    }
+    small.error-message{
+      color: #FC7777;
     }
   </style>
 </head>
@@ -298,6 +302,15 @@
           </div>
         </form>
       </div>
+      <div class="col-sm-3">
+        <form id="case-price-chng-form">
+          <div class="form-group">
+            <label for="case-price-chng">Case Price</label>
+            <input class="form-control" style="height: auto" type="text" id="case-price-chng" name="casePriceChng">
+          </div>
+          <button class="btn btn-primary">Change</button>
+        </form>
+      </div>
     </div>
   </div>
   {/case}
@@ -382,6 +395,35 @@
       location.reload();
     });
   });
+
+  var casePriceChngForm = $('#case-price-chng-form');
+  if(casePriceChngForm){
+    casePriceChngForm.validate({
+      errorElement: "small",
+      errorClass: "error-message",
+      rules: {
+        casePriceChng: {
+          required: true,
+          number: true,
+        }
+      },
+      submitHandler: function (form) {
+        var $form = $(form);
+        var price = $form.find('#case-price-chng').val();
+        $.ajax({
+          url: "/seller/update",
+          method: "POST",
+          data: {
+            oper: "updateCasePrice",
+            caseid: caseid,
+            finalPrice: price
+          }
+        }).done(function (data) {
+          location.reload();
+        });
+      }
+    });
+  }
   function formatTime(time) {
     var time = (+time) * 1000;
     var createTime = new Date(time);
