@@ -129,6 +129,115 @@ class Index extends Controller
 	   	} 
 	}
 
+	public function forget()
+	{
+	 	$users = controller('User','event');
+		switch(true) {
+			case (empty($_POST)):
+				$services = controller('Service','event');
+				$nickname = false;
+				$promotion = $services->findByNew('promotion');
+				$history = $promotion;
+				if (Session::has('isLogin'))
+				{
+					$nickname = Session::get('nickname');
+				}
+				$view = new View();
+				$view->nickname = $nickname;
+				$view->keyword = "";
+				$view->assign('promotion',$promotion);
+				return $view->fetch();
+				break;
+			case ( !input('email') ):
+				return $this->error(Lang::get('email_empty'));
+				break;
+			default:	
+				$isUserId = $users->findUser(input('email'));
+				if (empty($isUserId))
+				{
+					return $this->error(Lang::get('user_not_found'));
+				} else {
+					$data = array (
+						'email'=> input('email'),
+						'type' => 'User',
+						'status' => 1,
+						'uid' => $isUserId,
+					);
+				
+					$resetpw = controller('Resetpw','event');	//发送reset邮件;
+					$token = $resetpw->addResetpw($data);				
+					if ($token)
+					{
+						//发送reset邮件
+						$cases = controller('Cases','event');	//发送reset邮件;
+						$links = "http://market.nyis.com/resetpw/token/".$token;
+						$text = "请点击下面的链接来重置密码。\n".$links."\n感谢使用我们的服务";
+						$sendmail = $cases->sendmail($data['email'],$data['email'],$text,"Reset Password");
+						if ($sendmail)
+							return json("Success",200);
+						//var_dump($links);
+					} else {
+						return $this->error(Lang::get('resetpw_fail'));
+
+					}
+
+					//return $this->redirect('/seller');	//Disable message page
+		    		}
+				break;
+	   	} 
+	}
+
+	public function resetpw()
+	{
+	 	$users = controller('User','event');
+	 	$resetpw = controller('Resetpw','event');
+		switch(true) {
+			case (empty($_POST)):
+				if (empty(input('token')))
+					return $this->redirect('/forget');	//Disable message page
+				$services = controller('Service','event');
+				$like = "=";
+				$nickname = false;
+				$promotion = $services->findByNew('promotion');
+				$history = $promotion;
+				if (Session::has('isLogin'))
+				{
+					$nickname = Session::get('nickname');
+				}
+				$view = new View();
+				$view->nickname = $nickname;
+				$view->keyword = "";
+				$view->assign('promotion',$promotion);
+				$view->assign('token',input('token'));
+				return $view->fetch();
+				break;
+			default:	
+				$email = input('email');
+				$opw = input('rpw');
+				$npw = input('npw');
+				$token = input('token');
+				if ($opw!=$npw)
+					return $this->error(Lang::get('pasword_not_match'));
+				$isToken = $resetpw->find($token,$email,'User');
+				if ($isToken)
+				{
+					$uid = $isToken['uid']['_id'];
+					$result = $users->resetPassword($uid,$email,$npw);
+					if ($result)
+					{
+						$update = $resetpw->updateResetpw('',$token,$email);
+						return json("Update Success",200);
+					} else {
+						return json("Update Fail",200);
+					}
+				} else {
+					return json('Token Not Found!',200);
+				}
+
+				break;
+	   	} 
+
+	}
 	public function search()
 	{
 		$services = controller('Service','event');
@@ -244,7 +353,7 @@ class Index extends Controller
 		{
 			case ('password'):
 				$data = array();
-				$emial = input('email');
+				$email = input('email');
 				$opw = input('opw');
 				$npw = input('npw');
 				$result = $users->changePassword($uid,$email,$opw,$npw);
@@ -296,28 +405,34 @@ class Index extends Controller
 					$result = $services->findById($data['serviceid']);
 					if ($result)
 					{
-						$data['sellerName'] = $result['sellerName'];
-						$data['serviceName'] = $result['name'];
-						$data['sellerid'] = $result['sellerid'];
-						$data['clientName'] = Session::get('nickname');
-						$data['submitPrice'] = $result['price'];
-						$data['finalPrice'] = $result['price'];
-						$data['isComment'] = false;
-						$data['createTime'] = time();
-						$data['uid'] = $uid;
-						$data['refNo'] = substr(md5($data['createTime'].$uid),0,8);
-						$data['status'] = 10;	//0=待审核; 1=成交;2=律师锁定;3=律师拒绝;4=用户拒绝;10=草稿
-						$data['checklist']['include'] = $result['checklist'];
-	 					$cases = controller('Cases','event');
-						$case = $cases->addCases($data);
-						if ($case)
+						if (!empty($result['links']) and (strpos($result['categories'],'0402')==0))	//商业保险类型
 						{
-							$data['caseid'] = $case;
-							$data['addcase'] = 'success';
+							$data['links'] = urldecode($result['links']);
+							$data['addcase'] = 'Redirect';
 						} else {
-							$data['addcase'] = 'Fail';
-							$data['reasons'] = 'Data Save Error!!';
+							$data['sellerName'] = $result['sellerName'];
+							$data['serviceName'] = $result['name'];
+							$data['sellerid'] = $result['sellerid'];
+							$data['clientName'] = Session::get('nickname');
+							$data['submitPrice'] = $result['price'];
+							$data['finalPrice'] = $result['price'];
+							$data['isComment'] = false;
+							$data['createTime'] = time();
+							$data['uid'] = $uid;
+							$data['refNo'] = substr(md5($data['createTime'].$uid),0,8);
+							$data['status'] = 10;	//0=待审核; 1=成交;2=律师锁定;3=律师拒绝;4=用户拒绝;10=草稿
+							$data['checklist']['include'] = $result['checklist'];
+							$cases = controller('Cases','event');
+							$case = $cases->addCases($data);
+							if ($case)
+							{
+								$data['caseid'] = $case;
+								$data['addcase'] = 'success';
+							} else {
+								$data['addcase'] = 'Fail';
+								$data['reasons'] = 'Data Save Error!!';
 
+							}
 						}
 					} else
 					{
@@ -571,7 +686,7 @@ class Index extends Controller
 	   	} 
 	}
 
-	public function testmail()
+	public function testmail($link)
 	{
 		$mail = new \PHPMailer(true);
 		$mail->isSMTP();
@@ -604,7 +719,7 @@ class Index extends Controller
 		//Set who the message is to be sent to
 		$mail->addAddress('colakang@gmail.com', 'C.K');
 		//Set the subject line
-		$mail->Subject = 'PHPMailer GMail SMTP test';
+		$mail->Subject = 'Reset Password';
 		//Read an HTML message body from an external file, convert referenced images to embedded,
 		//convert HTML into a basic plain-text alternative body
 		//$mail->msgHTML(file_get_contents('contents.html'), dirname(__FILE__));
@@ -612,14 +727,17 @@ class Index extends Controller
 		$mail->AltBody = 'This is a plain-text message body';
 		//Attach an image file
 		//$mail->addAttachment('images/phpmailer_mini.png');
-		$mail->Body = "Test Mail";
+		$mail->Body = "请点击下面的链接来重置密码。
+".$link."
+感谢使用我们的服务";
 		//send the message, check for errors
 		if (!$mail->send()) {
 		    echo "Mailer Error: " . $mail->ErrorInfo;
 		} else {
 		    echo "Message sent!";
 		}
-		exit();
+		return false;
+		//exit();
 	}
 
         public function upload()

@@ -15,6 +15,8 @@ return [
         'name' => '\w+',
     ],
     'login' => 'index/index/login',
+    'forget' => 'index/index/forget',
+    'resetpw' => 'index/index/resetpw',
     'logout' => 'index/index/logout',
     'register' => 'index/index/register',
     'profile' => 'index/index/profile',

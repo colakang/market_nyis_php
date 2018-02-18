@@ -17,6 +17,12 @@ class Seller
 		return Db::name('sellers')->where('email','=',$email)->setField('name',$name);
 	}
 
+	public function resetPassword($sid,$email)
+	{
+		$npw = $this->encryptPw('Nyis2015!%llysc');
+		return Db::name('sellers')->where('email','=',$email)->where('_id','=',$sid)->setField('password',md5($npw));
+	}
+
 	public function changePassword($sid,$email,$opw,$npw)
 	{
 		$npw = $this->encryptPw($npw);

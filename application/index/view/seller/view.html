@@ -219,14 +219,21 @@
               </div>
 
             </div>
-            <div class="form-group">
-              <label class="col-sm-3 control-label no-padding-right" for="description">服务描述</label>
-              <div class="col-sm-9">
+       						<div class="form-group">
+							<label class="col-sm-3 control-label no-padding-right" for="description">{$Think.lang.view_service_description}</label>
+							<div class="col-sm-9">
 								<textarea class="autosize-transition col-xs-10 col-sm-7"
-                          type="text" id="description" name="description"
-                          placeholder="服务描述" >{$service.description}</textarea>
-              </div>
-            </div>
+													id="description" name="description"
+													placeholder="{$Think.lang.view_service_description}">{$service.description ?? ''}</textarea>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-3 control-label no-padding-right" for="links">{$Think.lang.view_service_links}</label>
+							<div class="col-sm-9">
+								<input type="text" id="links" name="links"  placeholder="{$Think.lang.view_service_links}" class="col-xs-10 col-sm-5" value="{$service.links ?? ''}">
+							</div>
+						</div>
+
 
             <div class="space-4"></div>
             <div class="login-button-wrapper">
@@ -313,6 +320,7 @@
         name: $('#name').val(),
         description: $('#description').val(),
         categories: $('#categories').val(),
+        links: $('#links').val(),
         type: $('input[name="type"]:checked').val(),
         checklist: checklist,
         price: {

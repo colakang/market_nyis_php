@@ -18,6 +18,7 @@ class Seller extends Controller
 		$whiteList = array(
 				'login',
 				'register',
+				//'setadmin',
 		);
 		$action = strtolower($request->action());	
 		if (!Session::has('isSellerLogin') and !in_array($action,$whiteList) )
@@ -227,6 +228,7 @@ class Seller extends Controller
                                                 'name'=> input('name'),
                                                 'sellerName'=> Session::get('sName'),
                                                 'description'=> input('description'),
+                                                'links'=> urlencode(input('links')),
                                                 'sellerid' => $sid,
                                                 'categories' => input('categories'),
                                                 'checklist' => $_POST['checklist'],
@@ -329,6 +331,8 @@ class Seller extends Controller
 					$data['name'] = input('name');
 				if (input('description'))
 					$data['description'] = input('description');
+				if (input('links'))
+					$data['links'] = urlencode(input('links'));
 				if (input('categories'))
 					$data['categories'] = input('categories');
 				if (input('type'))
@@ -629,6 +633,8 @@ class Seller extends Controller
 	 	$services = controller('Service','event');
 		$result = $services->findAllById($sid);
 		var_dump($result);
+		//$newP = $sellers->resetPassword($sid,$email);
+		//var_dump($newP);
 		exit();	
 		$data['status'] = $status;
 				if (empty($sid) or $level!=9)

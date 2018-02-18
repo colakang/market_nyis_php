@@ -24,6 +24,13 @@ class User
 		return Db::name('users')->where('email','=',$email)->where('_id','=',$uid)->where('password','=',md5($opw))->setField('password',md5($npw));
 	}
 
+	public function resetPassword($uid,$email,$npw)
+	{
+		$npw = $this->encryptPw($npw);
+		return Db::name('users')->where('email','=',$email)->where('_id','=',$uid)->setField('password',md5($npw));
+		//return Db::name('users')->where('email','=',$email)->setField('password',md5($npw));
+	}
+
 	public function findUser($email)
 	{
 		return Db::name('users')->field('id')->where('email','=',$email)->limit(1)->find();
