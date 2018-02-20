@@ -18,7 +18,8 @@ class Seller extends Controller
 		$whiteList = array(
 				'login',
 				'register',
-				//'setadmin',
+				'forget',
+				'resetpw',
 		);
 		$action = strtolower($request->action());	
 		if (!Session::has('isSellerLogin') and !in_array($action,$whiteList) )
@@ -113,6 +114,10 @@ class Seller extends Controller
 						'area' => input('area'),
 						'status' => 0,
 				);
+				$email = $sellers->findUser(input('email'));
+				if(!empty($email))
+					return $this->error('Email已注册');
+
 				$isSellerId = $sellers->addUser($data);
 				$isSellerName = $data['name'];
 				if (empty($isSellerId))
@@ -131,6 +136,92 @@ class Seller extends Controller
 	   	} 
 	}
 
+	public function forget()
+	{
+	 	$sellers = controller('Seller','event');
+		switch(true) {
+			case (empty($_POST)):
+				$view = new View();
+				return $view->fetch();
+				break;
+			case ( !input('email') ):
+				return $this->error(Lang::get('email_empty'));
+				break;
+			default:	
+				$isUserId = $sellers->findUser(input('email'));
+				if (empty($isUserId))
+				{
+					return json("Email Not Found!",200);
+				} else {
+					$data = array (
+						'email'=> input('email'),
+						'type' => 'Seller',
+						'status' => 1,
+						'uid' => $isUserId,
+					);
+				
+					$resetpw = controller('Resetpw','event');	//发送reset邮件;
+					$token = $resetpw->addResetpw($data);				
+					if ($token)
+					{
+						//发送reset邮件
+						$cases = controller('Cases','event');	//发送reset邮件;
+						$links = "http://market.nyis.com/seller/resetpw/token/".$token;
+						$text = "请点击下面的链接来重置密码。\n".$links."\n感谢使用我们的服务";
+						$sendmail = $cases->sendmail($data['email'],$data['email'],$text,"Reset Password");
+						if ($sendmail)
+							return json("Success",200);
+						//var_dump($links);
+					} else {
+						return $this->error(Lang::get('resetpw_fail'));
+
+					}
+
+					//return $this->redirect('/seller');	//Disable message page
+		    		}
+				break;
+	   	} 
+	}
+
+	public function resetpw()
+	{
+	 	$sellers = controller('Seller','event');
+	 	$resetpw = controller('Resetpw','event');
+		switch(true) {
+			case (empty($_POST)):
+				if (empty(input('token')))
+					return $this->redirect('/seller/forget');	//Disable message page
+				$view = new View();
+				$view->assign('token',input('token'));
+				return $view->fetch();
+				break;
+			default:	
+				$email = input('email');
+				$opw = input('rpw');
+				$npw = input('npw');
+				$token = input('token');
+				if ($opw!=$npw)
+					return $this->error(Lang::get('pasword_not_match'));
+				$isToken = $resetpw->find($token,$email,'Seller');
+				if ($isToken)
+				{
+					$uid = $isToken['uid']['_id'];
+					$result = $sellers->resetPassword($uid,$email,$npw);
+					if ($result)
+					{
+						$update = $resetpw->updateResetpw('',$token,$email);
+						return json("Update Success",200);
+					} else {
+						return json("Update Fail",200);
+					}
+				} else {
+					return json('Token Not Found!',200);
+				}
+
+				break;
+	   	} 
+
+	}
 	public function save()
 	{
 	 	$sellers = controller('Seller','event');
@@ -224,6 +315,8 @@ class Seller extends Controller
                                 $sid = Session::get('sid');
                                 if (empty($_POST['fees']))
 					$_POST['fees'] = 0;
+                                if (empty($_POST['state']))
+					$_POST['state'] = ['CA'];
                                 $data = array (
                                                 'name'=> input('name'),
                                                 'sellerName'=> Session::get('sName'),
@@ -610,6 +703,7 @@ class Seller extends Controller
 	 	$services = controller('Service','event');
 		$serviceid = input('id')?input('id'):'57d13e59421aa90dd56fcaa3';	//Using FAKE ServiceId when id is emtpy;
 		$service = $services->editById($sid,$serviceid);
+		$service['links'] = urldecode($service['links']);
 		$view = new View();
 		$view->assign('service',$service);
 		$view->nickname = Session::get('sName');

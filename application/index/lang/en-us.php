@@ -40,7 +40,11 @@ return [
      'view_addButton' => 'Add',
      'view_seller_status' => 'Status',
      'view_my_cases' => 'My Cases',
-    'view_approve_service' => 'Approve Service'
+    'view_approve_service' => 'Approve Service',
+    'view_service_description' => 'Service Description',
+    'view_service_links' => 'Links',
+    'service_success' => 'Succes'
+
 ];
 
 

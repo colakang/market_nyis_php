@@ -14,7 +14,7 @@ return [
      'view_my_info' => '个人资料',
      'view_email' => '邮箱',
      'view_name' => '名称',
-     'view_area' => '法律服务所在州',
+     'view_area' => '服务所在州',
      'view_wechat' => '微信号',
      'view_phone' => '联系电话',
      'view_address' => '所在地',
@@ -39,7 +39,10 @@ return [
      'view_addButton' => '添加',
      'view_seller_status' => '账号等级',
      'view_my_cases' => '我的案件',
-    'view_approve_service' => '批准审核'
+    'view_approve_service' => '批准审核',
+    'view_service_description' => '服务描述',
+    'view_service_links' => '链接',
+    'service_success' => '添加成功'
 ];
 
 

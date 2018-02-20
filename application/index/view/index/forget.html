@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>NYIS Market-search result</title>
+  <title>NYIS Market</title>
 	{include file="index/header" /}
   <script type="text/javascript" src="/static/javascripts/signup-form-validation.module.js"></script>
 </head>
@@ -114,38 +114,6 @@ $(document).ready(function(){
 
 	});
 });
-
-
-			function callajax(url,title)
-			{
-		     				var email = $('input#email_login').val();
-						if(!email)
-							return false;
-						jQuery.ajax({
-							url: url,
-							data: { email: email},
-							type: 'POST',
-							// optional contentType (depend on your server environment):
-							// contentType: 'application/json',
-							dataType: 'html',
-							success:function(data,st) {
-								// TODO: construct HTML code based on data received from the server
-								bootbox.dialog({
-									title: title,
-									message: data,
-									buttons: {
-										success: {
-											label: "关闭",
-											className: "btn-success",
-											}
-										}
-									});
-							},
-							error:function(xhr,st,err){
-								alert(st + ": " + xhr.responseText);
-							}
-						});
-			}
 
 
 </script>

@@ -113,6 +113,9 @@ class Index extends Controller
 						'nickname' => input('nickname'),
 						'age' => input('age'),
 				);
+				$email = $users->findUser(input('email'));
+				if(!empty($email))
+					return $this->error('Email已注册');
 				$isUserId = $users->addUser($data);
 				$isUserName = $data['nickname'];
 				if (empty($isUserId))
